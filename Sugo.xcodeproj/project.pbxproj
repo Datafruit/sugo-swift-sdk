@@ -10,6 +10,7 @@
 		147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EC1DF6698C001FF110 /* Sugo.swift */; };
 		147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EE1DF66B90001FF110 /* SugoType.swift */; };
 		147C00F11DF66C17001FF110 /* SugoInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00F01DF66C17001FF110 /* SugoInstance.swift */; };
+		1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */; };
 		14C7E7AA1DF6A37500CB906A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7A91DF6A37500CB906A /* UIKit.framework */; };
 		14EADCCA1DF65A5000E6B711 /* sugo.h in Headers */ = {isa = PBXBuildFile; fileRef = 14EADCBC1DF65A5000E6B711 /* sugo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14EADCD51DF65A5B00E6B711 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD41DF65A5B00E6B711 /* Foundation.framework */; };
@@ -77,6 +78,7 @@
 		147C00EC1DF6698C001FF110 /* Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sugo.swift; sourceTree = "<group>"; };
 		147C00EE1DF66B90001FF110 /* SugoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoType.swift; sourceTree = "<group>"; };
 		147C00F01DF66C17001FF110 /* SugoInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoInstance.swift; sourceTree = "<group>"; };
+		1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILayoutSupportToNSString.swift; path = Sugo/UILayoutSupportToNSString.swift; sourceTree = SOURCE_ROOT; };
 		14C7E7A91DF6A37500CB906A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		14EADCB91DF65A5000E6B711 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EADCBC1DF65A5000E6B711 /* sugo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sugo.h; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				14EADD111DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift */,
 				14EADD121DF65ACB00E6B711 /* UIFontToNSDictionary.swift */,
 				14EADD131DF65ACB00E6B711 /* UIImageToNSDictionary.swift */,
+				1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */,
 			);
 			name = Transformers;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				14EADD1A1DF65ACB00E6B711 /* Decide.swift in Sources */,
 				14EADD471DF65ACB00E6B711 /* SSLSecurity.swift in Sources */,
 				14EADD3F1DF65ACB00E6B711 /* ObjectSerializer.swift in Sources */,
+				1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */,
 				147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */,
 				14EADD2D1DF65ACB00E6B711 /* DeviceInfoMessage.swift in Sources */,
 				14EADD251DF65ACB00E6B711 /* CGPointToNSDictionary.swift in Sources */,
