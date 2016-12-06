@@ -120,7 +120,7 @@ class WebSocketWrapper: WebSocketDelegate {
             Logger.debug(message: "Sending message: \(message.debugDescription)")
             if let data = message?.JSONData(), let jsonString = String(data: data, encoding: String.Encoding.utf8) {
                 webSocket.write(string: jsonString)
-//                Logger.debug(message: "Sent JSON:\n\(jsonString)")
+                Logger.debug(message: "Sent JSON:\n\(jsonString)")
             }
         }
     }
@@ -128,7 +128,7 @@ class WebSocketWrapper: WebSocketDelegate {
     class func getMessageType(for message: Data) -> BaseWebSocketMessage? {
         Logger.info(message: "raw message \(message)")
         var webSocketMessage: BaseWebSocketMessage? = nil
-//        Logger.debug(message: "Got Message:\n\(String(data: message, encoding: String.Encoding.utf8))")
+        Logger.debug(message: "Got Message:\n\(String(data: message, encoding: String.Encoding.utf8))")
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: message, options: [])
             if let messageDict = jsonObject as? [String: Any] {

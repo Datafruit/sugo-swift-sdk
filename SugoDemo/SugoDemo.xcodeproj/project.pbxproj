@@ -12,13 +12,13 @@
 		147C01061DF67587001FF110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147C01051DF67587001FF110 /* Assets.xcassets */; };
 		147C01091DF67587001FF110 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01071DF67587001FF110 /* LaunchScreen.storyboard */; };
 		147C01141DF67587001FF110 /* SugoDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01131DF67587001FF110 /* SugoDemoTests.swift */; };
-		147C01271DF68ED8001FF110 /* Sugo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147C01261DF68ED8001FF110 /* Sugo.framework */; };
 		147C01291DF6913D001FF110 /* TrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01281DF6913D001FF110 /* TrackingViewController.swift */; };
 		147C012B1DF69169001FF110 /* UtilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012A1DF69169001FF110 /* UtilityViewController.swift */; };
 		147C012D1DF6918C001FF110 /* CodelessCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */; };
 		147C012F1DF691A2001FF110 /* UIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012E1DF691A2001FF110 /* UIWebViewController.swift */; };
 		147C01311DF691AA001FF110 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01301DF691AA001FF110 /* WKWebViewController.swift */; };
 		147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */; };
+		14C7E7AC1DF6A90E00CB906A /* Sugo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7AB1DF6A90E00CB906A /* Sugo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,14 +41,13 @@
 		147C010F1DF67587001FF110 /* SugoDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SugoDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		147C01131DF67587001FF110 /* SugoDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugoDemoTests.swift; sourceTree = "<group>"; };
 		147C01151DF67587001FF110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		147C01201DF68EB3001FF110 /* Sugo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sugo.framework; path = "../build/Debug-iphoneos/Sugo.framework"; sourceTree = "<group>"; };
-		147C01261DF68ED8001FF110 /* Sugo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sugo.framework; path = "../build/Debug-iphoneos/Sugo.framework"; sourceTree = "<group>"; };
 		147C01281DF6913D001FF110 /* TrackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingViewController.swift; sourceTree = "<group>"; };
 		147C012A1DF69169001FF110 /* UtilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityViewController.swift; sourceTree = "<group>"; };
 		147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodelessCommonViewController.swift; sourceTree = "<group>"; };
 		147C012E1DF691A2001FF110 /* UIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewController.swift; sourceTree = "<group>"; };
 		147C01301DF691AA001FF110 /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCompleteViewController.swift; sourceTree = "<group>"; };
+		14C7E7AB1DF6A90E00CB906A /* Sugo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sugo.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/SugoDemo-gtvotjwtbdqlxabgzwbvdptazjfz/Build/Products/Debug-iphonesimulator/Sugo.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				147C01271DF68ED8001FF110 /* Sugo.framework in Frameworks */,
+				14C7E7AC1DF6A90E00CB906A /* Sugo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,8 +118,7 @@
 		147C011F1DF68EB3001FF110 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				147C01261DF68ED8001FF110 /* Sugo.framework */,
-				147C01201DF68EB3001FF110 /* Sugo.framework */,
+				14C7E7AB1DF6A90E00CB906A /* Sugo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

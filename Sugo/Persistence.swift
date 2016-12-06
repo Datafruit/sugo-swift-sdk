@@ -125,12 +125,6 @@ class Persistence {
         return data as? Queue ?? []
     }
 
-    class private func unarchivePeople(token: String) -> Queue {
-//        let data = unarchiveWithType(.people, token: token)
-//        return data as? Queue ?? []
-        return Queue()
-    }
-
     class private func unarchiveProperties(token: String) -> (InternalProperties, InternalProperties, String) {
         let properties = unarchiveWithType(.properties, token: token) as? InternalProperties
         let superProperties =

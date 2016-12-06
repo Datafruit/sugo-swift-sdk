@@ -49,10 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     fileprivate func initSugo() {
-//        let id: String = "Add_Your_Project_ID_Here"
-//        let token: String = "Add_Your_App_Token_Here"
-        let id: String = "mobile_sdk_ry0Ot8WXl"
-        let token: String = "134f790fbf87380cd84b56f97c601b23"
+        let id: String = "Add_Your_Project_ID_Here"
+        let token: String = "Add_Your_App_Token_Here"
         Sugo.initialize(id: id, token: token)
         Sugo.mainInstance().loggingEnabled = true
         Sugo.mainInstance().flushInterval = 5
