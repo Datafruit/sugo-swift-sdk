@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00FE1DF67587001FF110 /* AppDelegate.swift */; };
+		147C01041DF67587001FF110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01021DF67587001FF110 /* Main.storyboard */; };
+		147C01061DF67587001FF110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147C01051DF67587001FF110 /* Assets.xcassets */; };
+		147C01091DF67587001FF110 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01071DF67587001FF110 /* LaunchScreen.storyboard */; };
+		147C01141DF67587001FF110 /* SugoDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01131DF67587001FF110 /* SugoDemoTests.swift */; };
+		147C01271DF68ED8001FF110 /* Sugo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147C01261DF68ED8001FF110 /* Sugo.framework */; };
+		147C01291DF6913D001FF110 /* TrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01281DF6913D001FF110 /* TrackingViewController.swift */; };
+		147C012B1DF69169001FF110 /* UtilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012A1DF69169001FF110 /* UtilityViewController.swift */; };
+		147C012D1DF6918C001FF110 /* CodelessCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */; };
+		147C012F1DF691A2001FF110 /* UIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012E1DF691A2001FF110 /* UIWebViewController.swift */; };
+		147C01311DF691AA001FF110 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01301DF691AA001FF110 /* WKWebViewController.swift */; };
+		147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		147C01101DF67587001FF110 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 147C00F31DF67587001FF110 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 147C00FA1DF67587001FF110;
+			remoteInfo = SugoDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		147C00FB1DF67587001FF110 /* SugoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SugoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		147C00FE1DF67587001FF110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		147C01031DF67587001FF110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		147C01051DF67587001FF110 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		147C01081DF67587001FF110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		147C010A1DF67587001FF110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147C010F1DF67587001FF110 /* SugoDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SugoDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		147C01131DF67587001FF110 /* SugoDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugoDemoTests.swift; sourceTree = "<group>"; };
+		147C01151DF67587001FF110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147C01201DF68EB3001FF110 /* Sugo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sugo.framework; path = "../build/Debug-iphoneos/Sugo.framework"; sourceTree = "<group>"; };
+		147C01261DF68ED8001FF110 /* Sugo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sugo.framework; path = "../build/Debug-iphoneos/Sugo.framework"; sourceTree = "<group>"; };
+		147C01281DF6913D001FF110 /* TrackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingViewController.swift; sourceTree = "<group>"; };
+		147C012A1DF69169001FF110 /* UtilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityViewController.swift; sourceTree = "<group>"; };
+		147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodelessCommonViewController.swift; sourceTree = "<group>"; };
+		147C012E1DF691A2001FF110 /* UIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewController.swift; sourceTree = "<group>"; };
+		147C01301DF691AA001FF110 /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
+		147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCompleteViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		147C00F81DF67587001FF110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147C01271DF68ED8001FF110 /* Sugo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147C010C1DF67587001FF110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		147C00F21DF67587001FF110 = {
+			isa = PBXGroup;
+			children = (
+				147C00FD1DF67587001FF110 /* SugoDemo */,
+				147C01121DF67587001FF110 /* SugoDemoTests */,
+				147C00FC1DF67587001FF110 /* Products */,
+				147C011F1DF68EB3001FF110 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		147C00FC1DF67587001FF110 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				147C00FB1DF67587001FF110 /* SugoDemo.app */,
+				147C010F1DF67587001FF110 /* SugoDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		147C00FD1DF67587001FF110 /* SugoDemo */ = {
+			isa = PBXGroup;
+			children = (
+				147C00FE1DF67587001FF110 /* AppDelegate.swift */,
+				147C01281DF6913D001FF110 /* TrackingViewController.swift */,
+				147C012A1DF69169001FF110 /* UtilityViewController.swift */,
+				147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */,
+				147C012E1DF691A2001FF110 /* UIWebViewController.swift */,
+				147C01301DF691AA001FF110 /* WKWebViewController.swift */,
+				147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */,
+				147C01021DF67587001FF110 /* Main.storyboard */,
+				147C01051DF67587001FF110 /* Assets.xcassets */,
+				147C01071DF67587001FF110 /* LaunchScreen.storyboard */,
+				147C010A1DF67587001FF110 /* Info.plist */,
+			);
+			path = SugoDemo;
+			sourceTree = "<group>";
+		};
+		147C01121DF67587001FF110 /* SugoDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				147C01131DF67587001FF110 /* SugoDemoTests.swift */,
+				147C01151DF67587001FF110 /* Info.plist */,
+			);
+			path = SugoDemoTests;
+			sourceTree = "<group>";
+		};
+		147C011F1DF68EB3001FF110 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				147C01261DF68ED8001FF110 /* Sugo.framework */,
+				147C01201DF68EB3001FF110 /* Sugo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		147C00FA1DF67587001FF110 /* SugoDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 147C01181DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemo" */;
+			buildPhases = (
+				147C00F71DF67587001FF110 /* Sources */,
+				147C00F81DF67587001FF110 /* Frameworks */,
+				147C00F91DF67587001FF110 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SugoDemo;
+			productName = SugoDemo;
+			productReference = 147C00FB1DF67587001FF110 /* SugoDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		147C010E1DF67587001FF110 /* SugoDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 147C011B1DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemoTests" */;
+			buildPhases = (
+				147C010B1DF67587001FF110 /* Sources */,
+				147C010C1DF67587001FF110 /* Frameworks */,
+				147C010D1DF67587001FF110 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				147C01111DF67587001FF110 /* PBXTargetDependency */,
+			);
+			name = SugoDemoTests;
+			productName = SugoDemoTests;
+			productReference = 147C010F1DF67587001FF110 /* SugoDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		147C00F31DF67587001FF110 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = Sugo;
+				TargetAttributes = {
+					147C00FA1DF67587001FF110 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+					147C010E1DF67587001FF110 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 147C00FA1DF67587001FF110;
+					};
+				};
+			};
+			buildConfigurationList = 147C00F61DF67587001FF110 /* Build configuration list for PBXProject "SugoDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 147C00F21DF67587001FF110;
+			productRefGroup = 147C00FC1DF67587001FF110 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				147C00FA1DF67587001FF110 /* SugoDemo */,
+				147C010E1DF67587001FF110 /* SugoDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		147C00F91DF67587001FF110 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147C01091DF67587001FF110 /* LaunchScreen.storyboard in Resources */,
+				147C01061DF67587001FF110 /* Assets.xcassets in Resources */,
+				147C01041DF67587001FF110 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147C010D1DF67587001FF110 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		147C00F71DF67587001FF110 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */,
+				147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */,
+				147C012F1DF691A2001FF110 /* UIWebViewController.swift in Sources */,
+				147C012B1DF69169001FF110 /* UtilityViewController.swift in Sources */,
+				147C01311DF691AA001FF110 /* WKWebViewController.swift in Sources */,
+				147C01291DF6913D001FF110 /* TrackingViewController.swift in Sources */,
+				147C012D1DF6918C001FF110 /* CodelessCommonViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147C010B1DF67587001FF110 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147C01141DF67587001FF110 /* SugoDemoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		147C01111DF67587001FF110 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 147C00FA1DF67587001FF110 /* SugoDemo */;
+			targetProxy = 147C01101DF67587001FF110 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		147C01021DF67587001FF110 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				147C01031DF67587001FF110 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		147C01071DF67587001FF110 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				147C01081DF67587001FF110 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		147C01161DF67587001FF110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		147C01171DF67587001FF110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		147C01191DF67587001FF110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SugoDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		147C011A1DF67587001FF110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SugoDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		147C011C1DF67587001FF110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SugoDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SugoDemo.app/SugoDemo";
+			};
+			name = Debug;
+		};
+		147C011D1DF67587001FF110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SugoDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SugoDemo.app/SugoDemo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		147C00F61DF67587001FF110 /* Build configuration list for PBXProject "SugoDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147C01161DF67587001FF110 /* Debug */,
+				147C01171DF67587001FF110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		147C01181DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147C01191DF67587001FF110 /* Debug */,
+				147C011A1DF67587001FF110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		147C011B1DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147C011C1DF67587001FF110 /* Debug */,
+				147C011D1DF67587001FF110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 147C00F31DF67587001FF110 /* Project object */;
+}
