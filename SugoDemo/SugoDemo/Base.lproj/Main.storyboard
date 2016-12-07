@@ -32,7 +32,7 @@
             </objects>
             <point key="canvasLocation" x="953" y="-441"/>
         </scene>
-        <!--Mixpanel-->
+        <!--Sugo-->
         <scene sceneID="sab-WC-BLQ">
             <objects>
                 <tableViewController id="Xdo-KF-sHR" sceneMemberID="viewController">
@@ -178,7 +178,7 @@
                             <outlet property="delegate" destination="Xdo-KF-sHR" id="RDO-JU-Dbx"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Mixpanel" id="vak-ce-85I"/>
+                    <navigationItem key="navigationItem" title="Sugo" id="vak-ce-85I"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yKh-hv-ldE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -472,7 +472,6 @@
         <!--Action Complete View Controller-->
         <scene sceneID="oCF-wz-mIR">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ngu-Uh-iWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="ActionCompleteViewController" id="rWz-Ng-KsG" customClass="ActionCompleteViewController" customModule="SugoDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OJu-ma-ajN"/>
@@ -523,6 +522,7 @@
                         <outlet property="popupView" destination="nAB-Fr-tac" id="zlD-5m-UAH"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ngu-Uh-iWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="953" y="1807"/>
         </scene>
