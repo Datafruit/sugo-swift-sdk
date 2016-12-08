@@ -19,14 +19,11 @@ enum MessageType: String {
     case snapshotResponse = "snapshot_response"
     case changeRequest = "change_request"
     case changeResponse = "change_response"
-    case tweakRequest = "tweak_request"
-    case tweakResponse = "tweak_response"
     case clearRequest = "clear_request"
     case clearResponse = "clear_response"
 }
 
 class WebSocketWrapper: WebSocketDelegate {
-    static let sessionVariantKey = "session_variant"
     static let startLoadingAnimationKey = "connectivityBarLoading"
     static let finishLoadingAnimationKey = "connectivtyBarFinished"
     static var retries = 0

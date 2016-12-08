@@ -397,7 +397,7 @@ extension SugoInstance {
      Creates a distinctId alias from alias to the current id.
 
      This method is used to map an identifier called an alias to the existing Sugo
-     distinct id. This causes all events and people requests sent with the alias to be
+     distinct id. This causes all events requests sent with the alias to be
      mapped back to the original distinct id. The recommended usage pattern is to call
      both createAlias: and identify: when the user signs up, and only identify: (with
      their new user ID) when they log in. This will keep your signup funnels working

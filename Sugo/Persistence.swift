@@ -18,7 +18,6 @@ class Persistence {
 
     enum ArchiveType: String {
         case events
-        case people
         case properties
         case codelessBindings
         case variants
@@ -56,10 +55,6 @@ class Persistence {
 
     class func archiveEvents(_ eventsQueue: Queue, token: String) {
         archiveToFile(.events, object: eventsQueue, token: token)
-    }
-
-    class func archivePeople(_ peopleQueue: Queue, token: String) {
-//        archiveToFile(.people, object: peopleQueue, token: token)
     }
 
     class func archiveProperties(_ properties: ArchivedProperties, token: String) {
