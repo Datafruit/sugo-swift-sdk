@@ -42,6 +42,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        return Sugo.mainInstance().handle(url: url)
+    }
+    
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        
+//    }
+//    
+//    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+//        
+//    }
 
 }
 
@@ -55,6 +68,7 @@ extension AppDelegate {
         Sugo.mainInstance().loggingEnabled = true
         Sugo.mainInstance().flushInterval = 5
         Sugo.mainInstance().identify(distinctId: Sugo.mainInstance().distinctId)
+        Sugo.mainInstance().track(eventName: "Launched")
     }
     
 }

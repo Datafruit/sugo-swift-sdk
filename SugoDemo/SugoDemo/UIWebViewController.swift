@@ -23,9 +23,8 @@ class UIWebViewController: UIViewController  {
         self.view.addSubview(self.webView)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    deinit {
+        self.webView.delegate = nil
     }
     
 }
@@ -34,7 +33,7 @@ class UIWebViewController: UIViewController  {
 extension UIWebViewController: UIWebViewDelegate {
     
     // Note: Developer should implement this very delegate method
-    @objc func webViewDidFinishLoad(_ webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         print(#function)
     }
     

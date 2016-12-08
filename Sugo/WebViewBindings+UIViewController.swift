@@ -26,7 +26,7 @@ extension WebViewBindings {
                     }
                 }
             }
-            Swizzler.swizzleSelector(NSSelectorFromString("viewDidAppear:"),
+            Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
                                      withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
                                      for: UIViewController.self,
                                      name: self.vcSwizzleBlockName,
@@ -43,7 +43,7 @@ extension WebViewBindings {
             if let webView = self.wkWebView {
                 stopWKWebViewSwizzle(webView: webView)
             }
-            Swizzler.unswizzleSelector(NSSelectorFromString("viewDidAppear:"),
+            Swizzler.unswizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
                                        aClass: UIViewController.self,
                                        name: self.vcSwizzleBlockName)
             self.vcSwizzleRunning = false
@@ -54,7 +54,7 @@ extension WebViewBindings {
 extension UIViewController {
     
     @objc func sugoViewDidAppear(_ animated: Bool) {
-        let originalSelector = NSSelectorFromString("viewDidAppear:")
+        let originalSelector = #selector(UIViewController.viewDidAppear(_:))
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
