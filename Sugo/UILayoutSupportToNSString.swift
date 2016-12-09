@@ -24,7 +24,6 @@ import UIKit
             return nil
         }
         let uiLayoutSupport = value
-        uiLayoutSupport.length
         
         return "\(uiLayoutSupport.length)"
     }
