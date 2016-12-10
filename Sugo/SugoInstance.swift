@@ -520,14 +520,18 @@ extension SugoInstance {
      - parameter completion: an optional completion handler for when the flush has completed.
      */
     open func flush(completion: (() -> Void)? = nil) {
-        serialQueue.async() {
-            if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
-                return
-            }
-            self.flushInstance.flushEventsQueue(&self.eventsQueue)
-            self.archive()
-            if let completion = completion {
-                DispatchQueue.main.async(execute: completion)
+        
+        if self.decideInstance.webSocketWrapper == nil
+            || !self.decideInstance.webSocketWrapper!.connected {
+            serialQueue.async() {
+                if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
+                    return
+                }
+                self.flushInstance.flushEventsQueue(&self.eventsQueue)
+                self.archive()
+                if let completion = completion {
+                    DispatchQueue.main.async(execute: completion)
+                }
             }
         }
     }
@@ -551,6 +555,7 @@ extension SugoInstance {
     open func track(eventID: String? = nil, eventName: String?, properties: Properties? = nil) {
         let epochInterval = Date().timeIntervalSince1970
         serialQueue.async() {
+            
             self.trackInstance.track(eventID: eventID,
                                      eventName: eventName,
                                      properties: properties,
@@ -559,7 +564,17 @@ extension SugoInstance {
                                      superProperties: self.superProperties,
                                      distinctId: self.distinctId,
                                      epochInterval: epochInterval)
-
+            
+            if self.decideInstance.webSocketWrapper != nil
+                && self.decideInstance.webSocketWrapper!.connected {
+                
+                if !self.eventsQueue.isEmpty {
+                    self.flushInstance.flushQueueViaWebSocket(connection: self.decideInstance.webSocketWrapper!,
+                                                              queue: self.eventsQueue)
+                    self.eventsQueue.removeAll()
+                }
+            }
+            
             Persistence.archiveEvents(self.eventsQueue, token: self.apiToken)
         }
     }
@@ -724,7 +739,7 @@ extension SugoInstance {
         if let urlKeyValue = url.query?.components(separatedBy: "=").last {
             self.urlSchemesKeyValue = urlKeyValue
             if self.enableVisualEditorForCodeless {
-                self.connectToWebSocket()
+                connectToWebSocket()
                 return true
             }
         }

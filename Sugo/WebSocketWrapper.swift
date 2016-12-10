@@ -12,15 +12,16 @@ import UIKit
 enum MessageType: String {
     case bindingRequest = "event_binding_request"
     case bindingResponse = "event_binding_response"
+    case trackMessage = "track_message"
     case deviceInfoRequest = "device_info_request"
     case deviceInfoResponse = "device_info_response"
-    case disconnect = "disconnect"
     case snapshotRequest = "snapshot_request"
     case snapshotResponse = "snapshot_response"
     case changeRequest = "change_request"
     case changeResponse = "change_response"
     case clearRequest = "clear_request"
     case clearResponse = "clear_response"
+    case disconnect = "disconnect"
 }
 
 class WebSocketWrapper: WebSocketDelegate {
@@ -117,7 +118,7 @@ class WebSocketWrapper: WebSocketDelegate {
             Logger.debug(message: "Sending message: \(message.debugDescription)")
             if let data = message?.JSONData(), let jsonString = String(data: data, encoding: String.Encoding.utf8) {
                 webSocket.write(string: jsonString)
-                Logger.debug(message: "Sent JSON:\n\(jsonString)")
+//                Logger.debug(message: "Sent JSON:\n\(jsonString)")
             }
         }
     }
@@ -125,7 +126,7 @@ class WebSocketWrapper: WebSocketDelegate {
     class func getMessageType(for message: Data) -> BaseWebSocketMessage? {
         Logger.info(message: "raw message \(message)")
         var webSocketMessage: BaseWebSocketMessage? = nil
-        Logger.debug(message: "Got Message:\n\(String(data: message, encoding: String.Encoding.utf8))")
+//        Logger.debug(message: "Got Message:\n\(String(data: message, encoding: String.Encoding.utf8))")
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: message, options: [])
             if let messageDict = jsonObject as? [String: Any] {
