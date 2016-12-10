@@ -24,14 +24,18 @@ class WebViewBindings: NSObject {
     var vcPath: String
     var stringBindings: String
     
-    var uiWebView: UIWebView?
-    var wkWebView: WKWebView?
+    var viewSwizzleRunning = false
     
-    var vcSwizzleRunning = false
-    var uiWebViewSwizzleRunning = false
+    var uiWebView: UIWebView?
+    var uiWebViewJavaScriptInjected = false
+    var uiDidMoveToWindowBlockName = UUID().uuidString
+    var uiRemoveFromSuperviewBlockName = UUID().uuidString
+    var uiWebViewDidFinishLoadBlockName = UUID().uuidString
+    
+    var wkWebView: WKWebView?
     var wkWebViewJavaScriptInjected = false
-    var vcSwizzleBlockName = UUID().uuidString
-    var uiWebViewSwizzleBlockName = UUID().uuidString
+    var wkDidMoveToWindowBlockName = UUID().uuidString
+    var wkRemoveFromSuperviewBlockName = UUID().uuidString
     
     static var global: WebViewBindings {
         return singleton

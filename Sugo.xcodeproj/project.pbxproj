@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14364FE21DFA622600F7BE89 /* TrackMessage.swift */; };
 		147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EC1DF6698C001FF110 /* Sugo.swift */; };
 		147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EE1DF66B90001FF110 /* SugoType.swift */; };
 		147C00F11DF66C17001FF110 /* SugoInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00F01DF66C17001FF110 /* SugoInstance.swift */; };
@@ -21,7 +22,7 @@
 		14EADD191DF65ACB00E6B711 /* Codeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCDD1DF65ACA00E6B711 /* Codeless.swift */; };
 		14EADD1A1DF65ACB00E6B711 /* Decide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCDE1DF65ACA00E6B711 /* Decide.swift */; };
 		14EADD1B1DF65ACB00E6B711 /* WebViewBindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCDF1DF65ACA00E6B711 /* WebViewBindings.swift */; };
-		14EADD1C1DF65ACB00E6B711 /* WebViewBindings+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE01DF65ACA00E6B711 /* WebViewBindings+UIViewController.swift */; };
+		14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */; };
 		14EADD1D1DF65ACB00E6B711 /* WebViewBindings+UIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */; };
 		14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */; };
 		14EADD1F1DF65ACB00E6B711 /* WebViewJSExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */; };
@@ -75,6 +76,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		14364FE21DFA622600F7BE89 /* TrackMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackMessage.swift; path = Sugo/TrackMessage.swift; sourceTree = SOURCE_ROOT; };
 		147C00EC1DF6698C001FF110 /* Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sugo.swift; sourceTree = "<group>"; };
 		147C00EE1DF66B90001FF110 /* SugoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoType.swift; sourceTree = "<group>"; };
 		147C00F01DF66C17001FF110 /* SugoInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoInstance.swift; sourceTree = "<group>"; };
@@ -93,7 +95,7 @@
 		14EADCDD1DF65ACA00E6B711 /* Codeless.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Codeless.swift; sourceTree = "<group>"; };
 		14EADCDE1DF65ACA00E6B711 /* Decide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decide.swift; sourceTree = "<group>"; };
 		14EADCDF1DF65ACA00E6B711 /* WebViewBindings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewBindings.swift; sourceTree = "<group>"; };
-		14EADCE01DF65ACA00E6B711 /* WebViewBindings+UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+UIViewController.swift"; sourceTree = "<group>"; };
+		14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WebView.swift"; sourceTree = "<group>"; };
 		14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+UIWebView.swift"; sourceTree = "<group>"; };
 		14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WKWebView.swift"; sourceTree = "<group>"; };
 		14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewJSExport.swift; sourceTree = "<group>"; };
@@ -212,19 +214,13 @@
 			isa = PBXGroup;
 			children = (
 				14EADD0B1DF65ACB00E6B711 /* SSLSecurity.swift */,
-				144DB1871DF66080007B2275 /* HTTP */,
-				144DB1831DF65F2F007B2275 /* WebScoket */,
-			);
-			name = Network;
-			sourceTree = "<group>";
-		};
-		144DB1831DF65F2F007B2275 /* WebScoket */ = {
-			isa = PBXGroup;
-			children = (
+				14EADCFE1DF65ACB00E6B711 /* Network.swift */,
+				14EADCF51DF65ACA00E6B711 /* Flush.swift */,
+				14EADCF61DF65ACA00E6B711 /* FlushRequest.swift */,
 				14EADD161DF65ACB00E6B711 /* WebSocket.swift */,
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
 			);
-			name = WebScoket;
+			name = Network;
 			sourceTree = "<group>";
 		};
 		144DB1841DF65F5A007B2275 /* Transformers */ = {
@@ -268,22 +264,12 @@
 			name = Data;
 			sourceTree = "<group>";
 		};
-		144DB1871DF66080007B2275 /* HTTP */ = {
-			isa = PBXGroup;
-			children = (
-				14EADCFE1DF65ACB00E6B711 /* Network.swift */,
-				14EADCF61DF65ACA00E6B711 /* FlushRequest.swift */,
-				14EADCF51DF65ACA00E6B711 /* Flush.swift */,
-			);
-			name = HTTP;
-			sourceTree = "<group>";
-		};
 		144DB1881DF6609B007B2275 /* WebViewBindings */ = {
 			isa = PBXGroup;
 			children = (
 				14EADCDC1DF65ACA00E6B711 /* WebViewInfoStorage.swift */,
 				14EADCDF1DF65ACA00E6B711 /* WebViewBindings.swift */,
-				14EADCE01DF65ACA00E6B711 /* WebViewBindings+UIViewController.swift */,
+				14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */,
 				14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */,
 				14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */,
 				14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */,
@@ -311,6 +297,7 @@
 				14EADCEC1DF65ACA00E6B711 /* ChangeMessage.swift */,
 				14EADCED1DF65ACA00E6B711 /* ClearMessage.swift */,
 				14EADCF21DF65ACA00E6B711 /* DisconnectMessage.swift */,
+				14364FE21DFA622600F7BE89 /* TrackMessage.swift */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -512,7 +499,8 @@
 				14EADD2D1DF65ACB00E6B711 /* DeviceInfoMessage.swift in Sources */,
 				14EADD251DF65ACB00E6B711 /* CGPointToNSDictionary.swift in Sources */,
 				14EADD3B1DF65ACB00E6B711 /* NSAttributedStringToNSDictionary.swift in Sources */,
-				14EADD1C1DF65ACB00E6B711 /* WebViewBindings+UIViewController.swift in Sources */,
+				14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */,
+				14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */,
 				14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */,
 				14EADD2A1DF65ACB00E6B711 /* CodelessBinding.swift in Sources */,
 				14EADD2C1DF65ACB00E6B711 /* DecideRequest.swift in Sources */,

@@ -15,32 +15,20 @@ extension WebViewBindings: WKScriptMessageHandler {
     func bindWKWebView(webView: WKWebView) {
         self.wkWebView = webView
         if !self.wkWebViewJavaScriptInjected {
-            var responder: UIResponder = webView
-            while responder.next != nil {
-                responder = responder.next!
-                if responder is UIViewController {
-                    self.vcPath = NSStringFromClass(responder.classForCoder)
-                    Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                    break
-                }
-            }
             let jsSource = WKUserScript(source: self.jsWKWebViewBindingsSource, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
             let jsExcute = WKUserScript(source: self.jsWKWebViewBindingsExcute, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
             self.wkWebView?.configuration.userContentController.addUserScript(jsSource)
             self.wkWebView?.configuration.userContentController.addUserScript(jsExcute)
             self.wkWebView?.configuration.userContentController.add(self, name: "WKWebViewBindings")
-            self.wkWebView?.evaluateJavaScript(self.jsWKWebViewBindingsSource, completionHandler: nil)
-            self.wkWebView?.evaluateJavaScript(self.jsWKWebViewBindingsExcute, completionHandler: nil)
+            Logger.debug(message: "WKWebView Injected")
             self.wkWebViewJavaScriptInjected = true
         }
     }
     
     func stopWKWebViewSwizzle(webView: WKWebView) {
         if self.wkWebViewJavaScriptInjected {
-            if webView.navigationDelegate != nil {
-                webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindings")
-                self.wkWebViewJavaScriptInjected = false
-            }
+            webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindings")
+            self.wkWebViewJavaScriptInjected = false
         }
     }
     
