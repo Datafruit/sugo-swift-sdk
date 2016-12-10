@@ -229,7 +229,7 @@ extension UIView {
             }
         }
     }
-
+    
     @objc func sugoViewDidMoveToWindow() {
         let originalSelector = NSSelectorFromString("didMoveToWindow")
         viewCallOriginalMethodWithSwizzledBlocks(originalSelector: originalSelector)
@@ -244,5 +244,6 @@ extension UIView {
         let originalSelector = NSSelectorFromString("layoutSubviews")
         viewCallOriginalMethodWithSwizzledBlocks(originalSelector: originalSelector)
     }
+    
 
 }

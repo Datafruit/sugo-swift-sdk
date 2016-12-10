@@ -11,10 +11,11 @@ import UIKit
 
 struct DecideResponse {
     var newCodelessBindings: Set<CodelessBinding>
-    var htmlCodelessBindings: WebViewBindings?
+    var htmlCodelessBindings: [[String: Any]]
 
     init() {
         newCodelessBindings = Set()
+        htmlCodelessBindings = [[String: Any]]()
     }
 }
 
@@ -73,6 +74,7 @@ class Decide {
                 self.codelessInstance.codelessBindings.subtract(finishedCodelessBindings)
 
                 if let htmlCodelessBindings = result["h5_event_bindings"] as? [[String: Any]] {
+                    decideResponse.htmlCodelessBindings = htmlCodelessBindings
                     WebViewBindings.global.decideBindings = htmlCodelessBindings
                     WebViewBindings.global.fillBindings()
                 }
@@ -110,7 +112,6 @@ class Decide {
             for binding in self.codelessInstance.codelessBindings {
                 binding.stop()
             }
-
         }
 
         let disconnectCallback = { [weak sugoInstance] in
@@ -123,6 +124,7 @@ class Decide {
             for binding in self.codelessInstance.codelessBindings {
                 binding.execute()
             }
+            
 
         }
 

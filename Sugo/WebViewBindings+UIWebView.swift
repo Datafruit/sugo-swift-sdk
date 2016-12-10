@@ -13,16 +13,7 @@ extension WebViewBindings {
     
     func bindUIWebView(webView: UIWebView) {
         self.uiWebView = webView
-        if !self.uiWebViewSwizzleRunning {
-            var responder: UIResponder = webView
-            while responder.next != nil {
-                responder = responder.next!
-                if responder is UIViewController {
-                    self.vcPath = NSStringFromClass(responder.classForCoder)
-                    Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                    break
-                }
-            }
+        if !self.uiWebViewJavaScriptInjected {
             let executeBlock = {
                 [unowned self] (view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) in
                 guard let wv = webView as? UIWebView else {
@@ -33,6 +24,7 @@ extension WebViewBindings {
                                     forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
                 jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
                 jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
+                Logger.debug(message: "UIWebView Injected")
             }
             
             if let delegate = webView.delegate {
@@ -41,20 +33,20 @@ extension WebViewBindings {
                                          withSelector: #selector(UIWebView.sugoWebViewDidFinishLoad(_:)),
                                          for: type(of: delegate),
                                          and: UIWebView.self,
-                                         name: self.uiWebViewSwizzleBlockName,
+                                         name: self.uiWebViewDidFinishLoadBlockName,
                                          block: executeBlock)
-                self.uiWebViewSwizzleRunning = true
+                self.uiWebViewJavaScriptInjected = true
             }
         }
     }
     
     func stopUIWebViewSwizzle(webView: UIWebView) {
-        if self.uiWebViewSwizzleRunning {
+        if self.uiWebViewJavaScriptInjected {
             if let delegate = webView.delegate {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidFinishLoad(_:)),
                                            aClass: type(of: delegate),
-                                           name: self.uiWebViewSwizzleBlockName)
-                self.uiWebViewSwizzleRunning = false
+                                           name: self.uiWebViewDidFinishLoadBlockName)
+                self.uiWebViewJavaScriptInjected = false
             }
         }
     }
@@ -82,7 +74,7 @@ extension UIWebView {
 extension WebViewBindings {
     
     var jsUIWebViewBindingsExcute: String {
-        return "sugo_bind.bindEvent();"
+        return "if(typeof sugo_bind_flag === 'undefined'){sugo_bind.bindEvent();sugo_bind_flag = 1};"
     }
     
     var jsUIWebViewBindingsSource: String {

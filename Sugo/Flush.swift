@@ -112,6 +112,13 @@ class Flush: AppLifecycle {
             }
         }
     }
+    
+    func flushQueueViaWebSocket(connection: WebSocketWrapper, queue: Queue) {
+        let events: [String: AnyObject] = ["events": queue as AnyObject]
+        let webSocketMessage = TrackMessage(payload: events)
+        connection.send(message: webSocketMessage)
+        Logger.debug(message: "via web socket: \(webSocketMessage?.payload)")
+    }
 
     // MARK: - Lifecycle
     func applicationDidBecomeActive() {
