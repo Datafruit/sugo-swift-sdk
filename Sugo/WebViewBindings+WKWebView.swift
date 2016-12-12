@@ -70,66 +70,69 @@ extension WebViewBindings {
     
     var jsWKWebViewBindingsSource: String {
         return "var sugo_bind={};\n" +
-            "sugo_bind.current_page ='\(self.vcPath)::' + window.location.pathname;\n" +
+            "sugo_bind.current_page ='\(self.wkVCPath)::' + window.location.pathname;\n" +
             "sugo_bind.h5_event_bindings = \(self.stringBindings);\n" +
             "sugo_bind.current_event_bindings = {};\n" +
             "for(var i=0;i<sugo_bind.h5_event_bindings.length;i++){\n" +
-            "\tvar b_event = sugo_bind.h5_event_bindings[i];\n" +
-            "\tif(b_event.target_activity === sugo_bind.current_page){\n" +
-            "\t\tvar key = JSON.stringify(b_event.path);\n" +
-            "\t\tsugo_bind.current_event_bindings[key] = b_event;\n" +
-            "\t}\n" +
+            " var b_event = sugo_bind.h5_event_bindings[i];\n" +
+            " if(b_event.target_activity === sugo_bind.current_page){\n" +
+            "  var key = JSON.stringify(b_event.path);\n" +
+            "  sugo_bind.current_event_bindings[key] = b_event;\n" +
+            " }\n" +
             "};\n" +
             "sugo_bind.get_node_name = function(node){\n" +
-            "\tvar path = '';\n" +
-            "\tvar name = node.localName;\n" +
-            "\tif(name == 'script'){return '';}\n" +
-            "\tif(name == 'link'){return '';}\n" +
-            "\tpath = name;\n" +
-            "\tid = node.id;\n" +
-            "\tif(id && id.length>0){\n" +
-            "\t\tpath += '#' + id;\n" +
-            "\t}\n" +
-            "\treturn path;\n" +
+            " var path = '';\n" +
+            " var name = node.localName;\n" +
+            " if(name == 'script'){return '';}\n" +
+            " if(name == 'link'){return '';}\n" +
+            " path = name;\n" +
+            " id = node.id;\n" +
+            " if(id && id.length>0){\n" +
+            "  path += '#' + id;\n" +
+            " }\n" +
+            " return path;\n" +
             "};\n" +
             "sugo_bind.bindChildNode = function (childrens, jsonArry, parent_path){\n" +
-            "\t\tvar index_map={};\n" +
-            "\t\tfor(var i=0;i<childrens.length;i++){\n" +
-            "\t\t\tvar children = childrens[i];\n" +
-            "\t\t\tvar node_name = sugo_bind.get_node_name(children);\n" +
-            "\t\t\tif (node_name == ''){continue;}\n" +
-            "\t\t\tif(index_map[node_name] == null){\n" +
-            "\t\t\t\tindex_map[node_name] = 0;\n" +
-            "\t\t\t}else{\n" +
-            "\t\t\t\tindex_map[node_name] = index_map[node_name]  + 1;\n" +
-            "\t\t\t}\n" +
-            "\t\t\tvar htmlNode={};\n" +
-            "\t\t\tvar path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "\t\t\thtmlNode.path=path;\t\t\t\n" +
-            "\t\t\tvar b_event = sugo_bind.current_event_bindings[JSON.stringify(htmlNode)];\n" +
-            "\tif(b_event){\n" +
-            "\t\t\t\tvar event = JSON.parse(JSON.stringify(b_event));\n" +
-            "\t\t\t\tchildren.addEventListener(event.event_type, function(e){\n" +
-            "var message = {\n" +
-            "\t\t\t\t'eventID' : event.event_id,\n" +
-            "\t\t\t\t'eventName' : event.event_name,\n" +
-            "\t\t\t\t'properties' : '{}'\n" +
-            "\t\t\t\t};\n" +
-            "window.webkit.messageHandlers.WKWebViewBindings.postMessage(message);\n" +
-            "\t\t\t\t});\n" +
-            "\t}\n" +
-            "\t\t\tif(children.children){\n" +
-            "\t\t\t\tsugo_bind.bindChildNode(children.children, jsonArry, path);\n" +
-            "\t\t\t}\n" +
-            "\t\t}\n" +
-            "};" +
+            "  var index_map={};\n" +
+            "  for(var i=0;i<childrens.length;i++){\n" +
+            "   var children = childrens[i];\n" +
+            "   var node_name = sugo_bind.get_node_name(children);\n" +
+            "   if (node_name == ''){continue;}\n" +
+            "   if(index_map[node_name] == null){\n" +
+            "    index_map[node_name] = 0;\n" +
+            "   }else{\n" +
+            "    index_map[node_name] = index_map[node_name]  + 1;\n" +
+            "   }\n" +
+            "   var htmlNode={};\n" +
+            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
+            "   htmlNode.path=path;   \n" +
+            "   var b_event = sugo_bind.current_event_bindings[JSON.stringify(htmlNode)];\n" +
+            " if(b_event){\n" +
+            "    var event = JSON.parse(JSON.stringify(b_event));\n" +
+            "    sugo_bind.addEvent(children, event);\n" +
+            " }\n" +
+            "   if(children.children){\n" +
+            "    sugo_bind.bindChildNode(children.children, jsonArry, path);\n" +
+            "   }\n" +
+            "  }\n" +
+            "};\n" +
+            "sugo_bind.addEvent = function (children, event) {\n" +
+            "  children.addEventListener(event.event_type, function (e) {\n" +
+            "    var message = {\n" +
+            "    'eventID' : event.event_id,\n" +
+            "    'eventName' : event.event_name,\n" +
+            "    'properties' : '{}'\n" +
+            "    };\n" +
+            "    window.webkit.messageHandlers.WKWebViewBindings.postMessage(message);\n" +
+            "  });\n" +
+            "}\n" +
             "sugo_bind.bindEvent = function(){\n" +
-            "\tvar jsonArry=[];\n" +
-            "\tvar body = document.getElementsByTagName('body')[0];\n" +
-            "\tvar childrens = body.children;\n" +
-            "\tvar parent_path='';\n" +
-            "\tsugo_bind.bindChildNode(childrens, jsonArry, parent_path);\n" +
-        "};"
+            " var jsonArry=[];\n" +
+            " var body = document.getElementsByTagName('body')[0];\n" +
+            " var childrens = body.children;\n" +
+            " var parent_path='';\n" +
+            " sugo_bind.bindChildNode(childrens, jsonArry, parent_path);\n" +
+            "};"
     }
 }
 

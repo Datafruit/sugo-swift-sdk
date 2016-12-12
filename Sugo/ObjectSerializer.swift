@@ -248,125 +248,125 @@ extension ObjectSerializer: WKScriptMessageHandler {
     
     fileprivate var jsUIWebViewReportSource: String {
         return "var sugo_report={};\n" +
-            "\tsugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            "\tsugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            "\tsugo_report.isElementInViewport = function(rect) {\n" +
-            "\t        return (\n" +
-            "\t                rect.top >= 0 &&\n" +
-            "\t                rect.left >= 0 &&\n" +
-            "\t                rect.bottom <= sugo_report.clientHeight && \n" +
-            "\t                rect.right <= sugo_report.clientWidth\n" +
-            "\t        );\n" +
-            "\t};\n" +
-            "\tsugo_report.get_node_name = function(node){\n" +
-            "\t\tvar path = '';\n" +
-            "\t\tvar name = node.localName;\n" +
-            "\t\tif(name == 'script'){return '';}\n" +
-            "\t\tif(name == 'link'){return '';}\n" +
-            "\t\tpath = name;\n" +
-            "\t\tid = node.id;\n" +
-            "\t\tif(id && id.length>0){\n" +
-            "\t\t\tpath += '#' + id;\n" +
-            "\t\t}\n" +
-            "\t\treturn path;\n" +
-            "\t};\n" +
-            "\tsugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
-            "\t\t\tvar index_map={};\n" +
-            "\t\t\tfor(var i=0;i<childrens.length;i++){\n" +
-            "\t\t\t\tvar children = childrens[i];\n" +
-            "\t\t\t\tvar node_name = sugo_report.get_node_name(children);\n" +
-            "\t\t\t\tif (node_name == ''){ continue;}\n" +
-            "\t\t\t\tif(index_map[node_name] == null){\n" +
-            "\t\t\t\t\tindex_map[node_name] = 0;\n" +
-            "\t\t\t\t}else{\n" +
-            "\t\t\t\t\tindex_map[node_name] = index_map[node_name]  + 1;\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t\tvar htmlNode={};\n" +
-            "\t\t\tvar path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "\t\thtmlNode.path=path;" +
-            "\t\t\t\tvar rect = children.getBoundingClientRect();\n" +
-            "\t\t\t\tif(sugo_report.isElementInViewport(rect) == true){ \n" +
-            "\t\t\t\t\thtmlNode.rect=rect;\n" +
-            "\t\t\t\t\tjsonArry.push(htmlNode);\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t\tif(children.children){\n" +
-            "\t\t\t\t\tsugo_report.reportChildNode(children.children, jsonArry, path);\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t}\n" +
-            "\t};\n" +
-            "\tsugo_report.reportNodes = function(){\n" +
-            "\t\tvar jsonArry=[];\n" +
-            "\t\tvar body = document.getElementsByTagName('body')[0];\n" +
-            "\t\tvar childrens = body.children;\n" +
-            "\t\tvar parent_path='';\n" +
-            "\t\tsugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
-            "\t\tWebViewJSExport.infoWithPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArry), sugo_report.clientWidth, sugo_report.clientHeight);\n" +
-        "\t};"
+            " sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
+            " sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
+            " sugo_report.isElementInViewport = function(rect) {\n" +
+            "         return (\n" +
+            "                 rect.top >= 0 &&\n" +
+            "                 rect.left >= 0 &&\n" +
+            "                 rect.bottom <= sugo_report.clientHeight && \n" +
+            "                 rect.right <= sugo_report.clientWidth\n" +
+            "         );\n" +
+            " };\n" +
+            " sugo_report.get_node_name = function(node){\n" +
+            "  var path = '';\n" +
+            "  var name = node.localName;\n" +
+            "  if(name == 'script'){return '';}\n" +
+            "  if(name == 'link'){return '';}\n" +
+            "  path = name;\n" +
+            "  id = node.id;\n" +
+            "  if(id && id.length>0){\n" +
+            "   path += '#' + id;\n" +
+            "  }\n" +
+            "  return path;\n" +
+            " };\n" +
+            " sugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
+            "   var index_map={};\n" +
+            "   for(var i=0;i<childrens.length;i++){\n" +
+            "    var children = childrens[i];\n" +
+            "    var node_name = sugo_report.get_node_name(children);\n" +
+            "    if (node_name == ''){ continue;}\n" +
+            "    if(index_map[node_name] == null){\n" +
+            "     index_map[node_name] = 0;\n" +
+            "    }else{\n" +
+            "     index_map[node_name] = index_map[node_name]  + 1;\n" +
+            "    }\n" +
+            "    var htmlNode={};\n" +
+            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
+            "  htmlNode.path=path;" +
+            "    var rect = children.getBoundingClientRect();\n" +
+            "    if(sugo_report.isElementInViewport(rect) == true){ \n" +
+            "     htmlNode.rect=rect;\n" +
+            "     jsonArry.push(htmlNode);\n" +
+            "    }\n" +
+            "    if(children.children){\n" +
+            "     sugo_report.reportChildNode(children.children, jsonArry, path);\n" +
+            "    }\n" +
+            "   }\n" +
+            " };\n" +
+            " sugo_report.reportNodes = function(){\n" +
+            "  var jsonArry=[];\n" +
+            "  var body = document.getElementsByTagName('body')[0];\n" +
+            "  var childrens = body.children;\n" +
+            "  var parent_path='';\n" +
+            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
+            "  WebViewJSExport.infoWithPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArry), sugo_report.clientWidth, sugo_report.clientHeight);\n" +
+            " };"
     }
     
     fileprivate var jsWKWebViewReport: String {
         return "var sugo_report={};\n" +
-            "\tsugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            "\tsugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            "\tsugo_report.isElementInViewport = function(rect) {\n" +
-            "\t        return (\n" +
-            "\t                rect.top >= 0 &&\n" +
-            "\t                rect.left >= 0 &&\n" +
-            "\t                rect.bottom <= sugo_report.clientHeight && \n" +
-            "\t                rect.right <= sugo_report.clientWidth\n" +
-            "\t        );\n" +
-            "\t};\n" +
-            "\tsugo_report.get_node_name = function(node){\n" +
-            "\t\tvar path = '';\n" +
-            "\t\tvar name = node.localName;\n" +
-            "\t\tif(name == 'script'){return '';}\n" +
-            "\t\tif(name == 'link'){return '';}\n" +
-            "\t\tpath = name;\n" +
-            "\t\tid = node.id;\n" +
-            "\t\tif(id && id.length>0){\n" +
-            "\t\t\tpath += '#' + id;\n" +
-            "\t\t}\n" +
-            "\t\treturn path;\n" +
-            "\t};\n" +
-            "\tsugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
-            "\t\t\tvar index_map={};\n" +
-            "\t\t\tfor(var i=0;i<childrens.length;i++){\n" +
-            "\t\t\t\tvar children = childrens[i];\n" +
-            "\t\t\t\tvar node_name = sugo_report.get_node_name(children);\n" +
-            "\t\t\t\tif (node_name == ''){ continue;}\n" +
-            "\t\t\t\tif(index_map[node_name] == null){\n" +
-            "\t\t\t\t\tindex_map[node_name] = 0;\n" +
-            "\t\t\t\t}else{\n" +
-            "\t\t\t\t\tindex_map[node_name] = index_map[node_name]  + 1;\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t\tvar htmlNode={};\n" +
-            "\t\t\tvar path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "\t\thtmlNode.path=path;" +
-            "\t\t\t\tvar rect = children.getBoundingClientRect();\n" +
-            "\t\t\t\tif(sugo_report.isElementInViewport(rect) == true){ \n" +
-            "\t\t\t\t\thtmlNode.rect=rect;\n" +
-            "\t\t\t\t\tjsonArry.push(htmlNode);\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t\tif(children.children){\n" +
-            "\t\t\t\t\tsugo_report.reportChildNode(children.children, jsonArry, path);\n" +
-            "\t\t\t\t}\n" +
-            "\t\t\t}\n" +
-            "\t};\n" +
-            "\tsugo_report.reportNodes = function(){\n" +
-            "\t\tvar jsonArry=[];\n" +
-            "\t\tvar body = document.getElementsByTagName('body')[0];\n" +
-            "\t\tvar childrens = body.children;\n" +
-            "\t\tvar parent_path='';\n" +
-            "\t\tsugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
-            "\t\tvar message = {\n" +
-            "\t\t\t\t'path' : window.location.pathname,\n" +
-            "\t\t\t\t'clientWidth' : sugo_report.clientWidth,\n" +
-            "\t\t\t\t'clientHeight' : sugo_report.clientHeight,\n" +
-            "\t\t\t\t'nodes' : JSON.stringify(jsonArry)\n" +
-            "\t\t\t\t};\n" +
-            "\t\twindow.webkit.messageHandlers.WKWebViewReporter.postMessage(message);\n" +
-            "\t};\n" +
-        "\tsugo_report.reportNodes();"
+            " sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
+            " sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
+            " sugo_report.isElementInViewport = function(rect) {\n" +
+            "         return (\n" +
+            "                 rect.top >= 0 &&\n" +
+            "                 rect.left >= 0 &&\n" +
+            "                 rect.bottom <= sugo_report.clientHeight && \n" +
+            "                 rect.right <= sugo_report.clientWidth\n" +
+            "         );\n" +
+            " };\n" +
+            " sugo_report.get_node_name = function(node){\n" +
+            "  var path = '';\n" +
+            "  var name = node.localName;\n" +
+            "  if(name == 'script'){return '';}\n" +
+            "  if(name == 'link'){return '';}\n" +
+            "  path = name;\n" +
+            "  id = node.id;\n" +
+            "  if(id && id.length>0){\n" +
+            "   path += '#' + id;\n" +
+            "  }\n" +
+            "  return path;\n" +
+            " };\n" +
+            " sugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
+            "   var index_map={};\n" +
+            "   for(var i=0;i<childrens.length;i++){\n" +
+            "    var children = childrens[i];\n" +
+            "    var node_name = sugo_report.get_node_name(children);\n" +
+            "    if (node_name == ''){ continue;}\n" +
+            "    if(index_map[node_name] == null){\n" +
+            "     index_map[node_name] = 0;\n" +
+            "    }else{\n" +
+            "     index_map[node_name] = index_map[node_name]  + 1;\n" +
+            "    }\n" +
+            "    var htmlNode={};\n" +
+            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
+            "  htmlNode.path=path;" +
+            "    var rect = children.getBoundingClientRect();\n" +
+            "    if(sugo_report.isElementInViewport(rect) == true){ \n" +
+            "     htmlNode.rect=rect;\n" +
+            "     jsonArry.push(htmlNode);\n" +
+            "    }\n" +
+            "    if(children.children){\n" +
+            "     sugo_report.reportChildNode(children.children, jsonArry, path);\n" +
+            "    }\n" +
+            "   }\n" +
+            " };\n" +
+            " sugo_report.reportNodes = function(){\n" +
+            "  var jsonArry=[];\n" +
+            "  var body = document.getElementsByTagName('body')[0];\n" +
+            "  var childrens = body.children;\n" +
+            "  var parent_path='';\n" +
+            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
+            "  var message = {\n" +
+            "    'path' : window.location.pathname,\n" +
+            "    'clientWidth' : sugo_report.clientWidth,\n" +
+            "    'clientHeight' : sugo_report.clientHeight,\n" +
+            "    'nodes' : JSON.stringify(jsonArry)\n" +
+            "    };\n" +
+            "  window.webkit.messageHandlers.WKWebViewReporter.postMessage(message);\n" +
+            " };\n" +
+            " sugo_report.reportNodes();"
     }
     
 }

@@ -21,15 +21,18 @@ class WebViewBindings: NSObject {
     var decideBindings: [[String: Any]]
     var codelessBindings: [[String: Any]]
     var bindings: [[String: Any]]
-    var vcPath: String
+    var uiVCPath: String
+    var wkVCPath: String
     var stringBindings: String
     
     var viewSwizzleRunning = false
     
     var uiWebView: UIWebView?
+    var uiWebViewSwizzleRunning = false
     var uiWebViewJavaScriptInjected = false
     var uiDidMoveToWindowBlockName = UUID().uuidString
     var uiRemoveFromSuperviewBlockName = UUID().uuidString
+    var uiWebViewDidStartLoadBlockName = UUID().uuidString
     var uiWebViewDidFinishLoadBlockName = UUID().uuidString
     
     var wkWebView: WKWebView?
@@ -47,7 +50,8 @@ class WebViewBindings: NSObject {
         self.decideBindings = [[String: Any]]()
         self.codelessBindings = [[String: Any]]()
         self.bindings = [[String: Any]]()
-        self.vcPath = String()
+        self.uiVCPath = String()
+        self.wkVCPath = String()
         self.stringBindings = String()
         super.init()
     }
