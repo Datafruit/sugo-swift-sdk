@@ -282,14 +282,18 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     func defaultDistinctId() -> String {
-        var distinctId: String? = IFA()
-        if distinctId == nil && NSClassFromString("UIDevice") != nil {
-            distinctId = UIDevice.current.identifierForVendor?.uuidString
-        }
-        guard let distId = distinctId else {
+        if SugoPermission.canObtainIFA {
+            var distinctId: String? = IFA()
+            if distinctId == nil && NSClassFromString("UIDevice") != nil {
+                distinctId = UIDevice.current.identifierForVendor?.uuidString
+            }
+            guard let distId = distinctId else {
+                return UUID().uuidString
+            }
+            return distId
+        } else {
             return UUID().uuidString
         }
-        return distId
     }
 
     func IFA() -> String? {

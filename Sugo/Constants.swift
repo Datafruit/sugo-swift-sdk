@@ -24,6 +24,10 @@ struct BundleConstants {
     static let ID = "io.sugo.Sugo"
 }
 
+struct SugoPermission {
+    static let canObtainIFA = false
+}
+
 struct ServerURL {
     static let bindings = "http://192.168.0.212:8000"
     static let collect = "http://collect.sugo.net"
