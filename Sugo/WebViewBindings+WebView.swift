@@ -20,11 +20,14 @@ extension WebViewBindings {
                 guard let webView = view as? UIWebView else {
                     return
                 }
+                if view!.isKind(of: WKWebView.self) {
+                    return
+                }
                 var responder: UIResponder = webView
                 while responder.next != nil {
                     responder = responder.next!
                     if responder is UIViewController {
-                        self.vcPath = NSStringFromClass(responder.classForCoder)
+                        self.uiVCPath = NSStringFromClass(responder.classForCoder)
                         Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
                         break
                     }
@@ -47,7 +50,7 @@ extension WebViewBindings {
                 while responder.next != nil {
                     responder = responder.next!
                     if responder is UIViewController {
-                        self.vcPath = NSStringFromClass(responder.classForCoder)
+                        self.wkVCPath = NSStringFromClass(responder.classForCoder)
                         Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
                         break
                     }
