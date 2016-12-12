@@ -72,6 +72,7 @@ extension WebViewBindings {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidFinishLoad(_:)),
                                            aClass: type(of: delegate),
                                            name: self.uiWebViewDidFinishLoadBlockName)
+                self.uiWebViewJavaScriptInjected = false
                 self.uiWebViewSwizzleRunning = false
             }
         }
