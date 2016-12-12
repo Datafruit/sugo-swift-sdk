@@ -32,7 +32,7 @@ class UIWebViewController: UIViewController  {
 // Mark: - UIWebViewDelegate
 extension UIWebViewController: UIWebViewDelegate {
        
-    // Note: Developer should implement this very delegate method
+    // Note: - Developer should implement these very delegate method for codeless bindings
     func webViewDidStartLoad(_ webView: UIWebView) {
         print(#function)
     }

@@ -144,6 +144,7 @@ class WebSocketWrapper: WebSocketDelegate {
                 case .disconnect:
                     webSocketMessage = DisconnectMessage()
                 case .bindingRequest:
+                    Sugo.mainInstance().isCodelessTesting = true
                     webSocketMessage = BindingRequest(payload: payload)
                 case .changeRequest:
                     webSocketMessage = ChangeRequest(payload: payload)

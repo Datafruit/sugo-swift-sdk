@@ -48,6 +48,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     /// data to the Sugo servers. Defaults to true.
     open var showNetworkActivityIndicator = true
 
+    open var isCodelessTesting: Bool = false
+    
     /// Flush timer's interval.
     /// Setting a flush interval of 0 will turn off the flush timer.
     open var flushInterval: Double {
@@ -83,8 +85,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     /// The base URL used for Sugo API requests.
-    /// Useful if you need to proxy Sugo requests. Defaults to
-    /// https://sugo.io
+    /// Useful if you need to proxy Sugo requests.
+    /// Defaults to https://sugo.io
     open var serverURL: String {
         set {
             BasePath.BindingEventsURL = newValue
@@ -521,8 +523,7 @@ extension SugoInstance {
      */
     open func flush(completion: (() -> Void)? = nil) {
         
-        if self.decideInstance.webSocketWrapper == nil
-            || !self.decideInstance.webSocketWrapper!.connected {
+        if !self.isCodelessTesting {
             serialQueue.async() {
                 if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
                     return
@@ -566,7 +567,8 @@ extension SugoInstance {
                                      epochInterval: epochInterval)
             
             if self.decideInstance.webSocketWrapper != nil
-                && self.decideInstance.webSocketWrapper!.connected {
+                && self.decideInstance.webSocketWrapper!.connected
+                && self.isCodelessTesting {
                 
                 if !self.eventsQueue.isEmpty {
                     self.flushInstance.flushQueueViaWebSocket(connection: self.decideInstance.webSocketWrapper!,
