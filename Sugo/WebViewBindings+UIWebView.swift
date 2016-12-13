@@ -16,9 +16,7 @@ extension WebViewBindings {
         if !self.uiWebViewSwizzleRunning {
             let uiWebViewDidStartLoadBlock = {
                 [unowned self] (view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) in
-                guard let wv = webView as? UIWebView else {
-                    return
-                }
+                
                 if self.uiWebViewJavaScriptInjected {
                     self.uiWebViewJavaScriptInjected = false
                     Logger.debug(message: "UIWebView Uninjected")

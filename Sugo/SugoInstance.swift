@@ -223,6 +223,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
+        track(eventName: "Launched")
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
@@ -282,17 +283,31 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     func defaultDistinctId() -> String {
-        if SugoPermission.canObtainIFA {
-            var distinctId: String? = IFA()
-            if distinctId == nil && NSClassFromString("UIDevice") != nil {
-                distinctId = UIDevice.current.identifierForVendor?.uuidString
+        
+        let userDefaults = UserDefaults.standard
+        let defaultsKey = "distinctIdKey"
+        if let distinctId = userDefaults.string(forKey: defaultsKey) {
+            return distinctId
+        } else {
+            if SugoPermission.canObtainIFA {
+                var distinctId: String? = IFA()
+                if distinctId == nil && NSClassFromString("UIDevice") != nil {
+                    distinctId = UIDevice.current.identifierForVendor?.uuidString
+                }
+                if let distId = distinctId {
+                    userDefaults.set(distId, forKey: defaultsKey)
+                } else {
+                    userDefaults.set(UUID().uuidString, forKey: defaultsKey)
+                }
+            } else {
+                userDefaults.set(UUID().uuidString, forKey: defaultsKey)
             }
-            guard let distId = distinctId else {
+            userDefaults.synchronize()
+            if let id = userDefaults.string(forKey: defaultsKey) {
+                return id
+            } else {
                 return UUID().uuidString
             }
-            return distId
-        } else {
-            return UUID().uuidString
         }
     }
 
@@ -500,7 +515,7 @@ extension SugoInstance {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
             serialQueue.async() {
-                Network.trackIntegration(apiToken: self.apiToken) {
+                Network.trackIntegration(projectID: self.projectID, apiToken: self.apiToken, distinct_id: self.distinctId) {
                     (success) in
                     if success {
                         UserDefaults.standard.set(true, forKey: defaultsKey)
