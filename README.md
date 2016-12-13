@@ -1,13 +1,10 @@
 # sugo-swift-sdk
 
-<!-- 
-[![Build Status](https://travis-ci.org/sugo/sugo-swift-sdk.svg)](https://travis-ci.org/sugo/sugo-swift-sdk)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/sugo/sugo-swift-sdk.svg)](http://isitmaintained.com/project/sugo/sugo-swift-sdk "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/sugo/sugo-swift-sdk.svg)](http://isitmaintained.com/project/sugo/sugo-swift-sdk "Percentage of issues still open")
-[![CocoaPods Compatible](http://img.shields.io/cocoapods/v/sugo-swift-sdk.svg)](https://sugo.com)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/Carthage/Carthage)
-[![Apache License](http://img.shields.io/cocoapods/l/sugo-swift-sdk.svg)](https://sugo.com)
- -->
+
+[![Build Status](https://travis-ci.org/Datafruit/sugo-swift-sdk.svg?branch=master)](https://travis-ci.org/Datafruit/sugo-swift-sdk)
+[![CocoaPods Compatible](http://img.shields.io/cocoapods/v/sugo-swift-sdk.svg)](https://cocoapods.org/pods/sugo-swift-sdk)
+[![Apache License](http://img.shields.io/cocoapods/l/sugo-swift-sdk.svg)](https://github.com/Datafruit/sugo-swift-sdk/blob/master/LICENSE)
+
 # Introduction
 
 Welcome to the official Sugo Swift SDK
