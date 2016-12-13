@@ -25,15 +25,16 @@ struct BundleConstants {
 }
 
 struct SugoPermission {
+    /* 
+     default to false.
+     It means SDK could only send UUID to server instead of IFA.
+     */
     static let canObtainIFA = false
 }
 
 struct ServerURL {
-    static let bindings = "http://192.168.0.212:8000"
-    static let collect = "http://collect.sugo.net"
-    static let codeless = "ws://192.168.0.212:8887"
     
-//    static let bindings = "http://192.168.0.111:8080"
-//    static let collect = "http://collect.sugo.net"
-//    static let codeless = "ws://192.168.0.111:8887"
+    static let bindings = "Address_For_Bindings"
+    static let collect = "Address_For_Collecting_events"
+    static let codeless = "Address_For_Codeless_Bindings"
 }
