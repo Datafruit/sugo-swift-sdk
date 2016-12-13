@@ -68,7 +68,6 @@ extension AppDelegate {
         Sugo.mainInstance().loggingEnabled = true
         Sugo.mainInstance().flushInterval = 5
         Sugo.mainInstance().identify(distinctId: Sugo.mainInstance().distinctId)
-        Sugo.mainInstance().track(eventName: "Launched")
     }
     
 }

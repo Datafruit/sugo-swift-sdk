@@ -33,8 +33,12 @@ struct SugoPermission {
 }
 
 struct ServerURL {
-    
-    static let bindings = "Address_For_Bindings"
-    static let collect = "Address_For_Collecting_events"
-    static let codeless = "Address_For_Codeless_Bindings"
+    /**
+     static let bindings = "Address_For_Bindings"
+     static let collect = "Address_For_Collecting_events"
+     static let codeless = "Address_For_Codeless_Bindings"
+     **/
+    static let bindings     = "http://192.168.0.111:8080"
+    static let collect      = "http://collect.sugo.net"
+    static let codeless     = "http://192.168.0.111:8887"
 }

@@ -113,12 +113,12 @@ class Network {
                         parse: parse)
     }
 
-    class func trackIntegration(apiToken: String, completion: @escaping (Bool) -> ()) {
-        let requestData = JSONHandler.encodeAPIData([["event": "Integration",
-                                                      "properties": ["token": "85053bf24bba75239b16a601d9387e17",
+    class func trackIntegration(projectID: String, apiToken: String, distinct_id: String, completion: @escaping (Bool) -> ()) {
+        let requestData = JSONHandler.encodeAPIData([["event_name": "Integration",
+                                                      "properties": ["token": apiToken,
                                                                      "mp_lib": "swift",
                                                                      "version": "3.0",
-                                                                     "distinct_id": apiToken]]])
+                                                                     "distinct_id": distinct_id]]])
 
         let responseParser: (Data) -> Int? = { data in
             let response = String(data: data, encoding: String.Encoding.utf8)
@@ -129,16 +129,17 @@ class Network {
         }
 
         if let requestData = requestData {
-            let requestBody = "ip=1&data=\(requestData)"
-                .data(using: String.Encoding.utf8)
-
+            let requestBody = requestData.data(using: String.Encoding.utf8)
+            
             let resource = Network.buildResource(path: FlushType.events.rawValue,
                                                  method: .post,
                                                  requestBody: requestBody,
+                                                 queryItems: [URLQueryItem(name: "locate",
+                                                                           value: projectID)],
                                                  headers: ["Accept-Encoding": "gzip"],
                                                  parse: responseParser)
 
-            Network.apiRequest(base: BasePath.BindingEventsURL,
+            Network.apiRequest(base: BasePath.CollectEventsAPI,
                                resource: resource,
                                failure: { (reason, data, response) in
                                 Logger.debug(message: "failed to track integration")
