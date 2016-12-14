@@ -18,11 +18,6 @@ class CodelessCommonViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var switchControl: UISwitch!
     
-    @IBOutlet weak var label1: UILabel!
-    @IBOutlet weak var label2: UILabel!
-    @IBOutlet weak var label3: UILabel!
-    @IBOutlet weak var label4: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
