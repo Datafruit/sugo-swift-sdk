@@ -1,10 +1,5 @@
 language: objective-c
-before_install:
-    - rvm use system
-    - gem install cocoapods
 osx_image: xcode8
-before_script: cd SugoDemo
-podfile: SugoDemo/Podfile
 branches:
   only:
   - master
@@ -23,6 +18,11 @@ env:
 #    - DESTINATION="platform=iOS Simulator,OS=9.1,name=iPhone 6 Plus"      SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
 #    - DESTINATION="platform=iOS Simulator,OS=9.2,name=iPhone 6S"          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
 #    - DESTINATION="platform=iOS Simulator,OS=9.1,name=iPhone 6s Plus"     SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
+# before_install:
+#     - rvm use system
+#     - gem install cocoapods
+# before_script: cd SugoDemo
+# podfile: SugoDemo/Podfile
 script:
   - set -o pipefail
   - xcodebuild -version
