@@ -15,7 +15,7 @@ If you are using Objective-C, we recommend using our **[Objective-C Library](htt
  -->
 ## Current supported features
 
-**Our master branch and our 1.x.x-Releases are now in Swift 3.
+**Our master branch and our 1.x.x+ are now in Swift 3.**
 
 | Feature      | Swift 3 | 
 | -------      | ------------- | 
@@ -29,7 +29,7 @@ If you are using Objective-C, we recommend using our **[Objective-C Library](htt
 **Our current release only supports Cocoapods version 1.1.0+**
 
 Sugo supports `CocoaPods` for easy installation.
-<!-- To Install, see our **[swift integration guide »](https://sugo.com/help/reference/swift)** -->
+<!-- To Install, see our **[swift integration guide »](https://sugo.io/help/reference/swift)** -->
 
 `pod 'sugo-swift-sdk'`
 <!-- 
@@ -103,4 +103,4 @@ Sugo.mainInstance().track(eventName: "Tracked Event!")
 
 You're done! You've successfully integrated the Sugo Swift SDK into your app. To stay up to speed on important SDK releases and updates, star or watch our repository on [Github](https://github.com/Datafruit/sugo-swift-sdk.git).
 
-Have any questions? Reach out to [support@sugo.io](mailto:support@sugo.io) to speak to someone smart, quickly.
+Have any questions? Reach out to [developer@sugo.io](developer@sugo.io) to speak to someone smart, quickly.
