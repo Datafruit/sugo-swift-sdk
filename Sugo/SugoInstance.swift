@@ -584,18 +584,17 @@ extension SugoInstance {
                                      superProperties: self.superProperties,
                                      distinctId: self.distinctId,
                                      epochInterval: epochInterval)
-            
             if self.decideInstance.webSocketWrapper != nil
                 && self.decideInstance.webSocketWrapper!.connected
                 && self.isCodelessTesting {
                 
                 if !self.eventsQueue.isEmpty {
+                    
                     self.flushInstance.flushQueueViaWebSocket(connection: self.decideInstance.webSocketWrapper!,
                                                               queue: self.eventsQueue)
                     self.eventsQueue.removeAll()
                 }
             }
-            
             Persistence.archiveEvents(self.eventsQueue, token: self.apiToken)
         }
     }
