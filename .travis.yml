@@ -1,6 +1,7 @@
 language: objective-c
 before_install:
-  - gem install cocoapods
+    - rvm use system
+    - gem install cocoapods --pre -v 
 osx_image: xcode8
 before_script: cd SugoDemo
 podfile: SugoDemo/Podfile
