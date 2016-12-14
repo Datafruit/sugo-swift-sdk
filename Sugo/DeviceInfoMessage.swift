@@ -32,7 +32,7 @@ class DeviceInfoRequest: BaseWebSocketMessage {
                                                           deviceName: currentDevice.name,
                                                           deviceModel: currentDevice.model,
                                                           libLanguage: "Swift",
-                                                          libVersion: "2.6", // workaround for a/b testing
+                                                          libVersion: AutomaticProperties.libVersion(),
                                                           availableFontFamilies: self.availableFontFamilies(),
                                                           mainBundleIdentifier: Bundle.main.bundleIdentifier,
                                                           urlSchemesKeyValue: Sugo.mainInstance().urlSchemesKeyValue)

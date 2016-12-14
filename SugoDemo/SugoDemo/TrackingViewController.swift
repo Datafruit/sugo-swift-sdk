@@ -74,7 +74,7 @@ class TrackingViewController: UIViewController, UITableViewDelegate, UITableView
                                  "Super Property 4": ["a":"b"],
                                  "Super Property 5": [3, "a", Date()],
                                  "Super Property 6":
-                                    URL(string: "https://Sugo.com")!,
+                                    URL(string: "https://Sugo.io")!,
                                  "Super Property 7": NSNull()]
             Sugo.mainInstance().registerSuperProperties(p)
             descStr = "Properties: \(p)"
