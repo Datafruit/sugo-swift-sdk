@@ -1,27 +1,21 @@
 language: objective-c
-before_install:
-    - rvm use system
-    - gem install cocoapods --pre
-osx_image: xcode8
-before_script: cd SugoDemo
+osx_image: xcode8.2
 podfile: SugoDemo/Podfile
 branches:
   only:
   - master
+  - develop
 env:
   global:
   - WORKSPACE=SugoDemo.xcworkspace
   - SCHEME=SugoDemo
-  - IOS_SDK=iphonesimulator10.0
+  - IOS_SDK=iphonesimulator10.2
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5"          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="YES"
-#    - DESTINATION="platform=iOS Simulator,OS=8.2,name=iPhone 5"           SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-#    - DESTINATION="platform=iOS Simulator,OS=8.3,name=iPhone 5S"          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-#    - DESTINATION="platform=iOS Simulator,OS=8.4,name=iPhone 6"           SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-#    - DESTINATION="platform=iOS Simulator,OS=9.0,name=iPhone 6"           SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-#    - DESTINATION="platform=iOS Simulator,OS=9.1,name=iPhone 6 Plus"      SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-#    - DESTINATION="platform=iOS Simulator,OS=9.2,name=iPhone 6S"          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
-    - DESTINATION="platform=iOS Simulator,OS=9.1,name=iPhone 6s Plus"     SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="NO"
+    - DESTINATION='platform=iOS Simulator, OS=8.1, name=iPhone 5'          SCHEME="$SCHEME"     SDK="$IOS_SDK"     RUN_TESTS="YES" POD_LINT="YES"
+before_install:
+    - gem install cocoapods
+    - pod repo update
+before_script: cd SugoDemo
 script:
   - set -o pipefail
   - xcodebuild -version
@@ -29,12 +23,12 @@ script:
 
   # Build Framework in Debug and Run Tests if specified
   - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty -c;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination 'platform=iOS Simulator,OS=8.1,name=iPhone 5' -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty -c;
     else
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO build | xcpretty -c;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination 'platform=iOS Simulator,OS=8.1,name=iPhone 5' -configuration Debug ONLY_ACTIVE_ARCH=NO build | xcpretty -c;
     fi
 
-  - xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO build | xcpretty -c;
+  - xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination 'platform=iOS Simulator,OS=8.1,name=iPhone 5' -configuration Release ONLY_ACTIVE_ARCH=NO build | xcpretty -c;
 
   # Run `pod lib lint` if specified
   - if [ $POD_LINT == "YES" ]; then
