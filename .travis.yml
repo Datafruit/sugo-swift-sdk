@@ -22,6 +22,7 @@ env:
 before_install:
 #     - rvm use system
     - gem install cocoapods
+    - pod repo update
 before_script: cd SugoDemo
 script:
   - set -o pipefail
