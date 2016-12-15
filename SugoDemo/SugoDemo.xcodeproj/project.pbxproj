@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		144DBB571DF95DA200D57028 /* Sugo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 144DBB561DF95DA200D57028 /* Sugo.framework */; };
-		144DBB581DF95DA200D57028 /* Sugo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 144DBB561DF95DA200D57028 /* Sugo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00FE1DF67587001FF110 /* AppDelegate.swift */; };
 		147C01041DF67587001FF110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01021DF67587001FF110 /* Main.storyboard */; };
 		147C01061DF67587001FF110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147C01051DF67587001FF110 /* Assets.xcassets */; };
@@ -31,20 +29,6 @@
 			remoteInfo = SugoDemo;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		144DBB591DF95DA300D57028 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				144DBB581DF95DA200D57028 /* Sugo.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		144DBB561DF95DA200D57028 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				144DBB571DF95DA200D57028 /* Sugo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +131,6 @@
 				147C00F71DF67587001FF110 /* Sources */,
 				147C00F81DF67587001FF110 /* Frameworks */,
 				147C00F91DF67587001FF110 /* Resources */,
-				144DBB591DF95DA300D57028 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
