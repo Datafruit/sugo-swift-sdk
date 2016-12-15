@@ -74,7 +74,7 @@ class JSONHandler {
             return obj.absoluteString
 
         default:
-//            Logger.info(message: "enforcing string on object")
+            Logger.info(message: "enforcing string on object: \(obj)")
             return String(describing: obj)
         }
     }
