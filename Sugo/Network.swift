@@ -116,7 +116,7 @@ class Network {
     class func trackIntegration(projectID: String, apiToken: String, distinct_id: String, completion: @escaping (Bool) -> ()) {
         let requestData = JSONHandler.encodeAPIData([["event_name": "Integration",
                                                       "properties": ["token": apiToken,
-                                                                     "mp_lib": "swift",
+                                                                     "mp_lib": "Swift",
                                                                      "version": "3.0",
                                                                      "distinct_id": distinct_id]]])
 
