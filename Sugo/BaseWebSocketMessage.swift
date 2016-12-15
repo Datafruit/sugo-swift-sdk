@@ -37,12 +37,7 @@ class BaseWebSocketMessage: WebSocketMessageProtocol {
     func JSONData() -> Data? {
         let jsonObject = ["type": type, "payload": payload] as [String : Any]
         var data: Data? = nil
-
-        do {            
-            data = JSONHandler.serializeJSONObject(jsonObject)
-        } catch {
-            Logger.error(message: "Failed to serialize websocket message:\(error.localizedDescription)")
-        }
+        data = JSONHandler.serializeJSONObject(jsonObject)
         return data
     }
 
