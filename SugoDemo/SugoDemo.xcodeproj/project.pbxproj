@@ -31,7 +31,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		144DBB561DF95DA200D57028 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		147C00FB1DF67587001FF110 /* SugoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SugoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		147C00FE1DF67587001FF110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		147C01031DF67587001FF110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +115,6 @@
 		147C011F1DF68EB3001FF110 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				144DBB561DF95DA200D57028 /* Sugo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
