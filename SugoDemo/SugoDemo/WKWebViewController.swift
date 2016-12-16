@@ -15,7 +15,7 @@ class WKWebViewController: UIViewController, WKNavigationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "WKWebView"
         // Do any additional setup after loading the view.
         let configuration = WKWebViewConfiguration()
         self.webView = WKWebView(frame: self.view.frame, configuration: configuration)

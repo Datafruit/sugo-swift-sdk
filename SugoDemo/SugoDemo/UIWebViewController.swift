@@ -14,7 +14,7 @@ class UIWebViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "UIWebView"
         // Do any additional setup after loading the view.
         self.webView.delegate = self
         let url = URL(string: "http://dev.ufile.ucloud.cn/test.html")

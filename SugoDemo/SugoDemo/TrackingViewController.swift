@@ -24,6 +24,8 @@ class TrackingViewController: UIViewController, UITableViewDelegate, UITableView
                           "Unregister SuperProperty"]
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Tracking"
         tableView.delegate = self
         tableView.dataSource = self
     }

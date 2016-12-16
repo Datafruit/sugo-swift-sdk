@@ -47,8 +47,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     /// Controls whether to show spinning network activity indicator when flushing
     /// data to the Sugo servers. Defaults to true.
     open var showNetworkActivityIndicator = true
-
-    open var isCodelessTesting: Bool = false
     
     /// Flush timer's interval.
     /// Setting a flush interval of 0 will turn off the flush timer.
@@ -152,6 +150,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     var timedEvents = InternalProperties()
     var serialQueue: DispatchQueue!
     var taskId = UIBackgroundTaskInvalid
+    var isCodelessTesting: Bool = false
     let flushInstance = Flush()
     let trackInstance: Track
     let decideInstance = Decide()
@@ -160,7 +159,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
          apiToken: String?,
          launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
          flushInterval: Double) {
-        
+
         if let projectID = projectID, !projectID.isEmpty {
             self.projectID = projectID
         }
@@ -177,7 +176,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         flushInstance._flushInterval = flushInterval
         setupListeners()
         unarchive()
-
+        
         #if os(iOS)
             executeCachedCodelessBindings()
         #endif
@@ -186,6 +185,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     private func setupListeners() {
         let notificationCenter = NotificationCenter.default
         trackIntegration()
+        trackStayTime()
         #if os(iOS)
             setCurrentRadio()
             notificationCenter.addObserver(self,
@@ -223,7 +223,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
-        track(eventName: "Launched")
+        self.track(eventName: "Launched")
+        self.time(event: "stay_event")
+        
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
@@ -716,6 +718,83 @@ extension SugoInstance {
         serialQueue.async() {
             closure()
             self.archiveProperties()
+        }
+    }
+}
+
+extension SugoInstance {
+    // Mark: - track stay time
+    
+    func trackStayTime() {
+            
+        let viewDidAppearBlock = {
+            [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
+            guard let vc = viewController as? UIViewController else {
+                return
+            }
+            Logger.debug(message: "viewDidAppear")
+            self.time(event: "stay_event")
+            var pViewController: Properties
+            if let tittle = vc.title {
+                pViewController = ["stay_page": tittle]
+            } else {
+                pViewController = ["stay_page": NSStringFromClass(vc.classForCoder)]
+            }
+            self.track(eventName: "enter_page_event", properties: pViewController)
+        }
+        Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
+                                 withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
+                                 for: UIViewController.self,
+                                 name: UUID().uuidString,
+                                 block: viewDidAppearBlock)
+        let viewDidDisappearBlock = {
+            [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
+            guard let vc = viewController as? UIViewController else {
+                return
+            }
+            Logger.debug(message: "viewDidDisappear")
+            var pViewController: Properties
+            if let tittle = vc.title {
+                pViewController = ["stay_page": tittle]
+            } else {
+                pViewController = ["stay_page": NSStringFromClass(vc.classForCoder)]
+            }
+            self.track(eventName: "stay_event", properties: pViewController)
+        }
+        Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
+                                 withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),
+                                 for: UIViewController.self,
+                                 name: UUID().uuidString,
+                                 block: viewDidDisappearBlock)
+    }
+}
+
+extension UIViewController {
+    
+    func sugoViewDidAppear(_ animated: Bool) {
+        let originalSelector = #selector(UIViewController.viewDidAppear(_:))
+        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+            let swizzle = Swizzler.swizzles[originalMethod] {
+            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
+            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+            curriedImplementation(self, originalSelector, animated)
+            
+            for (_, block) in swizzle.blocks {
+                block(self, swizzle.selector, nil, nil)
+            }
+        }
+    }
+    func sugoViewDidDisappearBlock(_ animated: Bool) {
+        let originalSelector = #selector(UIViewController.viewDidDisappear(_:))
+        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+            let swizzle = Swizzler.swizzles[originalMethod] {
+            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
+            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+            curriedImplementation(self, originalSelector, animated)
+            
+            for (_, block) in swizzle.blocks {
+                block(self, swizzle.selector, nil, nil)
+            }
         }
     }
 }
