@@ -20,6 +20,7 @@ class CodelessCommonViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Codeless"
         tableView.delegate = self
         tableView.dataSource = self
         

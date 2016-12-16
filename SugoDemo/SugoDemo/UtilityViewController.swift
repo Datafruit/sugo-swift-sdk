@@ -18,6 +18,8 @@ class UtilityViewController: UIViewController, UITableViewDelegate, UITableViewD
                           "Flush"]
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Utility"
         tableView.delegate = self
         tableView.dataSource = self
     }

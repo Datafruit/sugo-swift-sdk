@@ -18,6 +18,7 @@ class ActionCompleteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "ActionComplete"
         
         popupView.clipsToBounds = true
         popupView.layer.cornerRadius = 6
