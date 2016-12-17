@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import JavaScriptCore
 
 extension WebViewBindings {
     
@@ -32,7 +33,8 @@ extension WebViewBindings {
                         break
                     }
                 }
-                self.bindUIWebView(webView: webView)
+                self.uiWebView = webView
+                self.bindUIWebView(webView: &(self.uiWebView!))
             }
             Swizzler.swizzleSelector(#selector(UIView.didMoveToWindow),
                                      withSelector: #selector(UIView.sugoViewDidMoveToWindow),
@@ -55,7 +57,8 @@ extension WebViewBindings {
                         break
                     }
                 }
-                self.bindWKWebView(webView: webView)
+                self.wkWebView = webView
+                self.bindWKWebView(webView: &(self.wkWebView!))
             }
             
             Swizzler.swizzleSelector(#selector(WKWebView.didMoveToWindow),
@@ -101,6 +104,25 @@ extension WebViewBindings {
             self.viewSwizzleRunning = false
         }
     }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
+        if keyPath == "stringBindings" {
+            stop()
+            execute()
+            
+            if let wv = self.uiWebView {
+                self.uiWebViewJavaScriptInjected = false
+                bindUIWebView(webView: &(self.uiWebView!))
+                wv.reload()
+            }
+            
+            if let wv = self.wkWebView {
+                bindWKWebView(webView: &(self.wkWebView!))
+                wv.reload()
+            }
+        }
+    }
 }
 
 extension WKWebView {
@@ -127,6 +149,7 @@ extension WKWebView {
         let originalSelector = NSSelectorFromString("removeFromSuperview")
         webViewCallOriginalMethodWithSwizzledBlocks(originalSelector: originalSelector)
     }
+    
 }
 
 

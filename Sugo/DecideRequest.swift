@@ -29,11 +29,11 @@ class DecideRequest: Network {
             self.distinctId = URLQueryItem(name: "distinct_id", value: distinctId)
 
             // workaround for a/b testing
-            var peoplePropertiesCopy = AutomaticProperties.peopleProperties
-            peoplePropertiesCopy["$ios_lib_version"] = "2.6"
+            var devicePropertiesCopy = AutomaticProperties.deviceProperties
+            devicePropertiesCopy["$ios_lib_version"] = AutomaticProperties.libVersion()
             // end of workaround
 
-            let propertiesData = try! JSONSerialization.data(withJSONObject: peoplePropertiesCopy)
+            let propertiesData = try! JSONSerialization.data(withJSONObject: devicePropertiesCopy)
             let propertiesString = String(data: propertiesData, encoding: String.Encoding.utf8)
             self.properties = URLQueryItem(name: "properties", value: propertiesString)
         }

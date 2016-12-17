@@ -115,7 +115,7 @@ class WebSocketWrapper: WebSocketDelegate {
 
     func send(message: BaseWebSocketMessage?) {
         if connected {
-            Logger.debug(message: "Sending message: \(message.debugDescription)")
+//            Logger.debug(message: "Sending message: \(message.debugDescription)")
             if let data = message?.JSONData(), let jsonString = String(data: data, encoding: String.Encoding.utf8) {
                 webSocket.write(string: jsonString)
 //                Logger.debug(message: "Sent JSON:\n\(jsonString)")
@@ -124,7 +124,7 @@ class WebSocketWrapper: WebSocketDelegate {
     }
 
     class func getMessageType(for message: Data) -> BaseWebSocketMessage? {
-        Logger.info(message: "raw message \(message)")
+//        Logger.info(message: "raw message \(message)")
         var webSocketMessage: BaseWebSocketMessage? = nil
 //        Logger.debug(message: "Got Message:\n\(String(data: message, encoding: String.Encoding.utf8))")
         do {
@@ -237,7 +237,7 @@ class WebSocketWrapper: WebSocketDelegate {
         }
         if let messageData = text.data(using: String.Encoding.utf8) {
             let message = WebSocketWrapper.getMessageType(for: messageData)
-            Logger.info(message: "WebSocket received message: \(message.debugDescription)")
+//            Logger.info(message: "WebSocket received message: \(message.debugDescription)")
             if let commandOperation = message?.responseCommand(connection: self) {
                 commandQueue.addOperation(commandOperation)
                 if shouldShowUI {

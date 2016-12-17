@@ -11,8 +11,7 @@ import JavaScriptCore
 
 extension WebViewBindings {
     
-    func bindUIWebView(webView: UIWebView) {
-        self.uiWebView = webView
+    func bindUIWebView(webView: inout UIWebView) {
         if !self.uiWebViewSwizzleRunning {
             let uiWebViewDidStartLoadBlock = {
                 [unowned self] (view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) in
@@ -40,7 +39,7 @@ extension WebViewBindings {
                     jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
                     jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
                     self.uiWebViewJavaScriptInjected = true
-                    Logger.debug(message: "UIWebView Injected")
+//                    Logger.debug(message: "UIWebView Injected")
                 }
             }
             if let delegate = webView.delegate {
@@ -75,6 +74,7 @@ extension WebViewBindings {
             }
         }
     }
+    
 }
 
 extension UIWebView {
