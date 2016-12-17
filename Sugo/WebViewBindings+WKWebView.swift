@@ -12,16 +12,28 @@ import JavaScriptCore
 
 extension WebViewBindings: WKScriptMessageHandler {
     
-    func bindWKWebView(webView: WKWebView) {
-        self.wkWebView = webView
+    func bindWKWebView(webView: inout WKWebView) {
+            var userScripts = webView.configuration.userContentController.userScripts
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSSource) {
+                userScripts.remove(at: index)
+            }
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSExcute) {
+                userScripts.remove(at: index)
+            }
+            webView.configuration.userContentController.removeAllUserScripts()
+            for userScript in userScripts {
+                webView.configuration.userContentController.addUserScript(userScript)
+            }
+            self.wkWebViewCurrentJSSource = self.wkJavaScriptSource
+            self.wkWebViewCurrentJSExcute = self.wkJavaScriptExcute
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSSource)
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSExcute)
         if !self.wkWebViewJavaScriptInjected {
-            let jsSource = WKUserScript(source: self.jsWKWebViewBindingsSource, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
-            let jsExcute = WKUserScript(source: self.jsWKWebViewBindingsExcute, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
-            self.wkWebView?.configuration.userContentController.addUserScript(jsSource)
-            self.wkWebView?.configuration.userContentController.addUserScript(jsExcute)
-            self.wkWebView?.configuration.userContentController.add(self, name: "WKWebViewBindings")
-            Logger.debug(message: "WKWebView Injected")
+            webView.configuration.userContentController.add(self, name: "WKWebViewBindings")
             self.wkWebViewJavaScriptInjected = true
+//            Logger.debug(message: "WKWebView Injected")
         }
     }
     
@@ -63,6 +75,18 @@ extension WebViewBindings: WKScriptMessageHandler {
 }
 
 extension WebViewBindings {
+    
+    var wkJavaScriptExcute: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewBindingsExcute,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
+    }
+    
+    var wkJavaScriptSource: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewBindingsSource,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
+    }
     
     var jsWKWebViewBindingsExcute: String {
         return "sugo_bind.bindEvent();"

@@ -23,7 +23,7 @@ class WebViewBindings: NSObject {
     var bindings: [[String: Any]]
     var uiVCPath: String
     var wkVCPath: String
-    var stringBindings: String
+    dynamic var stringBindings: String
     
     var viewSwizzleRunning = false
     
@@ -39,6 +39,8 @@ class WebViewBindings: NSObject {
     var wkWebViewJavaScriptInjected = false
     var wkDidMoveToWindowBlockName = UUID().uuidString
     var wkRemoveFromSuperviewBlockName = UUID().uuidString
+    lazy var wkWebViewCurrentJSSource = WKUserScript()
+    lazy var wkWebViewCurrentJSExcute = WKUserScript()
     
     static var global: WebViewBindings {
         return singleton
@@ -54,6 +56,9 @@ class WebViewBindings: NSObject {
         self.wkVCPath = String()
         self.stringBindings = String()
         super.init()
+        self.addObserver(self, forKeyPath: "stringBindings",
+                         options: NSKeyValueObservingOptions.new,
+                         context: nil)
     }
     
     func fillBindings() {
@@ -64,17 +69,13 @@ class WebViewBindings: NSObject {
         } else {
             self.bindings = [[String: Any]]()
         }
-        if !self.bindings.isEmpty {
-            do {
-                let jsonBindings = try JSONSerialization.data(withJSONObject: self.bindings,
-                                                              options: JSONSerialization.WritingOptions.prettyPrinted)
-                self.stringBindings = String(data: jsonBindings, encoding: String.Encoding.utf8)!
-            } catch {
-                Logger.debug(message: "Failed to serialize JSONObject: \(self.bindings)")
-            }
+        do {
+            let jsonBindings = try JSONSerialization.data(withJSONObject: self.bindings,
+                                                          options: JSONSerialization.WritingOptions.prettyPrinted)
+            self.stringBindings = String(data: jsonBindings, encoding: String.Encoding.utf8)!
+        } catch {
+            Logger.debug(message: "Failed to serialize JSONObject: \(self.bindings)")
         }
-        stop()
-        execute()
     }
 }
 

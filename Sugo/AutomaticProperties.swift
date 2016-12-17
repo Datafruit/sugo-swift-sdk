@@ -22,24 +22,24 @@ class AutomaticProperties {
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {
-            p["$app_build_number"]     = infoDict["CFBundleVersion"]
-            p["$app_version_string"]   = infoDict["CFBundleShortVersionString"]
+            p["app_build_number"]     = infoDict["CFBundleVersion"]
+            p["app_version_string"]   = infoDict["CFBundleShortVersionString"]
         }
         #if os(iOS)
             p["$carrier"] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
         #endif
         p["mp_lib"]             = "Swift"
-        p["$lib_version"]       = AutomaticProperties.libVersion()
-        p["$manufacturer"]      = "Apple"
-        p["$os"]                = UIDevice.current.systemName
-        p["$os_version"]        = UIDevice.current.systemVersion
-        p["$model"]             = AutomaticProperties.deviceModel()
-        p["$screen_height"]     = Int(size.height)
-        p["$screen_width"]      = Int(size.width)
+        p["lib_version"]       = AutomaticProperties.libVersion()
+        p["manufacturer"]      = "Apple"
+        p["os"]                = UIDevice.current.systemName
+        p["os_version"]        = UIDevice.current.systemVersion
+        p["model"]             = AutomaticProperties.deviceModel()
+        p["screen_height"]     = Int(size.height)
+        p["screen_width"]      = Int(size.width)
         return p
     }()
 
-    static var peopleProperties: InternalProperties = {
+    static var deviceProperties: InternalProperties = {
         var p = InternalProperties()
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {

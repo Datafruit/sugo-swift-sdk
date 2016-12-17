@@ -736,9 +736,9 @@ extension SugoInstance {
             self.time(event: "stay_event")
             var pViewController: Properties
             if let tittle = vc.title {
-                pViewController = ["stay_page": tittle]
+                pViewController = ["page": tittle]
             } else {
-                pViewController = ["stay_page": NSStringFromClass(vc.classForCoder)]
+                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
             }
             self.track(eventName: "enter_page_event", properties: pViewController)
         }
@@ -755,9 +755,9 @@ extension SugoInstance {
             Logger.debug(message: "viewDidDisappear")
             var pViewController: Properties
             if let tittle = vc.title {
-                pViewController = ["stay_page": tittle]
+                pViewController = ["page": tittle]
             } else {
-                pViewController = ["stay_page": NSStringFromClass(vc.classForCoder)]
+                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
             }
             self.track(eventName: "stay_event", properties: pViewController)
         }
