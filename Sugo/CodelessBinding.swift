@@ -75,7 +75,7 @@ class CodelessBinding: NSObject, NSCoding {
 
     func track(eventID: String? = nil, eventName: String, properties: Properties) {
         var bindingProperties = properties
-        bindingProperties["$from_binding"] = true
+        bindingProperties["from_binding"] = true
         Sugo.mainInstance().track(eventID: eventID,
                                       eventName: eventName,
                                       properties: bindingProperties)

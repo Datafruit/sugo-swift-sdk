@@ -39,12 +39,17 @@ class Track {
         let epochSeconds = Int(round(epochInterval))
         let eventStartTime = timedEvents[evn!] as? Double
         var p = InternalProperties()
-        p += AutomaticProperties.properties
+        let sugo = Sugo.mainInstance()
+        if sugo.decideInstance.webSocketWrapper == nil
+            || !sugo.decideInstance.webSocketWrapper!.connected
+            || !sugo.isCodelessTesting {
+            p += AutomaticProperties.properties
+        }
         p["token"] = apiToken
         p["time"] = epochSeconds
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
-            p["$duration"] = Double(String(format: "%.3f", epochInterval - eventStartTime))
+            p["duration"] = Double(String(format: "%.3f", epochInterval - eventStartTime))
         }
         p["distinct_id"] = distinctId
         p += superProperties

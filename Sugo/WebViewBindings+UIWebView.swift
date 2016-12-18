@@ -143,7 +143,13 @@ extension WebViewBindings {
             "};\n" +
             "sugo_bind.addEvent = function (children, event) {\n" +
             "  children.addEventListener(event.event_type, function (e) {\n" +
-            "    WebViewJSExport.eventWithIdNameProperties(event.event_id, event.event_name, '{}');\n" +
+            "    var custom_props = {};\n" +
+            "    if(event.code && event.code.replace(/(^\\s*)|(\\s*$)/g, \"\") != ''){\n" +
+            "        eval(event.code);\n" +
+            "        custom_props = sugo_props();\n" +
+            "    }\n" +
+            "    custom_props.from_binding = true;\n" +
+            "    WebViewJSExport.eventWithIdNameProperties(event.event_id, event.event_name, JSON.stringify(custom_props));\n" +
             "  });\n" +
             "}\n" +
             "sugo_bind.bindChildNode = function (childrens, jsonArry, parent_path){\n" +

@@ -116,6 +116,22 @@ extension WebViewBindings {
             " }\n" +
             " return path;\n" +
             "};\n" +
+            "sugo_bind.addEvent = function (children, event) {\n" +
+            "  children.addEventListener(event.event_type, function (e) {\n" +
+            "    var custom_props = {};\n" +
+            "    if(event.code && event.code.replace(/(^\\s*)|(\\s*$)/g, \"\") != ''){\n" +
+            "        eval(event.code);\n" +
+            "        custom_props = sugo_props();\n" +
+            "    }\n" +
+            "    custom_props.from_binding = true;\n" +
+            "    var message = {\n" +
+            "    'eventID' : event.event_id,\n" +
+            "    'eventName' : event.event_name,\n" +
+            "    'properties' : JSON.stringify(custom_props)\n" +
+            "    };\n" +
+            "    window.webkit.messageHandlers.WKWebViewBindings.postMessage(message);\n" +
+            "  });\n" +
+            "}\n" +
             "sugo_bind.bindChildNode = function (childrens, jsonArry, parent_path){\n" +
             "  var index_map={};\n" +
             "  for(var i=0;i<childrens.length;i++){\n" +
@@ -140,16 +156,6 @@ extension WebViewBindings {
             "   }\n" +
             "  }\n" +
             "};\n" +
-            "sugo_bind.addEvent = function (children, event) {\n" +
-            "  children.addEventListener(event.event_type, function (e) {\n" +
-            "    var message = {\n" +
-            "    'eventID' : event.event_id,\n" +
-            "    'eventName' : event.event_name,\n" +
-            "    'properties' : '{}'\n" +
-            "    };\n" +
-            "    window.webkit.messageHandlers.WKWebViewBindings.postMessage(message);\n" +
-            "  });\n" +
-            "}\n" +
             "sugo_bind.bindEvent = function(){\n" +
             " var jsonArry=[];\n" +
             " var body = document.getElementsByTagName('body')[0];\n" +
