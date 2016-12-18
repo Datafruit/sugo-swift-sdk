@@ -26,7 +26,7 @@ class AutomaticProperties {
             p["app_version_string"]   = infoDict["CFBundleShortVersionString"]
         }
         #if os(iOS)
-            p["$carrier"] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
+            p["carrier"] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
         #endif
         p["mp_lib"]             = "Swift"
         p["lib_version"]       = AutomaticProperties.libVersion()

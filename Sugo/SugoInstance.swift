@@ -351,14 +351,14 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     @objc func setCurrentRadio() {
         let currentRadio = AutomaticProperties.getCurrentRadio()
         serialQueue.async() {
-            AutomaticProperties.properties["$radio"] = currentRadio
+            AutomaticProperties.properties["radio"] = currentRadio
         }
     }
 
     func initializeGestureRecognizer() {
         DispatchQueue.main.async {
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.connectGestureRecognized(gesture:)))
-            gestureRecognizer.minimumPressDuration = 3
+            gestureRecognizer.minimumPressDuration = 1
             gestureRecognizer.cancelsTouchesInView = false
             #if (arch(i386) || arch(x86_64)) && os(iOS)
                 gestureRecognizer.numberOfTouchesRequired = 2
