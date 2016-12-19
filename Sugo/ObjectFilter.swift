@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class ObjectFilter: CustomStringConvertible {
+    
     var name: String? = nil
     var predicate: NSPredicate? = nil
     var index: Int? = nil
@@ -25,7 +26,6 @@ class ObjectFilter: CustomStringConvertible {
     var description: String {
         return "name: \(name), index: \(index), predicate: \(predicate)]"
     }
-
 
     func apply(on views: [AnyObject]) -> [AnyObject] {
         var result = [AnyObject]()
