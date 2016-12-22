@@ -14,72 +14,21 @@ extension WebViewBindings {
     
     func execute() {
         if !self.viewSwizzleRunning {
-      
-            // Mark: - UIWebView
-            let uiDidMoveToWindowExecuteBlock = {
-                [unowned self] (view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-                guard let webView = view as? UIWebView else {
-                    return
-                }
-                if view!.isKind(of: WKWebView.self) {
-                    return
-                }
-                var responder: UIResponder = webView
-                while responder.next != nil {
-                    responder = responder.next!
-                    if responder is UIViewController {
-                        self.uiVCPath = NSStringFromClass(responder.classForCoder)
-                        Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                        break
-                    }
-                }
-                self.uiWebView = webView
-                self.bindUIWebView(webView: &(self.uiWebView!))
-            }
             Swizzler.swizzleSelector(#selector(UIView.didMoveToWindow),
                                      withSelector: #selector(UIView.sugoViewDidMoveToWindow),
                                      for: UIView.self,
                                      name: self.uiDidMoveToWindowBlockName,
-                                     block: uiDidMoveToWindowExecuteBlock)
-            
-            // Mark: - WKWebView
-            let wkDidMoveToWindowExecuteBlock = {
-                [unowned self] (view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-                guard let webView = view as? WKWebView else {
-                    return
-                }
-                var responder: UIResponder = webView
-                while responder.next != nil {
-                    responder = responder.next!
-                    if responder is UIViewController {
-                        self.wkVCPath = NSStringFromClass(responder.classForCoder)
-                        Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                        break
-                    }
-                }
-                self.wkWebView = webView
-                self.bindWKWebView(webView: &(self.wkWebView!))
-            }
-            
+                                     block: self.uiDidMoveToWindow)
             Swizzler.swizzleSelector(#selector(WKWebView.didMoveToWindow),
                                      withSelector: #selector(WKWebView.sugoWebViewDidMoveToWindow),
                                      for: WKWebView.self,
                                      name: self.wkDidMoveToWindowBlockName,
-                                     block: wkDidMoveToWindowExecuteBlock)
-            let wkRemoveFromSuperviewExecuteBlock = {
-                [unowned self] (view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-                guard let webView = view as? WKWebView else {
-                    return
-                }
-                self.stopWKWebViewSwizzle(webView: webView)
-            }
+                                     block: self.wkDidMoveToWindow)
             Swizzler.swizzleSelector(#selector(WKWebView.removeFromSuperview),
                                      withSelector: #selector(WKWebView.sugoWebViewRemoveFromSuperview),
                                      for: WKWebView.self,
                                      name: self.wkRemoveFromSuperviewBlockName,
-                                     block: wkRemoveFromSuperviewExecuteBlock)
-            // - WKWebView -
-            
+                                     block: self.wkRemoveFromSuperview)
             self.viewSwizzleRunning = true
         }
     }
@@ -101,16 +50,67 @@ extension WebViewBindings {
             Swizzler.unswizzleSelector(#selector(WKWebView.removeFromSuperview),
                                        aClass: WKWebView.self,
                                        name: self.wkRemoveFromSuperviewBlockName)
+            
             self.viewSwizzleRunning = false
         }
     }
+}
+
+extension WebViewBindings {
+    
+    func uiDidMoveToWindow(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
+        guard let webView = view as? UIWebView else {
+            return
+        }
+        if view!.isKind(of: WKWebView.self) {
+            return
+        }
+        var responder: UIResponder = webView
+        while responder.next != nil {
+            responder = responder.next!
+            if responder is UIViewController {
+                self.uiVCPath = NSStringFromClass(responder.classForCoder)
+                Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
+                break
+            }
+        }
+        self.uiWebView = webView
+        self.bindUIWebView(webView: &(self.uiWebView!))
+    }
+    
+    func wkDidMoveToWindow(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
+        guard let webView = view as? WKWebView else {
+            return
+        }
+        var responder: UIResponder = webView
+        while responder.next != nil {
+            responder = responder.next!
+            if responder is UIViewController {
+                self.wkVCPath = NSStringFromClass(responder.classForCoder)
+                Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
+                break
+            }
+        }
+        self.wkWebView = webView
+        self.bindWKWebView(webView: &(self.wkWebView!))
+    }
+    
+    func wkRemoveFromSuperview(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
+        guard let webView = view as? WKWebView else {
+            return
+        }
+        self.stopWKWebViewSwizzle(webView: webView)
+    }
+    
+}
+
+extension WebViewBindings {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if keyPath == "stringBindings" {
             stop()
             execute()
-            
             if let wv = self.uiWebView {
                 self.uiWebViewJavaScriptInjected = false
                 bindUIWebView(webView: &(self.uiWebView!))
