@@ -13,48 +13,19 @@ extension WebViewBindings {
     
     func bindUIWebView(webView: inout UIWebView) {
         if !self.uiWebViewSwizzleRunning {
-            let uiWebViewDidStartLoadBlock = {
-                [unowned self] (view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) in
-                
-                if self.uiWebViewJavaScriptInjected {
-                    self.uiWebViewJavaScriptInjected = false
-                    Logger.debug(message: "UIWebView Uninjected")
-                }
-            }
-            let uiWebViewDidFinishLoadBlock = {
-                [unowned self] (view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) in
-                guard let wv = webView as? UIWebView else {
-                    return
-                }
-                guard let url = webView?.request.url else {
-                    return
-                }
-                guard !url.path.isEmpty else {
-                    return
-                }
-                if !self.uiWebViewJavaScriptInjected {
-                    let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-                    jsContext.setObject(WebViewJSExport.self,
-                                        forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-                    jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
-                    jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
-                    self.uiWebViewJavaScriptInjected = true
-//                    Logger.debug(message: "UIWebView Injected")
-                }
-            }
             if let delegate = webView.delegate {
                 Swizzler.swizzleSelector(#selector(delegate.webViewDidStartLoad(_:)),
                                          withSelector: #selector(UIWebView.sugoWebViewDidStartLoad(_:)),
                                          for: type(of: delegate),
                                          and: UIWebView.self,
                                          name: self.uiWebViewDidStartLoadBlockName,
-                                         block: uiWebViewDidStartLoadBlock)
+                                         block: self.uiWebViewDidStartLoad)
                 Swizzler.swizzleSelector(#selector(delegate.webViewDidFinishLoad(_:)),
                                          withSelector: #selector(UIWebView.sugoWebViewDidFinishLoad(_:)),
                                          for: type(of: delegate),
                                          and: UIWebView.self,
                                          name: self.uiWebViewDidFinishLoadBlockName,
-                                         block: uiWebViewDidFinishLoadBlock)
+                                         block: self.uiWebViewDidFinishLoad)
                 self.uiWebViewSwizzleRunning = true
             }
         }
@@ -75,6 +46,32 @@ extension WebViewBindings {
         }
     }
     
+    func uiWebViewDidStartLoad(view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) {
+        if self.uiWebViewJavaScriptInjected {
+            self.uiWebViewJavaScriptInjected = false
+            Logger.debug(message: "UIWebView Uninjected")
+        }
+    }
+    func uiWebViewDidFinishLoad(view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) {
+        guard let wv = webView as? UIWebView else {
+            return
+        }
+        guard let url = webView?.request.url else {
+            return
+        }
+        guard !url.path.isEmpty else {
+            return
+        }
+        if !self.uiWebViewJavaScriptInjected {
+            let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
+            jsContext.setObject(WebViewJSExport.self,
+                                forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+            jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
+            jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
+            self.uiWebViewJavaScriptInjected = true
+            Logger.debug(message: "UIWebView Injected")
+        }
+    }
 }
 
 extension UIWebView {
