@@ -196,6 +196,7 @@ extension ObjectSerializer: WKScriptMessageHandler {
         
         jsContext.setObject(WebViewJSExport.self,
                             forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+        jsContext.evaluateScript(self.webViewUtils)
         jsContext.evaluateScript(self.jsUIWebViewReportSource)
         jsContext.evaluateScript(self.jsUIWebViewReportExcute)
         
@@ -208,6 +209,10 @@ extension ObjectSerializer: WKScriptMessageHandler {
 
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
+        let jsUtils = WKUserScript(source: self.webViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsUtils) {
+            webView.configuration.userContentController.addUserScript(jsUtils)
+        }
         let jsReportScript = WKUserScript(source: self.jsWKWebViewReport, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
         if !webView.configuration.userContentController.userScripts.contains(jsReportScript) {
             webView.configuration.userContentController.addUserScript(jsReportScript)
@@ -247,117 +252,82 @@ extension ObjectSerializer: WKScriptMessageHandler {
     }
     
     fileprivate var jsUIWebViewReportSource: String {
-        return "var sugo_report={};\n" +
-            " sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            " sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            " sugo_report.isElementInViewport = function(rect) {\n" +
-            "         return (\n" +
-            "                 rect.top >= 0 &&\n" +
-            "                 rect.left >= 0 &&\n" +
-            "                 rect.bottom <= sugo_report.clientHeight && \n" +
-            "                 rect.right <= sugo_report.clientWidth\n" +
-            "         );\n" +
-            " };\n" +
-            " sugo_report.get_node_name = function(node){\n" +
-            "  var path = '';\n" +
-            "  var name = node.localName;\n" +
-            "  if(name == 'script'){return '';}\n" +
-            "  if(name == 'link'){return '';}\n" +
-            "  path = name;\n" +
-            "  id = node.id;\n" +
-            "  if(id && id.length>0){\n" +
-            "   path += '#' + id;\n" +
-            "  }\n" +
-            "  return path;\n" +
-            " };\n" +
-            " sugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
-            "   var index_map={};\n" +
-            "   for(var i=0;i<childrens.length;i++){\n" +
-            "    var children = childrens[i];\n" +
-            "    var node_name = sugo_report.get_node_name(children);\n" +
-            "    if (node_name == ''){ continue;}\n" +
-            "    if(index_map[node_name] == null){\n" +
-            "     index_map[node_name] = 0;\n" +
-            "    }else{\n" +
-            "     index_map[node_name] = index_map[node_name]  + 1;\n" +
-            "    }\n" +
-            "    var htmlNode={};\n" +
-            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "  htmlNode.path=path;" +
+        
+        return "var sugo_report = {};\n" +
+            "sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
+            "sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
+            "sugo_report.isElementInViewport = function (rect) {\n" +
+            "  return (\n" +
+            "      rect.top >= 0 &&\n" +
+            "      rect.left >= 0 &&\n" +
+            "      rect.bottom <= sugo_report.clientHeight &&\n" +
+            "      rect.right <= sugo_report.clientWidth\n" +
+            "  );\n" +
+            "};\n" +
+            "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
+            "  var index_map = {};\n" +
+            "  for (var i = 0; i < childrens.length; i++) {\n" +
+            "\tvar children = childrens[i];\n" +
+            "\tvar path = UTILS.cssPath(children);\n" +
+            "    var htmlNode = {};\n" +
+            "    htmlNode.path = path;\n" +
             "    var rect = children.getBoundingClientRect();\n" +
-            "    if(sugo_report.isElementInViewport(rect) == true){ \n" +
-            "     htmlNode.rect=rect;\n" +
-            "     jsonArry.push(htmlNode);\n" +
+            "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
+            "      htmlNode.rect = rect;\n" +
+            "      jsonArry.push(htmlNode);\n" +
             "    }\n" +
-            "    if(children.children){\n" +
-            "     sugo_report.reportChildNode(children.children, jsonArry, path);\n" +
+            "    if (children.children) {\n" +
+            "      sugo_report.reportChildNode(children.children, jsonArry, path, type);\n" +
             "    }\n" +
-            "   }\n" +
-            " };\n" +
-            " sugo_report.reportNodes = function(){\n" +
-            "  var jsonArry=[];\n" +
+            "  }\n" +
+            "};\n" +
+            "sugo_report.reportNodes = function () {\n" +
+            "  var jsonArry = [];\n" +
             "  var body = document.getElementsByTagName('body')[0];\n" +
             "  var childrens = body.children;\n" +
-            "  var parent_path='';\n" +
-            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
+            "  var parent_path = '';\n" +
+            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path, 'report');\n" +
+            "\n" +
             "  WebViewJSExport.infoWithPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArry), sugo_report.clientWidth, sugo_report.clientHeight);\n" +
-            " };"
+            "};\n"
     }
     
     fileprivate var jsWKWebViewReport: String {
-        return "var sugo_report={};\n" +
-            " sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            " sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            " sugo_report.isElementInViewport = function(rect) {\n" +
-            "         return (\n" +
-            "                 rect.top >= 0 &&\n" +
-            "                 rect.left >= 0 &&\n" +
-            "                 rect.bottom <= sugo_report.clientHeight && \n" +
-            "                 rect.right <= sugo_report.clientWidth\n" +
-            "         );\n" +
-            " };\n" +
-            " sugo_report.get_node_name = function(node){\n" +
-            "  var path = '';\n" +
-            "  var name = node.localName;\n" +
-            "  if(name == 'script'){return '';}\n" +
-            "  if(name == 'link'){return '';}\n" +
-            "  path = name;\n" +
-            "  id = node.id;\n" +
-            "  if(id && id.length>0){\n" +
-            "   path += '#' + id;\n" +
-            "  }\n" +
-            "  return path;\n" +
-            " };\n" +
-            " sugo_report.reportChildNode = function(childrens, jsonArry, parent_path){\n" +
-            "   var index_map={};\n" +
-            "   for(var i=0;i<childrens.length;i++){\n" +
-            "    var children = childrens[i];\n" +
-            "    var node_name = sugo_report.get_node_name(children);\n" +
-            "    if (node_name == ''){ continue;}\n" +
-            "    if(index_map[node_name] == null){\n" +
-            "     index_map[node_name] = 0;\n" +
-            "    }else{\n" +
-            "     index_map[node_name] = index_map[node_name]  + 1;\n" +
-            "    }\n" +
-            "    var htmlNode={};\n" +
-            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "  htmlNode.path=path;" +
+        return "var sugo_report = {};\n" +
+            "sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
+            "sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
+            "sugo_report.isElementInViewport = function (rect) {\n" +
+            "  return (\n" +
+            "      rect.top >= 0 &&\n" +
+            "      rect.left >= 0 &&\n" +
+            "      rect.bottom <= sugo_report.clientHeight &&\n" +
+            "      rect.right <= sugo_report.clientWidth\n" +
+            "  );\n" +
+            "};\n" +
+            "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
+            "  var index_map = {};\n" +
+            "  for (var i = 0; i < childrens.length; i++) {\n" +
+            "\tvar children = childrens[i];\n" +
+            "\tvar path = UTILS.cssPath(children);\n" +
+            "    var htmlNode = {};\n" +
+            "    htmlNode.path = path;\n" +
             "    var rect = children.getBoundingClientRect();\n" +
-            "    if(sugo_report.isElementInViewport(rect) == true){ \n" +
-            "     htmlNode.rect=rect;\n" +
-            "     jsonArry.push(htmlNode);\n" +
+            "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
+            "      htmlNode.rect = rect;\n" +
+            "      jsonArry.push(htmlNode);\n" +
             "    }\n" +
-            "    if(children.children){\n" +
-            "     sugo_report.reportChildNode(children.children, jsonArry, path);\n" +
+            "    if (children.children) {\n" +
+            "      sugo_report.reportChildNode(children.children, jsonArry, path, type);\n" +
             "    }\n" +
-            "   }\n" +
-            " };\n" +
-            " sugo_report.reportNodes = function(){\n" +
-            "  var jsonArry=[];\n" +
+            "  }\n" +
+            "};\n" +
+            "sugo_report.reportNodes = function () {\n" +
+            "  var jsonArry = [];\n" +
             "  var body = document.getElementsByTagName('body')[0];\n" +
             "  var childrens = body.children;\n" +
-            "  var parent_path='';\n" +
-            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path);\n" +
+            "  var parent_path = '';\n" +
+            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path, 'report');\n" +
+            "\n" +
             "  var message = {\n" +
             "    'path' : window.location.pathname,\n" +
             "    'clientWidth' : sugo_report.clientWidth,\n" +
@@ -365,8 +335,151 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "    'nodes' : JSON.stringify(jsonArry)\n" +
             "    };\n" +
             "  window.webkit.messageHandlers.WKWebViewReporter.postMessage(message);\n" +
-            " };\n" +
-            " sugo_report.reportNodes();"
+            "};\n" +
+        "sugo_report.reportNodes();\n"
+    }
+    
+    fileprivate var webViewUtils: String {
+        return "var UTILS = {};\n" +
+            "UTILS.cssPath = function(node, optimized)\n" +
+            "{\n" +
+            "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
+            "        return \"\";\n" +
+            "    var steps = [];\n" +
+            "    var contextNode = node;\n" +
+            "    while (contextNode) {\n" +
+            "        var step = UTILS._cssPathStep(contextNode, !!optimized, contextNode === node);\n" +
+            "        if (!step)\n" +
+            "            break; \n" +
+            "        steps.push(step);\n" +
+            "        if (step.optimized)\n" +
+            "            break;\n" +
+            "        contextNode = contextNode.parentNode;\n" +
+            "    }\n" +
+            "    steps.reverse();\n" +
+            "    return steps.join(\" > \");\n" +
+            "};\n" +
+            "UTILS._cssPathStep = function(node, optimized, isTargetNode)\n" +
+            "{\n" +
+            "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
+            "        return null;\n" +
+            "    var id = node.getAttribute(\"id\");\n" +
+            "    if (optimized) {\n" +
+            "        if (id)\n" +
+            "            return new UTILS.DOMNodePathStep(idSelector(id), true);\n" +
+            "        var nodeNameLower = node.nodeName.toLowerCase();\n" +
+            "        if (nodeNameLower === \"body\" || nodeNameLower === \"head\" || nodeNameLower === \"html\")\n" +
+            "            return new UTILS.DOMNodePathStep(node.nodeName.toLowerCase(), true);\n" +
+            "     }\n" +
+            "    var nodeName = node.nodeName.toLowerCase();\n" +
+            "    if (id)\n" +
+            "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase() + idSelector(id), true);\n" +
+            "    var parent = node.parentNode;\n" +
+            "    if (!parent || parent.nodeType === Node.DOCUMENT_NODE)\n" +
+            "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase(), true);\n" +
+            "    function prefixedElementClassNames(node)\n" +
+            "    {\n" +
+            "        var classAttribute = node.getAttribute(\"class\");\n" +
+            "        if (!classAttribute)\n" +
+            "            return [];\n" +
+            "\n" +
+            "        return classAttribute.split(/\\s+/g).filter(Boolean).map(function(name) {\n" +
+            "            return \"$\" + name;\n" +
+            "        });\n" +
+            "     }\n" +
+            "    function idSelector(id)\n" +
+            "    {\n" +
+            "        return \"#\" + escapeIdentifierIfNeeded(id);\n" +
+            "    }\n" +
+            "    function escapeIdentifierIfNeeded(ident)\n" +
+            "    {\n" +
+            "        if (isCSSIdentifier(ident))\n" +
+            "            return ident;\n" +
+            "        var shouldEscapeFirst = /^(?:[0-9]|-[0-9-]?)/.test(ident);\n" +
+            "        var lastIndex = ident.length - 1;\n" +
+            "        return ident.replace(/./g, function(c, i) {\n" +
+            "            return ((shouldEscapeFirst && i === 0) || !isCSSIdentChar(c)) ? escapeAsciiChar(c, i === lastIndex) : c;\n" +
+            "        });\n" +
+            "    }\n" +
+            "    function escapeAsciiChar(c, isLast)\n" +
+            "    {\n" +
+            "        return \"\\\\\" + toHexByte(c) + (isLast ? \"\" : \" \");\n" +
+            "    }\n" +
+            "    function toHexByte(c)\n" +
+            "    {\n" +
+            "        var hexByte = c.charCodeAt(0).toString(16);\n" +
+            "        if (hexByte.length === 1)\n" +
+            "          hexByte = \"0\" + hexByte;\n" +
+            "        return hexByte;\n" +
+            "    }\n" +
+            "    function isCSSIdentChar(c)\n" +
+            "    {\n" +
+            "        if (/[a-zA-Z0-9_-]/.test(c))\n" +
+            "            return true;\n" +
+            "        return c.charCodeAt(0) >= 0xA0;\n" +
+            "    }\n" +
+            "    function isCSSIdentifier(value)\n" +
+            "    {\n" +
+            "        return /^-?[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);\n" +
+            "    }\n" +
+            "    var prefixedOwnClassNamesArray = prefixedElementClassNames(node);\n" +
+            "    var needsClassNames = false;\n" +
+            "    var needsNthChild = false;\n" +
+            "    var ownIndex = -1;\n" +
+            "    var siblings = parent.children;\n" +
+            "    for (var i = 0; (ownIndex === -1 || !needsNthChild) && i < siblings.length; ++i) {\n" +
+            "        var sibling = siblings[i];\n" +
+            "        if (sibling === node) {\n" +
+            "            ownIndex = i;\n" +
+            "            continue;\n" +
+            "        }\n" +
+            "        if (needsNthChild)\n" +
+            "            continue;\n" +
+            "        if (sibling.nodeName.toLowerCase() !== nodeName.toLowerCase())\n" +
+            "            continue;\n" +
+            "        needsClassNames = true;\n" +
+            "        var ownClassNames = prefixedOwnClassNamesArray;\n" +
+            "        var ownClassNameCount = 0;\n" +
+            "        for (var name in ownClassNames)\n" +
+            "            ++ownClassNameCount;\n" +
+            "        if (ownClassNameCount === 0) {\n" +
+            "            needsNthChild = true;\n" +
+            "            continue;\n" +
+            "        }\n" +
+            "        var siblingClassNamesArray = prefixedElementClassNames(sibling);\n" +
+            "        for (var j = 0; j < siblingClassNamesArray.length; ++j) {\n" +
+            "            var siblingClass = siblingClassNamesArray[j];\n" +
+            "            if (ownClassNames.indexOf(siblingClass))\n" +
+            "                continue;\n" +
+            "            delete ownClassNames[siblingClass];\n" +
+            "            if (!--ownClassNameCount) {\n" +
+            "                needsNthChild = true;\n" +
+            "                break;\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "    var result = nodeName.toLowerCase();\n" +
+            "    if (isTargetNode && nodeName.toLowerCase() === \"input\" && node.getAttribute(\"type\") && !node.getAttribute(\"id\") && !node.getAttribute(\"class\"))\n" +
+            "        result += \"[type=\\\"\" + node.getAttribute(\"type\") + \"\\\"]\";\n" +
+            "    if (needsNthChild) {\n" +
+            "        result += \":nth-child(\" + (ownIndex + 1) + \")\";\n" +
+            "    } else if (needsClassNames) {\n" +
+            "        for (var prefixedName in prefixedOwnClassNamesArray)\n" +
+            "            result += \".\" + escapeIdentifierIfNeeded(prefixedOwnClassNamesArray[prefixedName].substr(1));\n" +
+            "    }\n" +
+            "    return new UTILS.DOMNodePathStep(result, false);\n" +
+            "};\n" +
+            "UTILS.DOMNodePathStep = function(value, optimized)\n" +
+            "{\n" +
+            "    this.value = value;\n" +
+            "    this.optimized = optimized || false;\n" +
+            "};\n" +
+            "UTILS.DOMNodePathStep.prototype = {\n" +
+            "    toString: function()\n" +
+            "    {\n" +
+            "        return this.value;\n" +
+            "    }\n" +
+        "};"
     }
     
 }

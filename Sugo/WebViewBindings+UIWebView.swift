@@ -111,34 +111,22 @@ extension UIWebView {
 extension WebViewBindings {
     
     var jsUIWebViewBindingsExcute: String {
-        return "sugo_bind.bindEvent();"
+        return "sugo_binding.bindEvent();"
     }
     
     var jsUIWebViewBindingsSource: String {
-        return "var sugo_bind={};\n" +
-            "sugo_bind.current_page ='\(self.uiVCPath)::' + window.location.pathname;\n" +
-            "sugo_bind.h5_event_bindings = \(self.stringBindings);\n" +
-            "sugo_bind.current_event_bindings = {};\n" +
-            "for(var i=0;i<sugo_bind.h5_event_bindings.length;i++){\n" +
-            " var b_event = sugo_bind.h5_event_bindings[i];\n" +
-            " if(b_event.target_activity === sugo_bind.current_page){\n" +
-            "  var key = JSON.stringify(b_event.path);\n" +
-            "  sugo_bind.current_event_bindings[key] = b_event;\n" +
-            " }\n" +
+        return "var sugo_binding = {};\n" +
+            "sugo_binding.current_page = '\(self.uiVCPath)::' + window.location.pathname;\n" +
+            "sugo_binding.h5_event_bindings = \(self.stringBindings);\n" +
+            "sugo_binding.current_event_bindings = {};\n" +
+            "for (var i = 0; i < sugo_binding.h5_event_bindings.length; i++) {\n" +
+            "  var b_event = sugo_binding.h5_event_bindings[i];\n" +
+            "  if (b_event.target_activity === sugo_binding.current_page) {\n" +
+            "    var key = JSON.stringify(b_event.path);\n" +
+            "    sugo_binding.current_event_bindings[key] = b_event;\n" +
+            "  }\n" +
             "};\n" +
-            "sugo_bind.get_node_name = function(node){\n" +
-            " var path = '';\n" +
-            " var name = node.localName;\n" +
-            " if(name == 'script'){return '';}\n" +
-            " if(name == 'link'){return '';}\n" +
-            " path = name;\n" +
-            " id = node.id;\n" +
-            " if(id && id.length>0){\n" +
-            "  path += '#' + id;\n" +
-            " }\n" +
-            " return path;\n" +
-            "};\n" +
-            "sugo_bind.addEvent = function (children, event) {\n" +
+            "sugo_binding.addEvent = function (children, event) {\n" +
             "  children.addEventListener(event.event_type, function (e) {\n" +
             "    var custom_props = {};\n" +
             "    if(event.code && event.code.replace(/(^\\s*)|(\\s*$)/g, \"\") != ''){\n" +
@@ -148,38 +136,22 @@ extension WebViewBindings {
             "    custom_props.from_binding = true;\n" +
             "    WebViewJSExport.eventWithIdNameProperties(event.event_id, event.event_name, JSON.stringify(custom_props));\n" +
             "  });\n" +
-            "}\n" +
-            "sugo_bind.bindChildNode = function (childrens, jsonArry, parent_path){\n" +
-            "  var index_map={};\n" +
-            "  for(var i=0;i<childrens.length;i++){\n" +
-            "   var children = childrens[i];\n" +
-            "   var node_name = sugo_bind.get_node_name(children);\n" +
-            "   if (node_name == ''){continue;}\n" +
-            "   if(index_map[node_name] == null){\n" +
-            "    index_map[node_name] = 0;\n" +
-            "   }else{\n" +
-            "    index_map[node_name] = index_map[node_name]  + 1;\n" +
-            "   }\n" +
-            "   var htmlNode={};\n" +
-            "   var path=parent_path + '/' + node_name + '[' + index_map[node_name] + ']';\n" +
-            "   htmlNode.path=path;   \n" +
-            "   var b_event = sugo_bind.current_event_bindings[JSON.stringify(htmlNode)];\n" +
-            " if(b_event){\n" +
-            "    var event = JSON.parse(JSON.stringify(b_event));\n" +
-            "    sugo_bind.addEvent(children, event);\n" +
-            " }\n" +
-            "   if(children.children){\n" +
-            "    sugo_bind.bindChildNode(children.children, jsonArry, path);\n" +
-            "   }\n" +
-            "  }\n" +
             "};\n" +
-            "sugo_bind.bindEvent = function(){\n" +
-            " var jsonArry=[];\n" +
-            " var body = document.getElementsByTagName('body')[0];\n" +
-            " var childrens = body.children;\n" +
-            " var parent_path='';\n" +
-            " sugo_bind.bindChildNode(childrens, jsonArry, parent_path);\n" +
-            "};"
+            "sugo_binding.bindEvent = function () {\n" +
+            "  var paths = Object.keys(sugo_binding.current_event_bindings);\n" +
+            "  for(var idx in paths){\n" +
+            "    var path_str = paths[idx];\n" +
+            "    var event = sugo_binding.current_event_bindings[path_str];\n" +
+            "    var eles = document.querySelectorAll(JSON.parse(paths[idx]).path);\n" +
+            "    if(eles){\n" +
+            "      for(var eles_idx=0;eles_idx < eles.length; eles_idx ++){\n" +
+            "        var ele = eles[eles_idx];\n" +
+            "        sugo_binding.addEvent(ele, event);\n" +
+            "      }\n" +
+            "    }\n" +
+            "    \n" +
+            "  }\n" +
+            "};\n"
     }
     
 }
