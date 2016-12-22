@@ -31,7 +31,7 @@ class FlushRequest: Network {
         }
 
         let requestBody = requestData.data(using: String.Encoding.utf8)
-        Logger.debug(message: requestData)
+//        Logger.debug(message: requestData)
         let projectID = Sugo.mainInstance().projectID
         let resource = Network.buildResource(path: type.rawValue,
                                              method: .post,

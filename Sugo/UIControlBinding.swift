@@ -16,7 +16,7 @@ class UIControlBinding: CodelessBinding {
     var verified: NSHashTable<UIControl>
     var appliedTo: NSHashTable<UIControl>
 
-    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents, verifyEvent: UIControlEvents) {
+    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents, verifyEvent: UIControlEvents, attributes: Attributes? = nil) {
         self.controlEvent = controlEvent
         self.verifyEvent = verifyEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
@@ -57,13 +57,22 @@ class UIControlBinding: CodelessBinding {
             Logger.warn(message: "wasn't able to fetch a valid verify event")
             return nil
         }
-
-        self.init(eventID: eventID,
-                  eventName: eventName,
-                  path: path,
-                  controlEvent: UIControlEvents(rawValue: controlEvent),
-                  verifyEvent: finalVerifyEvent)
-
+        
+        if let attributes = object["attributes"] as? Properties {
+            let attr = Attributes(attributes: attributes)
+            self.init(eventID: eventID,
+                      eventName: eventName,
+                      path: path,
+                      controlEvent: UIControlEvents(rawValue: controlEvent),
+                      verifyEvent: finalVerifyEvent,
+                      attributes: attr)
+        } else {
+            self.init(eventID: eventID,
+                      eventName: eventName,
+                      path: path,
+                      controlEvent: UIControlEvents(rawValue: controlEvent),
+                      verifyEvent: finalVerifyEvent)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -207,9 +216,13 @@ class UIControlBinding: CodelessBinding {
             shouldTrack = verifyControlMatchesPath(sender)
         }
         if shouldTrack {
+            var p = Properties()
+            if let a = self.attributes {
+                p += a.parse()
+            }
             self.track(eventID: self.eventID,
                        eventName: self.eventName,
-                       properties: [:])
+                       properties: p)
         }
     }
 

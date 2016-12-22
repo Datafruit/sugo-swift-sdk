@@ -12,6 +12,8 @@
 		147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EE1DF66B90001FF110 /* SugoType.swift */; };
 		147C00F11DF66C17001FF110 /* SugoInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00F01DF66C17001FF110 /* SugoInstance.swift */; };
 		1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */; };
+		148F37171E07B38900E2A98D /* Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37161E07B38900E2A98D /* Attributes.swift */; };
+		148F37191E07B52C00E2A98D /* AttributesPaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37181E07B52C00E2A98D /* AttributesPaser.swift */; };
 		14C7E7AA1DF6A37500CB906A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7A91DF6A37500CB906A /* UIKit.framework */; };
 		14EADCCA1DF65A5000E6B711 /* sugo.h in Headers */ = {isa = PBXBuildFile; fileRef = 14EADCBC1DF65A5000E6B711 /* sugo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14EADCD51DF65A5B00E6B711 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD41DF65A5B00E6B711 /* Foundation.framework */; };
@@ -81,6 +83,8 @@
 		147C00EE1DF66B90001FF110 /* SugoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoType.swift; sourceTree = "<group>"; };
 		147C00F01DF66C17001FF110 /* SugoInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoInstance.swift; sourceTree = "<group>"; };
 		1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILayoutSupportToNSString.swift; path = Sugo/UILayoutSupportToNSString.swift; sourceTree = SOURCE_ROOT; };
+		148F37161E07B38900E2A98D /* Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attributes.swift; sourceTree = "<group>"; };
+		148F37181E07B52C00E2A98D /* AttributesPaser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributesPaser.swift; sourceTree = "<group>"; };
 		14C7E7A91DF6A37500CB906A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		14EADCB91DF65A5000E6B711 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EADCBC1DF65A5000E6B711 /* sugo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sugo.h; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				14EADCEF1DF65ACA00E6B711 /* Constants.swift */,
 				14EADD0C1DF65ACB00E6B711 /* Swizzle.swift */,
 				144DB1821DF65D6F007B2275 /* Network */,
+				144DB18B1DF660F7007B2275 /* Serialization */,
 				144DB1841DF65F5A007B2275 /* Transformers */,
 				144DB1861DF66004007B2275 /* Data */,
 				144DB1851DF65F6C007B2275 /* Logger */,
@@ -182,7 +187,6 @@
 			children = (
 				14EADD0D1DF65ACB00E6B711 /* Track.swift */,
 				144DB18A1DF660D2007B2275 /* Messages */,
-				144DB18B1DF660F7007B2275 /* Serialization */,
 				144DB18C1DF66116007B2275 /* Bindings */,
 				144DB18D1DF6619C007B2275 /* Codeless */,
 			);
@@ -313,6 +317,7 @@
 				14EADD031DF65ACB00E6B711 /* ObjectSerializer.swift */,
 				14EADD041DF65ACB00E6B711 /* ObjectSerializerConfig.swift */,
 				14EADD051DF65ACB00E6B711 /* ObjectSerializerContext.swift */,
+				148F37151E07B28400E2A98D /* Injection */,
 			);
 			name = Serialization;
 			sourceTree = "<group>";
@@ -334,6 +339,15 @@
 				14EADCF01DF65ACA00E6B711 /* DecideRequest.swift */,
 			);
 			name = Codeless;
+			sourceTree = "<group>";
+		};
+		148F37151E07B28400E2A98D /* Injection */ = {
+			isa = PBXGroup;
+			children = (
+				148F37161E07B38900E2A98D /* Attributes.swift */,
+				148F37181E07B52C00E2A98D /* AttributesPaser.swift */,
+			);
+			name = Injection;
 			sourceTree = "<group>";
 		};
 		14EADCAF1DF65A5000E6B711 = {
@@ -510,10 +524,12 @@
 				14EADD1B1DF65ACB00E6B711 /* WebViewBindings.swift in Sources */,
 				14EADD2F1DF65ACB00E6B711 /* Error.swift in Sources */,
 				14EADD4D1DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift in Sources */,
+				148F37171E07B38900E2A98D /* Attributes.swift in Sources */,
 				14EADD211DF65ACB00E6B711 /* AutomaticProperties.swift in Sources */,
 				14EADD431DF65ACB00E6B711 /* Persistence.swift in Sources */,
 				14EADD201DF65ACB00E6B711 /* ApplicationStateSerializer.swift in Sources */,
 				14EADD451DF65ACB00E6B711 /* SHA256.swift in Sources */,
+				148F37191E07B52C00E2A98D /* AttributesPaser.swift in Sources */,
 				14EADD2B1DF65ACB00E6B711 /* Constants.swift in Sources */,
 				14EADD351DF65ACB00E6B711 /* Logger.swift in Sources */,
 				14EADD281DF65ACB00E6B711 /* ChangeMessage.swift in Sources */,

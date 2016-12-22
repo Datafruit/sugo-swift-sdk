@@ -732,7 +732,7 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-            Logger.debug(message: "viewDidAppear")
+//            Logger.debug(message: "viewDidAppear")
             self.time(event: "stay_event")
             var pViewController: Properties
             if let tittle = vc.title {
@@ -752,7 +752,7 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-            Logger.debug(message: "viewDidDisappear")
+//            Logger.debug(message: "viewDidDisappear")
             var pViewController: Properties
             if let tittle = vc.title {
                 pViewController = ["page": tittle]

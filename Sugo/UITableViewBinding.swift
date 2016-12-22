@@ -12,8 +12,8 @@ import UIKit
 class UITableViewBinding: CodelessBinding {
 
 
-    init(eventID: String?, eventName: String, path: String, delegate: AnyClass) {
-        super.init(eventID: eventID, eventName: eventName, path: path)
+    init(eventID: String?, eventName: String, path: String, delegate: AnyClass, attributes: Attributes? = nil) {
+        super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
         self.swizzleClass = delegate
     }
 
@@ -37,11 +37,20 @@ class UITableViewBinding: CodelessBinding {
             Logger.warn(message: "binding requires a table_delegate class")
             return nil
         }
-
-        self.init(eventID: eventID,
-                  eventName: eventName,
-                  path: path,
-                  delegate: tableDelegateClass)
+        
+        if let attributes = object["attributes"] as? Properties {
+            let attr = Attributes(attributes: attributes)
+            self.init(eventID: eventID,
+                      eventName: eventName,
+                      path: path,
+                      delegate: tableDelegateClass,
+                      attributes: attr)
+        } else {
+            self.init(eventID: eventID,
+                      eventName: eventName,
+                      path: path,
+                      delegate: tableDelegateClass)
+        }
 
     }
 
@@ -72,11 +81,16 @@ class UITableViewBinding: CodelessBinding {
                                 }
                             }
                         }
+                        var p = Properties()
+                        if let a = self.attributes {
+                            p += a.parse()
+                        }
+                        p += ["cell_index": "\(indexPath.row)",
+                            "cell_section": "\(indexPath.section)",
+                            "cell_label": label]
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
-                                   properties: ["cell_index": "\(indexPath.row)",
-                                                "cell_section": "\(indexPath.section)",
-                                                "cell_label": label])
+                                   properties: p)
                     }
                 }
             }
