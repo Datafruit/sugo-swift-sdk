@@ -112,22 +112,13 @@ extension WebViewBindings {
             stop()
             execute()
             if let wv = self.uiWebView {
-                if self.uiWebViewJavaScriptInjected {
-                    self.uiWebViewJavaScriptInjected = false
-                    bindUIWebView(webView: &(self.uiWebView!))
-                    wv.reload()
-                } else {
-                    bindUIWebView(webView: &(self.uiWebView!))
-                }
+                self.uiWebViewJavaScriptInjected = false
+                bindUIWebView(webView: &(self.uiWebView!))
+                wv.reload()
             }
-            
             if let wv = self.wkWebView {
-                if self.wkWebViewJavaScriptInjected {
-                    bindWKWebView(webView: &(self.wkWebView!))
-                    wv.reload()
-                } else {
-                    bindWKWebView(webView: &(self.wkWebView!))
-                }
+                bindWKWebView(webView: &(self.wkWebView!))
+                wv.reload()
             }
         }
     }
