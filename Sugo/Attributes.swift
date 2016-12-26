@@ -11,9 +11,9 @@ import Foundation
 
 class Attributes: NSObject {
     
-    var paths: Properties
+    var paths: InternalProperties
     
-    init(attributes: Properties) {
+    init(attributes: InternalProperties) {
         self.paths = attributes
         super.init()
     }

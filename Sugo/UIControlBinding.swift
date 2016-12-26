@@ -21,7 +21,7 @@ class UIControlBinding: CodelessBinding {
         self.verifyEvent = verifyEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         self.appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
-        super.init(eventID: eventID, eventName: eventName, path: path)
+        super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
         self.swizzleClass = UIControl.self
     }
 
@@ -58,7 +58,7 @@ class UIControlBinding: CodelessBinding {
             return nil
         }
         
-        if let attributes = object["attributes"] as? Properties {
+        if let attributes = object["attributes"] as? InternalProperties {
             let attr = Attributes(attributes: attributes)
             self.init(eventID: eventID,
                       eventName: eventName,

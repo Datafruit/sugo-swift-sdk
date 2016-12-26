@@ -38,7 +38,7 @@ class UITableViewBinding: CodelessBinding {
             return nil
         }
         
-        if let attributes = object["attributes"] as? Properties {
+        if let attributes = object["attributes"] as? InternalProperties {
             let attr = Attributes(attributes: attributes)
             self.init(eventID: eventID,
                       eventName: eventName,
