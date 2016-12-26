@@ -21,6 +21,7 @@ class WKWebViewController: UIViewController, WKNavigationDelegate {
         self.webView = WKWebView(frame: self.view.frame, configuration: configuration)
         self.webView.navigationDelegate = self
         let url = URL(string: "http://dev.ufile.ucloud.cn/test.html")
+//        let url = URL(string: "http://baidu.com")
         let request = URLRequest(url: url!)
         self.webView.load(request)
         

@@ -17,6 +17,7 @@ class UIWebViewController: UIViewController  {
         self.title = "UIWebView"
         // Do any additional setup after loading the view.
         self.webView.delegate = self
+//        let url = URL(string: "http://baidu.com")
         let url = URL(string: "http://dev.ufile.ucloud.cn/test.html")
         let request = URLRequest(url: url!)
         self.webView.loadRequest(request)
