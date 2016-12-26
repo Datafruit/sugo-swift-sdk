@@ -36,7 +36,7 @@ class CodelessBinding: NSObject, NSCoding {
             let eventName = aDecoder.decodeObject(forKey: "eventName") as? String,
             let swizzleString = aDecoder.decodeObject(forKey: "swizzleClass") as? String,
             let swizzleClass = NSClassFromString(swizzleString),
-            let attributes = aDecoder.decodeObject(forKey: "attributes") as? Attributes else {
+            let paths = aDecoder.decodeObject(forKey: "paths") as? InternalProperties else {
                 return nil
         }
         
@@ -44,9 +44,9 @@ class CodelessBinding: NSObject, NSCoding {
         self.eventName = eventName
         self.path = ObjectSelector(string: path)
         self.name = name
-        self.attributes = attributes
         self.running = false
         self.swizzleClass = swizzleClass
+        self.attributes = Attributes(attributes: paths)
     }
 
     func encode(with aCoder: NSCoder) {
@@ -55,7 +55,7 @@ class CodelessBinding: NSObject, NSCoding {
         aCoder.encode(eventID, forKey: "eventID")
         aCoder.encode(eventName, forKey: "eventName")
         aCoder.encode(NSStringFromClass(swizzleClass), forKey: "swizzleClass")
-        aCoder.encode(self.attributes, forKey: "attributes")
+        aCoder.encode(attributes?.paths, forKey: "paths")
     }
 
     override func isEqual(_ object: Any?) -> Bool {
