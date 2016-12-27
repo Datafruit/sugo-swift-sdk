@@ -58,7 +58,6 @@ extension WebViewBindings {
             Swizzler.unswizzleSelector(#selector(WKWebView.removeFromSuperview),
                                        aClass: WKWebView.self,
                                        name: self.wkRemoveFromSuperviewBlockName)
-            
             self.viewSwizzleRunning = false
         }
     }
@@ -93,6 +92,11 @@ extension WebViewBindings {
         }
         self.uiVCPath.removeAll()
         self.stopUIWebViewBindings(webView: webView)
+        if self.isTimerStarted && !self.lastURLString.isEmpty {
+            var pLastURL: Properties = ["page": self.lastURLString]
+            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
+            self.isTimerStarted = false
+        }
     }
 
     // Mark: - WKWebView
@@ -122,6 +126,11 @@ extension WebViewBindings {
         }
         self.wkVCPath.removeAll()
         self.stopWKWebViewBindings(webView: webView)
+        if self.isTimerStarted && !self.lastURLString.isEmpty {
+            var pLastURL: Properties = ["page": self.lastURLString]
+            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
+            self.isTimerStarted = false
+        }
     }
     
 }
