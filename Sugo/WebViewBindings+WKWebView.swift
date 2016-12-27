@@ -21,6 +21,14 @@ extension WebViewBindings: WKScriptMessageHandler {
             webView.configuration.userContentController
                 .addUserScript(self.wkWebViewCurrentJSExcute)
             webView.configuration.userContentController.add(self, name: "WKWebViewBindings")
+            if let delegate = webView.navigationDelegate {
+                Swizzler.swizzleSelector(#selector(delegate.webView(_:didFinish:)),
+                                         withSelector: #selector(WKWebView.sugoWebView(_:didFinish:)),
+                                         for: type(of: delegate),
+                                         and: WKWebView.self,
+                                         name: self.wkWebViewDidFinishBlockName,
+                                         block: self.wkWebViewDidFinish)
+            }
             self.wkWebViewJavaScriptInjected = true
             Logger.debug(message: "WKWebView Injected")
         }
@@ -29,6 +37,11 @@ extension WebViewBindings: WKScriptMessageHandler {
     func stopWKWebViewBindings(webView: WKWebView) {
         if self.wkWebViewJavaScriptInjected {
             webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindings")
+            if let delegate = webView.navigationDelegate {
+                Swizzler.unswizzleSelector(#selector(delegate.webView(_:didFinish:)),
+                                           aClass: type(of: delegate),
+                                           name: self.wkWebViewDidFinishBlockName)
+            }
             self.wkWebViewJavaScriptInjected = false
             self.wkWebView = nil
         }
@@ -83,6 +96,54 @@ extension WebViewBindings: WKScriptMessageHandler {
             Logger.debug(message: "id:\(WebViewInfoStorage.global.eventID), name:\(WebViewInfoStorage.global.eventName)")
         } else {
             Logger.debug(message: "Wrong message body type: name=\(message.name), body=\(message.body as? String)")
+        }
+    }
+    
+    func wkWebViewDidFinish(view: AnyObject?, command: Selector, webView: AnyObject?, navigation: AnyObject?) {
+        guard let wv = webView as? WKWebView else {
+            return
+        }
+        guard let url = webView?.url else {
+            return
+        }
+        guard !url.absoluteString.isEmpty else {
+            return
+        }
+        guard !wv.isLoading else {
+            return
+        }
+        if self.isTimerStarted && !self.lastURLString.isEmpty {
+            var pLastURL: Properties = ["page": self.lastURLString]
+            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
+            self.isTimerStarted = false
+        }
+        if let query = url.query {
+            self.lastURLString = url.path + "?" + query
+        } else {
+            self.lastURLString = url.path
+        }
+        var pURL: Properties = ["page": self.lastURLString]
+        Sugo.mainInstance().track(eventName: "h5_enter_page_event", properties: pURL)
+        Sugo.mainInstance().time(event: "h5_stay_event")
+        self.isTimerStarted = true
+    }
+}
+
+extension WKWebView {
+    
+    @objc func sugoWebView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if let delegate = webView.navigationDelegate {
+            let originalSelector = #selector(delegate.webView(_:didFinish:))
+            if let originalMethod = class_getInstanceMethod(type(of: delegate), originalSelector),
+                let swizzle = Swizzler.swizzles[originalMethod] {
+                typealias SUGOCFunction = @convention(c) (AnyObject, Selector, WKWebView, WKNavigation) -> Void
+                let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+                curriedImplementation(self, originalSelector, webView, navigation)
+                
+                for (_, block) in swizzle.blocks {
+                    block(self, swizzle.selector, webView, navigation)
+                }
+            }
         }
     }
 }
