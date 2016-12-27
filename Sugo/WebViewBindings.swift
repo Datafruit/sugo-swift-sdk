@@ -25,20 +25,21 @@ class WebViewBindings: NSObject {
     var wkVCPath: String
     dynamic var stringBindings: String
     
-    var viewSwizzleRunning = false
+    lazy var viewSwizzleRunning = false
+    dynamic var isWebViewNeedReload = false
     
     var uiWebView: UIWebView?
-    var uiWebViewSwizzleRunning = false
-    var uiWebViewJavaScriptInjected = false
-    var uiDidMoveToWindowBlockName = UUID().uuidString
-    var uiRemoveFromSuperviewBlockName = UUID().uuidString
-    var uiWebViewDidStartLoadBlockName = UUID().uuidString
-    var uiWebViewDidFinishLoadBlockName = UUID().uuidString
+    lazy var uiWebViewSwizzleRunning = false
+    lazy var uiWebViewJavaScriptInjected = false
+    lazy var uiDidMoveToWindowBlockName = UUID().uuidString
+    lazy var uiRemoveFromSuperviewBlockName = UUID().uuidString
+    lazy var uiWebViewDidStartLoadBlockName = UUID().uuidString
+    lazy var uiWebViewDidFinishLoadBlockName = UUID().uuidString
     
     var wkWebView: WKWebView?
-    var wkWebViewJavaScriptInjected = false
-    var wkDidMoveToWindowBlockName = UUID().uuidString
-    var wkRemoveFromSuperviewBlockName = UUID().uuidString
+    lazy var wkWebViewJavaScriptInjected = false
+    lazy var wkDidMoveToWindowBlockName = UUID().uuidString
+    lazy var wkRemoveFromSuperviewBlockName = UUID().uuidString
     lazy var wkWebViewCurrentJSSource = WKUserScript()
     lazy var wkWebViewCurrentJSExcute = WKUserScript()
     
@@ -56,9 +57,43 @@ class WebViewBindings: NSObject {
         self.wkVCPath = String()
         self.stringBindings = String()
         super.init()
-        self.addObserver(self, forKeyPath: "stringBindings",
+        self.addObserver(self,
+                         forKeyPath: "stringBindings",
                          options: NSKeyValueObservingOptions.new,
                          context: nil)
+        self.addObserver(self,
+                         forKeyPath: #keyPath(WebViewBindings.isWebViewNeedReload),
+                         options: NSKeyValueObservingOptions.new,
+                         context: nil)
+    }
+    
+    deinit {
+        stop()
+        self.mode = .decide
+        self.decideBindings.removeAll()
+        self.codelessBindings.removeAll()
+        self.bindings.removeAll()
+        self.uiVCPath.removeAll()
+        self.wkVCPath.removeAll()
+        self.removeObserver(self, forKeyPath: "stringBindings")
+        self.stringBindings.removeAll()
+        self.viewSwizzleRunning = false
+        self.removeObserver(self, forKeyPath: "isWebViewNeedReload")
+        self.isWebViewNeedReload = false
+        
+        self.uiWebView = nil
+        self.uiWebViewSwizzleRunning = false
+        self.uiWebViewJavaScriptInjected = false
+        self.uiDidMoveToWindowBlockName.removeAll()
+        self.uiRemoveFromSuperviewBlockName.removeAll()
+        self.uiWebViewDidStartLoadBlockName.removeAll()
+        self.uiWebViewDidFinishLoadBlockName.removeAll()
+        
+        self.wkWebView = nil
+        self.wkWebViewJavaScriptInjected = false
+        self.wkDidMoveToWindowBlockName.removeAll()
+        self.wkRemoveFromSuperviewBlockName.removeAll()
+        
     }
     
     func fillBindings() {

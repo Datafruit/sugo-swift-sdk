@@ -11,7 +11,7 @@ import JavaScriptCore
 
 extension WebViewBindings {
     
-    func bindUIWebView(webView: inout UIWebView) {
+    func startUIWebViewBindings(webView: inout UIWebView) {
         if !self.uiWebViewSwizzleRunning {
             if let delegate = webView.delegate {
                 Swizzler.swizzleSelector(#selector(delegate.webViewDidStartLoad(_:)),
@@ -31,7 +31,7 @@ extension WebViewBindings {
         }
     }
     
-    func stopUIWebViewSwizzle(webView: UIWebView) {
+    func stopUIWebViewBindings(webView: UIWebView) {
         if self.uiWebViewSwizzleRunning {
             if let delegate = webView.delegate {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidStartLoad(_:)),
@@ -42,7 +42,18 @@ extension WebViewBindings {
                                            name: self.uiWebViewDidFinishLoadBlockName)
                 self.uiWebViewJavaScriptInjected = false
                 self.uiWebViewSwizzleRunning = false
+                self.uiWebView = nil
             }
+        }
+    }
+    
+    func updateUIWebViewBindings(webView: inout UIWebView) {
+        if self.uiWebViewSwizzleRunning {
+            let jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
+            jsContext.setObject(WebViewJSExport.self,
+                                forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+            jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
+            jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
         }
     }
     

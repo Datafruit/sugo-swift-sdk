@@ -12,7 +12,30 @@ import JavaScriptCore
 
 extension WebViewBindings: WKScriptMessageHandler {
     
-    func bindWKWebView(webView: inout WKWebView) {
+    func startWKWebViewBindings(webView: inout WKWebView) {
+        if !self.wkWebViewJavaScriptInjected {
+            self.wkWebViewCurrentJSSource = self.wkJavaScriptSource
+            self.wkWebViewCurrentJSExcute = self.wkJavaScriptExcute
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSSource)
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSExcute)
+            webView.configuration.userContentController.add(self, name: "WKWebViewBindings")
+            self.wkWebViewJavaScriptInjected = true
+            Logger.debug(message: "WKWebView Injected")
+        }
+    }
+    
+    func stopWKWebViewBindings(webView: WKWebView) {
+        if self.wkWebViewJavaScriptInjected {
+            webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindings")
+            self.wkWebViewJavaScriptInjected = false
+            self.wkWebView = nil
+        }
+    }
+    
+    func updateWKWebViewBindings(webView: inout WKWebView) {
+        if self.wkWebViewJavaScriptInjected {
             var userScripts = webView.configuration.userContentController.userScripts
             if let index = userScripts.index(of: self.wkWebViewCurrentJSSource) {
                 userScripts.remove(at: index)
@@ -30,17 +53,7 @@ extension WebViewBindings: WKScriptMessageHandler {
                 .addUserScript(self.wkWebViewCurrentJSSource)
             webView.configuration.userContentController
                 .addUserScript(self.wkWebViewCurrentJSExcute)
-        if !self.wkWebViewJavaScriptInjected {
-            webView.configuration.userContentController.add(self, name: "WKWebViewBindings")
-            self.wkWebViewJavaScriptInjected = true
-            Logger.debug(message: "WKWebView Injected")
-        }
-    }
-    
-    func stopWKWebViewSwizzle(webView: WKWebView) {
-        if self.wkWebViewJavaScriptInjected {
-            webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindings")
-            self.wkWebViewJavaScriptInjected = false
+            Logger.debug(message: "WKWebView Updated")
         }
     }
     
