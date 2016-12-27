@@ -82,7 +82,7 @@ extension WebViewBindings {
             self.isTimerStarted = false
         }
         if let query = url.query {
-            self.lastURLString = url.path + "?" + query
+            self.lastURLString = (url.path.isEmpty ? "/" : url.path) + "?" + query
         } else {
             self.lastURLString = url.path
         }
