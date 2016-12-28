@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// The primary class for integrating Sugo with your app.
-@objc open class Sugo {
+open class Sugo {
 
     /**
      Initializes an instance of the API with the given project token.
