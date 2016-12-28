@@ -113,7 +113,7 @@ extension WebViewBindings: WKScriptMessageHandler {
             return
         }
         if self.isTimerStarted && !self.lastURLString.isEmpty {
-            var pLastURL: Properties = ["page": self.lastURLString]
+            let pLastURL: Properties = ["page": self.lastURLString]
             Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
             self.isTimerStarted = false
         }
@@ -122,7 +122,7 @@ extension WebViewBindings: WKScriptMessageHandler {
         } else {
             self.lastURLString = url.path
         }
-        var pURL: Properties = ["page": self.lastURLString]
+        let pURL: Properties = ["page": self.lastURLString]
         Sugo.mainInstance().track(eventName: "h5_enter_page_event", properties: pURL)
         Sugo.mainInstance().time(event: "h5_stay_event")
         self.isTimerStarted = true

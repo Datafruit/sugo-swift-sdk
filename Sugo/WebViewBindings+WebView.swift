@@ -93,7 +93,7 @@ extension WebViewBindings {
         self.uiVCPath.removeAll()
         self.stopUIWebViewBindings(webView: webView)
         if self.isTimerStarted && !self.lastURLString.isEmpty {
-            var pLastURL: Properties = ["page": self.lastURLString]
+            let pLastURL: Properties = ["page": self.lastURLString]
             Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
             self.isTimerStarted = false
         }
@@ -127,7 +127,7 @@ extension WebViewBindings {
         self.wkVCPath.removeAll()
         self.stopWKWebViewBindings(webView: webView)
         if self.isTimerStarted && !self.lastURLString.isEmpty {
-            var pLastURL: Properties = ["page": self.lastURLString]
+            let pLastURL: Properties = ["page": self.lastURLString]
             Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
             self.isTimerStarted = false
         }
