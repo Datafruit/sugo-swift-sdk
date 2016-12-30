@@ -23,14 +23,15 @@ class DecideRequest: Network {
         let properties: URLQueryItem
 
         init(distinctId: String, token: String) {
-            self.version = URLQueryItem(name: "version", value: "1")
+            self.version = URLQueryItem(name: "app_version",
+                                        value: Bundle.main.infoDictionary["CFBundleShortVersionString"])
             self.lib = URLQueryItem(name: "lib", value: "iphone")
             self.token = URLQueryItem(name: "token", value: token)
             self.distinctId = URLQueryItem(name: "distinct_id", value: distinctId)
 
             // workaround for a/b testing
             var devicePropertiesCopy = AutomaticProperties.deviceProperties
-            devicePropertiesCopy["$ios_lib_version"] = AutomaticProperties.libVersion()
+            devicePropertiesCopy["ios_lib_version"] = AutomaticProperties.libVersion()
             // end of workaround
 
             let propertiesData = try! JSONSerialization.data(withJSONObject: devicePropertiesCopy)
