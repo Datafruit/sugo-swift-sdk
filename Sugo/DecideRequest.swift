@@ -23,8 +23,14 @@ class DecideRequest: Network {
         let properties: URLQueryItem
 
         init(distinctId: String, token: String) {
-            self.version = URLQueryItem(name: "app_version",
-                                        value: Bundle.main.infoDictionary["CFBundleShortVersionString"])
+            let infoDict = Bundle.main.infoDictionary
+            if let infoDict = infoDict {
+                self.version = URLQueryItem(name: "app_version",
+                                            value: "\(infoDict["CFBundleShortVersionString"])")
+            } else {
+                self.version = URLQueryItem(name: "app_version",
+                                            value: "1.0.0")
+            }
             self.lib = URLQueryItem(name: "lib", value: "iphone")
             self.token = URLQueryItem(name: "token", value: token)
             self.distinctId = URLQueryItem(name: "distinct_id", value: distinctId)
