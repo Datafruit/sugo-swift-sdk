@@ -12,7 +12,7 @@ import UIKit
 @objc(UILayoutSupportToNSString) class UILayoutSupportToNSString: ValueTransformer {
     
     override class func transformedValueClass() -> AnyClass {
-        return NSString.self
+        return NSDictionary.self
     }
     
     override class func allowsReverseTransformation() -> Bool {
