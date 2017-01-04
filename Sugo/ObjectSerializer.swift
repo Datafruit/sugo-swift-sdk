@@ -209,9 +209,9 @@ extension ObjectSerializer: WKScriptMessageHandler {
 
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
-        let jsUtils = WKUserScript(source: self.jsWebViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsUtils) {
-            webView.configuration.userContentController.addUserScript(jsUtils)
+        let jsUtilsScript = WKUserScript(source: self.jsWebViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
+            webView.configuration.userContentController.addUserScript(jsUtilsScript)
         }
         let jsReportScript = WKUserScript(source: self.jsWKWebViewReport, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
         if !webView.configuration.userContentController.userScripts.contains(jsReportScript) {
