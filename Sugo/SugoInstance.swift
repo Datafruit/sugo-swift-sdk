@@ -183,9 +183,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     private func setupListeners() {
-        let notificationCenter = NotificationCenter.default
         trackIntegration()
         trackStayTime()
+        let notificationCenter = NotificationCenter.default
         #if os(iOS)
             setCurrentRadio()
             notificationCenter.addObserver(self,
@@ -213,9 +213,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                                        selector: #selector(applicationWillEnterForeground(_:)),
                                        name: .UIApplicationWillEnterForeground,
                                        object: nil)
-//        #if os(iOS)
-//        initializeGestureRecognizer()
-//        #endif
+        #if os(iOS)
+        initializeGestureRecognizer()
+        #endif
     }
 
     deinit {
@@ -448,7 +448,7 @@ extension SugoInstance {
         }
 
         let properties = ["distinct_id": distinctId, "alias": alias]
-        track(eventName: "$create_alias",
+        track(eventName: "create_alias",
               properties: properties)
         flush()
     }

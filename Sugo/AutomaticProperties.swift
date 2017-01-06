@@ -43,12 +43,12 @@ class AutomaticProperties {
         var p = InternalProperties()
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {
-            p["$ios_app_version"] = infoDict["CFBundleVersion"]
-            p["$ios_app_release"] = infoDict["CFBundleShortVersionString"]
+            p["ios_app_version"] = infoDict["CFBundleVersion"]
+            p["ios_app_release"] = infoDict["CFBundleShortVersionString"]
         }
-        p["$ios_device_model"]  = AutomaticProperties.deviceModel()
-        p["$ios_version"]       = UIDevice.current.systemVersion
-        p["$ios_lib_version"]   = AutomaticProperties.libVersion()
+        p["ios_device_model"]  = AutomaticProperties.deviceModel()
+        p["ios_version"]       = UIDevice.current.systemVersion
+        p["ios_lib_version"]   = AutomaticProperties.libVersion()
 
         return p
     }()

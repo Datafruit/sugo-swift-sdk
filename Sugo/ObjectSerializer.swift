@@ -196,7 +196,7 @@ extension ObjectSerializer: WKScriptMessageHandler {
         
         jsContext.setObject(WebViewJSExport.self,
                             forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-        jsContext.evaluateScript(self.webViewUtils)
+        jsContext.evaluateScript(self.jsWebViewUtils)
         jsContext.evaluateScript(self.jsUIWebViewReportSource)
         jsContext.evaluateScript(self.jsUIWebViewReportExcute)
         
@@ -209,9 +209,9 @@ extension ObjectSerializer: WKScriptMessageHandler {
 
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
-        let jsUtils = WKUserScript(source: self.webViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsUtils) {
-            webView.configuration.userContentController.addUserScript(jsUtils)
+        let jsUtilsScript = WKUserScript(source: self.jsWebViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
+            webView.configuration.userContentController.addUserScript(jsUtilsScript)
         }
         let jsReportScript = WKUserScript(source: self.jsWKWebViewReport, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
         if !webView.configuration.userContentController.userScripts.contains(jsReportScript) {
@@ -267,13 +267,19 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
             "  var index_map = {};\n" +
             "  for (var i = 0; i < childrens.length; i++) {\n" +
-            "\tvar children = childrens[i];\n" +
-            "\tvar path = UTILS.cssPath(children);\n" +
+            "    var children = childrens[i];\n" +
+            "    var path = UTILS.cssPath(children);\n" +
             "    var htmlNode = {};\n" +
             "    htmlNode.path = path;\n" +
             "    var rect = children.getBoundingClientRect();\n" +
             "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
-            "      htmlNode.rect = rect;\n" +
+            "      var temp_rect = {\n" +
+            "          top: rect.top,\n" +
+            "          left: rect.left,\n" +
+            "          width: rect.width,\n" +
+            "          height: rect.height\n" +
+            "      };\n" +
+            "      htmlNode.rect = temp_rect;\n" +
             "      jsonArry.push(htmlNode);\n" +
             "    }\n" +
             "    if (children.children) {\n" +
@@ -287,9 +293,8 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "  var childrens = body.children;\n" +
             "  var parent_path = '';\n" +
             "  sugo_report.reportChildNode(childrens, jsonArry, parent_path, 'report');\n" +
-            "\n" +
             "  WebViewJSExport.infoWithPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArry), sugo_report.clientWidth, sugo_report.clientHeight);\n" +
-            "};\n"
+        "};"
     }
     
     fileprivate var jsWKWebViewReport: String {
@@ -307,13 +312,19 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
             "  var index_map = {};\n" +
             "  for (var i = 0; i < childrens.length; i++) {\n" +
-            "\tvar children = childrens[i];\n" +
-            "\tvar path = UTILS.cssPath(children);\n" +
+            "    var children = childrens[i];\n" +
+            "    var path = UTILS.cssPath(children);\n" +
             "    var htmlNode = {};\n" +
             "    htmlNode.path = path;\n" +
             "    var rect = children.getBoundingClientRect();\n" +
             "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
-            "      htmlNode.rect = rect;\n" +
+            "      var temp_rect = {\n" +
+            "          top: rect.top,\n" +
+            "          left: rect.left,\n" +
+            "          width: rect.width,\n" +
+            "          height: rect.height\n" +
+            "      };\n" +
+            "      htmlNode.rect = temp_rect;\n" +
             "      jsonArry.push(htmlNode);\n" +
             "    }\n" +
             "    if (children.children) {\n" +
@@ -339,12 +350,12 @@ extension ObjectSerializer: WKScriptMessageHandler {
         "sugo_report.reportNodes();\n"
     }
     
-    fileprivate var webViewUtils: String {
+    fileprivate var jsWebViewUtils: String {
         return "var UTILS = {};\n" +
             "UTILS.cssPath = function(node, optimized)\n" +
             "{\n" +
             "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
-            "        return \"\";\n" +
+            "        return '';\n" +
             "    var steps = [];\n" +
             "    var contextNode = node;\n" +
             "    while (contextNode) {\n" +
@@ -357,40 +368,47 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "        contextNode = contextNode.parentNode;\n" +
             "    }\n" +
             "    steps.reverse();\n" +
-            "    return steps.join(\" > \");\n" +
+            "    return steps.join(' > ');\n" +
             "};\n" +
             "UTILS._cssPathStep = function(node, optimized, isTargetNode)\n" +
             "{\n" +
             "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
             "        return null;\n" +
-            "    var id = node.getAttribute(\"id\");\n" +
+            " \n" +
+            "    var id = node.getAttribute('id');\n" +
             "    if (optimized) {\n" +
             "        if (id)\n" +
             "            return new UTILS.DOMNodePathStep(idSelector(id), true);\n" +
             "        var nodeNameLower = node.nodeName.toLowerCase();\n" +
-            "        if (nodeNameLower === \"body\" || nodeNameLower === \"head\" || nodeNameLower === \"html\")\n" +
+            "        if (nodeNameLower === 'body' || nodeNameLower === 'head' || nodeNameLower === 'html')\n" +
             "            return new UTILS.DOMNodePathStep(node.nodeName.toLowerCase(), true);\n" +
             "     }\n" +
             "    var nodeName = node.nodeName.toLowerCase();\n" +
+            " \n" +
             "    if (id)\n" +
             "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase() + idSelector(id), true);\n" +
             "    var parent = node.parentNode;\n" +
             "    if (!parent || parent.nodeType === Node.DOCUMENT_NODE)\n" +
             "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase(), true);\n" +
+            "\n" +
+            "\n" +
             "    function prefixedElementClassNames(node)\n" +
             "    {\n" +
-            "        var classAttribute = node.getAttribute(\"class\");\n" +
+            "        var classAttribute = node.getAttribute('class');\n" +
             "        if (!classAttribute)\n" +
             "            return [];\n" +
             "\n" +
             "        return classAttribute.split(/\\s+/g).filter(Boolean).map(function(name) {\n" +
-            "            return \"$\" + name;\n" +
+            "            return '$' + name;\n" +
             "        });\n" +
             "     }\n" +
+            " \n" +
+            "\n" +
             "    function idSelector(id)\n" +
             "    {\n" +
-            "        return \"#\" + escapeIdentifierIfNeeded(id);\n" +
+            "        return '#' + escapeIdentifierIfNeeded(id);\n" +
             "    }\n" +
+            "\n" +
             "    function escapeIdentifierIfNeeded(ident)\n" +
             "    {\n" +
             "        if (isCSSIdentifier(ident))\n" +
@@ -401,27 +419,35 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "            return ((shouldEscapeFirst && i === 0) || !isCSSIdentChar(c)) ? escapeAsciiChar(c, i === lastIndex) : c;\n" +
             "        });\n" +
             "    }\n" +
+            "\n" +
+            "\n" +
             "    function escapeAsciiChar(c, isLast)\n" +
             "    {\n" +
-            "        return \"\\\\\" + toHexByte(c) + (isLast ? \"\" : \" \");\n" +
+            "        return '\\\\' + toHexByte(c) + (isLast ? '' : ' ');\n" +
             "    }\n" +
+            "\n" +
+            "\n" +
             "    function toHexByte(c)\n" +
             "    {\n" +
             "        var hexByte = c.charCodeAt(0).toString(16);\n" +
             "        if (hexByte.length === 1)\n" +
-            "          hexByte = \"0\" + hexByte;\n" +
+            "          hexByte = '0' + hexByte;\n" +
             "        return hexByte;\n" +
             "    }\n" +
+            "\n" +
             "    function isCSSIdentChar(c)\n" +
             "    {\n" +
             "        if (/[a-zA-Z0-9_-]/.test(c))\n" +
             "            return true;\n" +
             "        return c.charCodeAt(0) >= 0xA0;\n" +
             "    }\n" +
+            "\n" +
+            "\n" +
             "    function isCSSIdentifier(value)\n" +
             "    {\n" +
             "        return /^-?[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);\n" +
             "    }\n" +
+            "\n" +
             "    var prefixedOwnClassNamesArray = prefixedElementClassNames(node);\n" +
             "    var needsClassNames = false;\n" +
             "    var needsNthChild = false;\n" +
@@ -437,10 +463,11 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "            continue;\n" +
             "        if (sibling.nodeName.toLowerCase() !== nodeName.toLowerCase())\n" +
             "            continue;\n" +
+            "\n" +
             "        needsClassNames = true;\n" +
             "        var ownClassNames = prefixedOwnClassNamesArray;\n" +
             "        var ownClassNameCount = 0;\n" +
-            "        for (var name in ownClassNames)\n" +
+            "        for (var cn_idx = 0; cn_idx < ownClassNames.length; cn_idx++)\n" +
             "            ++ownClassNameCount;\n" +
             "        if (ownClassNameCount === 0) {\n" +
             "            needsNthChild = true;\n" +
@@ -449,32 +476,40 @@ extension ObjectSerializer: WKScriptMessageHandler {
             "        var siblingClassNamesArray = prefixedElementClassNames(sibling);\n" +
             "        for (var j = 0; j < siblingClassNamesArray.length; ++j) {\n" +
             "            var siblingClass = siblingClassNamesArray[j];\n" +
-            "            if (ownClassNames.indexOf(siblingClass))\n" +
+            "            var o_idx = ownClassNames.indexOf(siblingClass);\n" +
+            "            if (o_idx === -1)\n" +
             "                continue;\n" +
-            "            delete ownClassNames[siblingClass];\n" +
+            "            ownClassNames.splice(o_idx,1);\n" +
             "            if (!--ownClassNameCount) {\n" +
             "                needsNthChild = true;\n" +
             "                break;\n" +
             "            }\n" +
             "        }\n" +
             "    }\n" +
+            " \n" +
             "    var result = nodeName.toLowerCase();\n" +
-            "    if (isTargetNode && nodeName.toLowerCase() === \"input\" && node.getAttribute(\"type\") && !node.getAttribute(\"id\") && !node.getAttribute(\"class\"))\n" +
-            "        result += \"[type=\\\"\" + node.getAttribute(\"type\") + \"\\\"]\";\n" +
+            "    if (isTargetNode && nodeName.toLowerCase() === 'input' && node.getAttribute('type') && !node.getAttribute('id') && !node.getAttribute('class'))\n" +
+            "        result += '[type=\\'' + node.getAttribute('type') + '\\']';\n" +
             "    if (needsNthChild) {\n" +
-            "        result += \":nth-child(\" + (ownIndex + 1) + \")\";\n" +
+            "        result += ':nth-child(' + (ownIndex + 1) + ')';\n" +
             "    } else if (needsClassNames) {\n" +
-            "        for (var prefixedName in prefixedOwnClassNamesArray)\n" +
-            "            result += \".\" + escapeIdentifierIfNeeded(prefixedOwnClassNamesArray[prefixedName].substr(1));\n" +
+            "        for (var idx = 0;idx < ownClassNames.length; idx++) {\n" +
+            "            result += '.' + escapeIdentifierIfNeeded(ownClassNames[idx].substr(1));\n" +
+            "        }\n" +
             "    }\n" +
+            "\n" +
             "    return new UTILS.DOMNodePathStep(result, false);\n" +
             "};\n" +
+            "\n" +
+            "\n" +
             "UTILS.DOMNodePathStep = function(value, optimized)\n" +
             "{\n" +
             "    this.value = value;\n" +
             "    this.optimized = optimized || false;\n" +
             "};\n" +
+            "\n" +
             "UTILS.DOMNodePathStep.prototype = {\n" +
+            "\n" +
             "    toString: function()\n" +
             "    {\n" +
             "        return this.value;\n" +
