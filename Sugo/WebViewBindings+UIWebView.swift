@@ -52,6 +52,7 @@ extension WebViewBindings {
             let jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
             jsContext.setObject(WebViewJSExport.self,
                                 forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+            jsContext.evaluateScript(self.jsUIWebViewTrack)
             jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
             jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
         }
@@ -76,26 +77,14 @@ extension WebViewBindings {
         guard !wv.isLoading else {
             return
         }
-        if self.isTimerStarted && !self.lastURLString.isEmpty {
-            let pLastURL: Properties = ["page": self.lastURLString]
-            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-            self.isTimerStarted = false
-        }
-        if let query = url.query {
-            self.lastURLString = (url.path.isEmpty ? "/" : url.path) + "?" + query
-        } else {
-            self.lastURLString = url.path
-        }
-        let pURL: Properties = ["page": self.lastURLString]
-        Sugo.mainInstance().track(eventName: "h5_enter_page_event", properties: pURL)
-        Sugo.mainInstance().time(event: "h5_stay_event")
-        self.isTimerStarted = true
         if !self.uiWebViewJavaScriptInjected {
             let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
             jsContext.setObject(WebViewJSExport.self,
                                 forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+            jsContext.evaluateScript(self.jsUIWebViewTrack)
             jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
             jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
+            Logger.debug(message: "UI JS Track:\n\(self.jsUIWebViewTrack)")
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
         }
@@ -139,47 +128,19 @@ extension UIWebView {
 extension WebViewBindings {
     
     var jsUIWebViewBindingsExcute: String {
-        return "sugo_binding.bindEvent();"
+        return self.jsSource(of: "WebViewBindings.excute")
     }
     
     var jsUIWebViewBindingsSource: String {
-        return "var sugo_binding = {};\n" +
-            "sugo_binding.current_page = '\(self.uiVCPath)::' + window.location.pathname;\n" +
-            "sugo_binding.h5_event_bindings = \(self.stringBindings);\n" +
-            "sugo_binding.current_event_bindings = {};\n" +
-            "for (var i = 0; i < sugo_binding.h5_event_bindings.length; i++) {\n" +
-            "  var b_event = sugo_binding.h5_event_bindings[i];\n" +
-            "  if (b_event.target_activity === sugo_binding.current_page) {\n" +
-            "    var key = JSON.stringify(b_event.path);\n" +
-            "    sugo_binding.current_event_bindings[key] = b_event;\n" +
-            "  }\n" +
-            "};\n" +
-            "sugo_binding.addEvent = function (children, event) {\n" +
-            "  children.addEventListener(event.event_type, function (e) {\n" +
-            "    var custom_props = {};\n" +
-            "    if(event.code && event.code.replace(/(^\\s*)|(\\s*$)/g, \"\") != ''){\n" +
-            "        eval(event.code);\n" +
-            "        custom_props = sugo_props();\n" +
-            "    }\n" +
-            "    custom_props.from_binding = true;\n" +
-            "    WebViewJSExport.eventWithIdNameProperties(event.event_id, event.event_name, JSON.stringify(custom_props));\n" +
-            "  });\n" +
-            "};\n" +
-            "sugo_binding.bindEvent = function () {\n" +
-            "  var paths = Object.keys(sugo_binding.current_event_bindings);\n" +
-            "  for(var idx in paths){\n" +
-            "    var path_str = paths[idx];\n" +
-            "    var event = sugo_binding.current_event_bindings[path_str];\n" +
-            "    var eles = document.querySelectorAll(JSON.parse(paths[idx]).path);\n" +
-            "    if(eles){\n" +
-            "      for(var eles_idx=0;eles_idx < eles.length; eles_idx ++){\n" +
-            "        var ele = eles[eles_idx];\n" +
-            "        sugo_binding.addEvent(ele, event);\n" +
-            "      }\n" +
-            "    }\n" +
-            "    \n" +
-            "  }\n" +
-            "};\n"
+        
+        return self.jsSource(of: "WebViewBindings.1")
+                + "sugo_bindings.current_page = '\(self.uiVCPath)::' + window.location.pathname;\n"
+                + "sugo_bindings.h5_event_bindings = \(self.stringBindings);\n"
+                + self.jsSource(of: "WebViewBindings.2")
+    }
+    
+    var jsUIWebViewTrack: String {
+        return self.jsSource(of: "UIWebViewTrack")
     }
     
 }

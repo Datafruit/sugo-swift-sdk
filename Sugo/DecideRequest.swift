@@ -24,9 +24,10 @@ class DecideRequest: Network {
 
         init(distinctId: String, token: String) {
             let infoDict = Bundle.main.infoDictionary
-            if let infoDict = infoDict {
+            if let infoDict = infoDict,
+                let version = infoDict["CFBundleShortVersionString"] {
                 self.version = URLQueryItem(name: "app_version",
-                                            value: "\(infoDict["CFBundleShortVersionString"])")
+                                            value: "\(version)")
             } else {
                 self.version = URLQueryItem(name: "app_version",
                                             value: "1.0.0")

@@ -193,12 +193,12 @@ extension ObjectSerializer: WKScriptMessageHandler {
     func getUIWebViewHTMLInfo(from webView: UIWebView) -> [String: Any] {
         
         let jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-        
+        let wvBindings = WebViewBindings.global
         jsContext.setObject(WebViewJSExport.self,
                             forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-        jsContext.evaluateScript(self.jsWebViewUtils)
-        jsContext.evaluateScript(self.jsUIWebViewReportSource)
-        jsContext.evaluateScript(self.jsUIWebViewReportExcute)
+        jsContext.evaluateScript(wvBindings.jsSource(of: "Utils"))
+        jsContext.evaluateScript(wvBindings.jsSource(of: "UIWebViewReport"))
+        jsContext.evaluateScript(wvBindings.jsSource(of: "WebViewReport.excute"))
         
         return ["url": WebViewInfoStorage.global.path,
                 "clientWidth": WebViewInfoStorage.global.width,
@@ -209,17 +209,29 @@ extension ObjectSerializer: WKScriptMessageHandler {
 
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
-        let jsUtilsScript = WKUserScript(source: self.jsWebViewUtils, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
+        let wvBindings = WebViewBindings.global
+        let jsUtilsScript = WKUserScript(source: wvBindings.jsSource(of: "Utils"),
+                                         injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                                         forMainFrameOnly: true)
         if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
             webView.configuration.userContentController.addUserScript(jsUtilsScript)
         }
-        let jsReportScript = WKUserScript(source: self.jsWKWebViewReport, injectionTime: WKUserScriptInjectionTime.atDocumentEnd, forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsReportScript) {
-            webView.configuration.userContentController.addUserScript(jsReportScript)
+        let jsReportSourceScript = WKUserScript(source: wvBindings.jsSource(of: "WKWebViewReport"),
+                                                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                                                forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsReportSourceScript) {
+            webView.configuration.userContentController.addUserScript(jsReportSourceScript)
+        }
+        let jsReportExcuteScript = WKUserScript(source: wvBindings.jsSource(of: "WebViewReport.excute"),
+                                                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                                                forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsReportExcuteScript) {
+            webView.configuration.userContentController.addUserScript(jsReportExcuteScript)
         }
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewReporter")
         webView.configuration.userContentController.add(self, name: "WKWebViewReporter")
-        webView.evaluateJavaScript(self.jsWKWebViewReport, completionHandler: nil)
+        webView.evaluateJavaScript(wvBindings.jsSource(of: "WKWebViewReport"), completionHandler: nil)
+        webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewReport.excute"), completionHandler: nil)
         
         return ["url": WebViewInfoStorage.global.path,
                 "clientWidth": WebViewInfoStorage.global.width,
@@ -246,275 +258,4 @@ extension ObjectSerializer: WKScriptMessageHandler {
             }
         }
     }
-    
-    fileprivate var jsUIWebViewReportExcute: String {
-        return "sugo_report.reportNodes();"
-    }
-    
-    fileprivate var jsUIWebViewReportSource: String {
-        
-        return "var sugo_report = {};\n" +
-            "sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            "sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            "sugo_report.isElementInViewport = function (rect) {\n" +
-            "  return (\n" +
-            "      rect.top >= 0 &&\n" +
-            "      rect.left >= 0 &&\n" +
-            "      rect.bottom <= sugo_report.clientHeight &&\n" +
-            "      rect.right <= sugo_report.clientWidth\n" +
-            "  );\n" +
-            "};\n" +
-            "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
-            "  var index_map = {};\n" +
-            "  for (var i = 0; i < childrens.length; i++) {\n" +
-            "    var children = childrens[i];\n" +
-            "    var path = UTILS.cssPath(children);\n" +
-            "    var htmlNode = {};\n" +
-            "    htmlNode.path = path;\n" +
-            "    var rect = children.getBoundingClientRect();\n" +
-            "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
-            "      var temp_rect = {\n" +
-            "          top: rect.top,\n" +
-            "          left: rect.left,\n" +
-            "          width: rect.width,\n" +
-            "          height: rect.height\n" +
-            "      };\n" +
-            "      htmlNode.rect = temp_rect;\n" +
-            "      jsonArry.push(htmlNode);\n" +
-            "    }\n" +
-            "    if (children.children) {\n" +
-            "      sugo_report.reportChildNode(children.children, jsonArry, path, type);\n" +
-            "    }\n" +
-            "  }\n" +
-            "};\n" +
-            "sugo_report.reportNodes = function () {\n" +
-            "  var jsonArry = [];\n" +
-            "  var body = document.getElementsByTagName('body')[0];\n" +
-            "  var childrens = body.children;\n" +
-            "  var parent_path = '';\n" +
-            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path, 'report');\n" +
-            "  WebViewJSExport.infoWithPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArry), sugo_report.clientWidth, sugo_report.clientHeight);\n" +
-        "};"
-    }
-    
-    fileprivate var jsWKWebViewReport: String {
-        return "var sugo_report = {};\n" +
-            "sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);\n" +
-            "sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);\n" +
-            "sugo_report.isElementInViewport = function (rect) {\n" +
-            "  return (\n" +
-            "      rect.top >= 0 &&\n" +
-            "      rect.left >= 0 &&\n" +
-            "      rect.bottom <= sugo_report.clientHeight &&\n" +
-            "      rect.right <= sugo_report.clientWidth\n" +
-            "  );\n" +
-            "};\n" +
-            "sugo_report.reportChildNode = function (childrens, jsonArry, parent_path, type) {\n" +
-            "  var index_map = {};\n" +
-            "  for (var i = 0; i < childrens.length; i++) {\n" +
-            "    var children = childrens[i];\n" +
-            "    var path = UTILS.cssPath(children);\n" +
-            "    var htmlNode = {};\n" +
-            "    htmlNode.path = path;\n" +
-            "    var rect = children.getBoundingClientRect();\n" +
-            "    if (sugo_report.isElementInViewport(rect) == true) {\n" +
-            "      var temp_rect = {\n" +
-            "          top: rect.top,\n" +
-            "          left: rect.left,\n" +
-            "          width: rect.width,\n" +
-            "          height: rect.height\n" +
-            "      };\n" +
-            "      htmlNode.rect = temp_rect;\n" +
-            "      jsonArry.push(htmlNode);\n" +
-            "    }\n" +
-            "    if (children.children) {\n" +
-            "      sugo_report.reportChildNode(children.children, jsonArry, path, type);\n" +
-            "    }\n" +
-            "  }\n" +
-            "};\n" +
-            "sugo_report.reportNodes = function () {\n" +
-            "  var jsonArry = [];\n" +
-            "  var body = document.getElementsByTagName('body')[0];\n" +
-            "  var childrens = body.children;\n" +
-            "  var parent_path = '';\n" +
-            "  sugo_report.reportChildNode(childrens, jsonArry, parent_path, 'report');\n" +
-            "\n" +
-            "  var message = {\n" +
-            "    'path' : window.location.pathname,\n" +
-            "    'clientWidth' : sugo_report.clientWidth,\n" +
-            "    'clientHeight' : sugo_report.clientHeight,\n" +
-            "    'nodes' : JSON.stringify(jsonArry)\n" +
-            "    };\n" +
-            "  window.webkit.messageHandlers.WKWebViewReporter.postMessage(message);\n" +
-            "};\n" +
-        "sugo_report.reportNodes();\n"
-    }
-    
-    fileprivate var jsWebViewUtils: String {
-        return "var UTILS = {};\n" +
-            "UTILS.cssPath = function(node, optimized)\n" +
-            "{\n" +
-            "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
-            "        return '';\n" +
-            "    var steps = [];\n" +
-            "    var contextNode = node;\n" +
-            "    while (contextNode) {\n" +
-            "        var step = UTILS._cssPathStep(contextNode, !!optimized, contextNode === node);\n" +
-            "        if (!step)\n" +
-            "            break; \n" +
-            "        steps.push(step);\n" +
-            "        if (step.optimized)\n" +
-            "            break;\n" +
-            "        contextNode = contextNode.parentNode;\n" +
-            "    }\n" +
-            "    steps.reverse();\n" +
-            "    return steps.join(' > ');\n" +
-            "};\n" +
-            "UTILS._cssPathStep = function(node, optimized, isTargetNode)\n" +
-            "{\n" +
-            "    if (node.nodeType !== Node.ELEMENT_NODE)\n" +
-            "        return null;\n" +
-            " \n" +
-            "    var id = node.getAttribute('id');\n" +
-            "    if (optimized) {\n" +
-            "        if (id)\n" +
-            "            return new UTILS.DOMNodePathStep(idSelector(id), true);\n" +
-            "        var nodeNameLower = node.nodeName.toLowerCase();\n" +
-            "        if (nodeNameLower === 'body' || nodeNameLower === 'head' || nodeNameLower === 'html')\n" +
-            "            return new UTILS.DOMNodePathStep(node.nodeName.toLowerCase(), true);\n" +
-            "     }\n" +
-            "    var nodeName = node.nodeName.toLowerCase();\n" +
-            " \n" +
-            "    if (id)\n" +
-            "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase() + idSelector(id), true);\n" +
-            "    var parent = node.parentNode;\n" +
-            "    if (!parent || parent.nodeType === Node.DOCUMENT_NODE)\n" +
-            "        return new UTILS.DOMNodePathStep(nodeName.toLowerCase(), true);\n" +
-            "\n" +
-            "\n" +
-            "    function prefixedElementClassNames(node)\n" +
-            "    {\n" +
-            "        var classAttribute = node.getAttribute('class');\n" +
-            "        if (!classAttribute)\n" +
-            "            return [];\n" +
-            "\n" +
-            "        return classAttribute.split(/\\s+/g).filter(Boolean).map(function(name) {\n" +
-            "            return '$' + name;\n" +
-            "        });\n" +
-            "     }\n" +
-            " \n" +
-            "\n" +
-            "    function idSelector(id)\n" +
-            "    {\n" +
-            "        return '#' + escapeIdentifierIfNeeded(id);\n" +
-            "    }\n" +
-            "\n" +
-            "    function escapeIdentifierIfNeeded(ident)\n" +
-            "    {\n" +
-            "        if (isCSSIdentifier(ident))\n" +
-            "            return ident;\n" +
-            "        var shouldEscapeFirst = /^(?:[0-9]|-[0-9-]?)/.test(ident);\n" +
-            "        var lastIndex = ident.length - 1;\n" +
-            "        return ident.replace(/./g, function(c, i) {\n" +
-            "            return ((shouldEscapeFirst && i === 0) || !isCSSIdentChar(c)) ? escapeAsciiChar(c, i === lastIndex) : c;\n" +
-            "        });\n" +
-            "    }\n" +
-            "\n" +
-            "\n" +
-            "    function escapeAsciiChar(c, isLast)\n" +
-            "    {\n" +
-            "        return '\\\\' + toHexByte(c) + (isLast ? '' : ' ');\n" +
-            "    }\n" +
-            "\n" +
-            "\n" +
-            "    function toHexByte(c)\n" +
-            "    {\n" +
-            "        var hexByte = c.charCodeAt(0).toString(16);\n" +
-            "        if (hexByte.length === 1)\n" +
-            "          hexByte = '0' + hexByte;\n" +
-            "        return hexByte;\n" +
-            "    }\n" +
-            "\n" +
-            "    function isCSSIdentChar(c)\n" +
-            "    {\n" +
-            "        if (/[a-zA-Z0-9_-]/.test(c))\n" +
-            "            return true;\n" +
-            "        return c.charCodeAt(0) >= 0xA0;\n" +
-            "    }\n" +
-            "\n" +
-            "\n" +
-            "    function isCSSIdentifier(value)\n" +
-            "    {\n" +
-            "        return /^-?[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);\n" +
-            "    }\n" +
-            "\n" +
-            "    var prefixedOwnClassNamesArray = prefixedElementClassNames(node);\n" +
-            "    var needsClassNames = false;\n" +
-            "    var needsNthChild = false;\n" +
-            "    var ownIndex = -1;\n" +
-            "    var siblings = parent.children;\n" +
-            "    for (var i = 0; (ownIndex === -1 || !needsNthChild) && i < siblings.length; ++i) {\n" +
-            "        var sibling = siblings[i];\n" +
-            "        if (sibling === node) {\n" +
-            "            ownIndex = i;\n" +
-            "            continue;\n" +
-            "        }\n" +
-            "        if (needsNthChild)\n" +
-            "            continue;\n" +
-            "        if (sibling.nodeName.toLowerCase() !== nodeName.toLowerCase())\n" +
-            "            continue;\n" +
-            "\n" +
-            "        needsClassNames = true;\n" +
-            "        var ownClassNames = prefixedOwnClassNamesArray;\n" +
-            "        var ownClassNameCount = 0;\n" +
-            "        for (var cn_idx = 0; cn_idx < ownClassNames.length; cn_idx++)\n" +
-            "            ++ownClassNameCount;\n" +
-            "        if (ownClassNameCount === 0) {\n" +
-            "            needsNthChild = true;\n" +
-            "            continue;\n" +
-            "        }\n" +
-            "        var siblingClassNamesArray = prefixedElementClassNames(sibling);\n" +
-            "        for (var j = 0; j < siblingClassNamesArray.length; ++j) {\n" +
-            "            var siblingClass = siblingClassNamesArray[j];\n" +
-            "            var o_idx = ownClassNames.indexOf(siblingClass);\n" +
-            "            if (o_idx === -1)\n" +
-            "                continue;\n" +
-            "            ownClassNames.splice(o_idx,1);\n" +
-            "            if (!--ownClassNameCount) {\n" +
-            "                needsNthChild = true;\n" +
-            "                break;\n" +
-            "            }\n" +
-            "        }\n" +
-            "    }\n" +
-            " \n" +
-            "    var result = nodeName.toLowerCase();\n" +
-            "    if (isTargetNode && nodeName.toLowerCase() === 'input' && node.getAttribute('type') && !node.getAttribute('id') && !node.getAttribute('class'))\n" +
-            "        result += '[type=\\'' + node.getAttribute('type') + '\\']';\n" +
-            "    if (needsNthChild) {\n" +
-            "        result += ':nth-child(' + (ownIndex + 1) + ')';\n" +
-            "    } else if (needsClassNames) {\n" +
-            "        for (var idx = 0;idx < ownClassNames.length; idx++) {\n" +
-            "            result += '.' + escapeIdentifierIfNeeded(ownClassNames[idx].substr(1));\n" +
-            "        }\n" +
-            "    }\n" +
-            "\n" +
-            "    return new UTILS.DOMNodePathStep(result, false);\n" +
-            "};\n" +
-            "\n" +
-            "\n" +
-            "UTILS.DOMNodePathStep = function(value, optimized)\n" +
-            "{\n" +
-            "    this.value = value;\n" +
-            "    this.optimized = optimized || false;\n" +
-            "};\n" +
-            "\n" +
-            "UTILS.DOMNodePathStep.prototype = {\n" +
-            "\n" +
-            "    toString: function()\n" +
-            "    {\n" +
-            "        return this.value;\n" +
-            "    }\n" +
-        "};"
-    }
-    
 }
