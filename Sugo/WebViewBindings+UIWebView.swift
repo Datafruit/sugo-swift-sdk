@@ -40,6 +40,7 @@ extension WebViewBindings {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidFinishLoad(_:)),
                                            aClass: type(of: delegate),
                                            name: self.uiWebViewDidFinishLoadBlockName)
+                webView.loadRequest(URLRequest(url: URL(string: "")!))
                 self.uiWebViewJavaScriptInjected = false
                 self.uiWebViewSwizzleRunning = false
                 self.uiWebView = nil
@@ -77,20 +78,6 @@ extension WebViewBindings {
         guard !wv.isLoading else {
             return
         }
-//        if self.isTimerStarted && !self.lastURLString.isEmpty {
-//            let pLastURL: Properties = ["page": self.lastURLString]
-//            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-//            self.isTimerStarted = false
-//        }
-//        if let query = url.query {
-//            self.lastURLString = (url.path.isEmpty ? "/" : url.path) + "?" + query
-//        } else {
-//            self.lastURLString = url.path
-//        }
-//        let pURL: Properties = ["page": self.lastURLString]
-//        Sugo.mainInstance().track(eventName: "h5_enter_page_event", properties: pURL)
-//        Sugo.mainInstance().time(event: "h5_stay_event")
-//        self.isTimerStarted = true
         if !self.uiWebViewJavaScriptInjected {
             let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
             jsContext.setObject(WebViewJSExport.self,

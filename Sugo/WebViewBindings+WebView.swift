@@ -105,11 +105,6 @@ extension WebViewBindings {
         }
         self.uiVCPath.removeAll()
         self.stopUIWebViewBindings(webView: webView)
-//        if self.isTimerStarted && !self.lastURLString.isEmpty {
-//            let pLastURL: Properties = ["page": self.lastURLString]
-//            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-//            self.isTimerStarted = false
-//        }
     }
 
     // Mark: - WKWebView
@@ -139,11 +134,6 @@ extension WebViewBindings {
         }
         self.wkVCPath.removeAll()
         self.stopWKWebViewBindings(webView: webView)
-//        if self.isTimerStarted && !self.lastURLString.isEmpty {
-//            let pLastURL: Properties = ["page": self.lastURLString]
-//            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-//            self.isTimerStarted = false
-//        }
     }
     
 }

@@ -27,8 +27,6 @@ class WebViewBindings: NSObject {
     
     lazy var viewSwizzleRunning = false
     dynamic var isWebViewNeedReload = false
-//    lazy var isTimerStarted = false
-//    lazy var lastURLString = String()
     
     var uiWebView: UIWebView?
     lazy var uiWebViewSwizzleRunning = false
@@ -84,8 +82,6 @@ class WebViewBindings: NSObject {
         self.viewSwizzleRunning = false
         self.removeObserver(self, forKeyPath: "isWebViewNeedReload")
         self.isWebViewNeedReload = false
-//        self.isTimerStarted = false
-//        self.lastURLString.removeAll()
         
         self.uiWebView = nil
         self.uiWebViewSwizzleRunning = false
