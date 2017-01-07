@@ -3,5 +3,5 @@ platform :ios, '8.0'
 use_frameworks!
 
 target :SugoDemo do
-    pod 'sugo-swift-sdk'
+    pod 'sugo-swift-sdk', :git => 'https://github.com/Datafruit/sugo-swift-sdk.git'
 end
