@@ -67,7 +67,8 @@ extension WebViewBindings {
         let bundle = Bundle(for: Sugo.self)
         if let sourcePath = bundle.path(forResource: fileName, ofType: "js") {
             do {
-                source = try String(contentsOfFile: sourcePath)
+                source = try NSString(contentsOfFile: sourcePath,
+                                      encoding: String.Encoding.utf8.rawValue) as String
             } catch {
                 Logger.debug(message: "Can not get javascript source from bundle resource")
             }
