@@ -61,6 +61,19 @@ extension WebViewBindings {
             self.viewSwizzleRunning = false
         }
     }
+    
+    func jsSource(of fileName: String) -> String {
+        var source: String = String()
+        let bundle = Bundle(for: Sugo.self)
+        if let sourcePath = bundle.path(forResource: fileName, ofType: "js") {
+            do {
+                source = try String(contentsOfFile: sourcePath)
+            } catch {
+                Logger.debug(message: "Can not get javascript source from bundle resource")
+            }
+        }
+        return source
+    }
 }
 
 extension WebViewBindings {
@@ -92,11 +105,11 @@ extension WebViewBindings {
         }
         self.uiVCPath.removeAll()
         self.stopUIWebViewBindings(webView: webView)
-        if self.isTimerStarted && !self.lastURLString.isEmpty {
-            let pLastURL: Properties = ["page": self.lastURLString]
-            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-            self.isTimerStarted = false
-        }
+//        if self.isTimerStarted && !self.lastURLString.isEmpty {
+//            let pLastURL: Properties = ["page": self.lastURLString]
+//            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
+//            self.isTimerStarted = false
+//        }
     }
 
     // Mark: - WKWebView
@@ -126,15 +139,16 @@ extension WebViewBindings {
         }
         self.wkVCPath.removeAll()
         self.stopWKWebViewBindings(webView: webView)
-        if self.isTimerStarted && !self.lastURLString.isEmpty {
-            let pLastURL: Properties = ["page": self.lastURLString]
-            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
-            self.isTimerStarted = false
-        }
+//        if self.isTimerStarted && !self.lastURLString.isEmpty {
+//            let pLastURL: Properties = ["page": self.lastURLString]
+//            Sugo.mainInstance().track(eventName: "h5_stay_event", properties: pLastURL)
+//            self.isTimerStarted = false
+//        }
     }
     
 }
 
+// Mark: - KVO
 extension WebViewBindings {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -173,6 +187,7 @@ extension WebViewBindings {
     }
 }
 
+// Mark: - UIWebView Swizzle method
 extension UIWebView {
     
     @objc func webViewCallOriginalMethodWithSwizzledBlocks(originalSelector: Selector) {
@@ -200,6 +215,7 @@ extension UIWebView {
     
 }
 
+// Mark: - WKWebView Swizzle method
 extension WKWebView {
     
     @objc func webViewCallOriginalMethodWithSwizzledBlocks(originalSelector: Selector) {
