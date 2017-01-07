@@ -45,23 +45,29 @@ extension WebViewBindings: WKScriptMessageHandler {
             if let index = userScripts.index(of: self.wkWebViewCurrentJSSource) {
                 userScripts.remove(at: index)
             }
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSExcute) {
+                userScripts.remove(at: index)
+            }
             webView.configuration.userContentController.removeAllUserScripts()
             for userScript in userScripts {
                 webView.configuration.userContentController.addUserScript(userScript)
             }
             self.wkWebViewCurrentJSSource = self.wkJavaScriptSource
+            self.wkWebViewCurrentJSExcute = self.wkJavaScriptExcute
             webView.configuration.userContentController
                 .addUserScript(self.wkWebViewCurrentJSSource)
+            webView.configuration.userContentController
+                .addUserScript(self.wkJavaScriptExcute)
             Logger.debug(message: "WKWebView Updated")
         }
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
-        Logger.debug(message: "message name: \(message.name)")
-        switch message.name {
-        case "WKWebViewBindingsTrack":
-            if let body = message.body as? [String: Any] {
+        if let body = message.body as? [String: Any] {
+            Logger.debug(message: "message name: \(message.name)")
+            switch message.name {
+            case "WKWebViewBindingsTrack":
                 if let eventID = body["eventID"] as? String {
                     WebViewInfoStorage.global.eventID = eventID
                 }
@@ -83,20 +89,17 @@ extension WebViewBindings: WKScriptMessageHandler {
                                               eventName: WebViewInfoStorage.global.eventName)
                 }
                 Logger.debug(message: "id = \(WebViewInfoStorage.global.eventID), name = \(WebViewInfoStorage.global.eventName)")
-            } else {
-                Logger.debug(message: "Wrong message body type: name=\(message.name), body=\(message.body as? String)")
-            }
-        case "WKWebViewBindingsTime":
-            if let body = message.body as? [String: Any] {
+                
+            case "WKWebViewBindingsTime":
                 if let eventName = body["eventName"] as? String {
                     Sugo.mainInstance().time(event: eventName)
                     Logger.debug(message: "time event name = \(eventName)")
                 }
-            } else {
-                Logger.debug(message: "Wrong message body type: name=\(message.name), body=\(message.body as? String)")
+            default:
+                Logger.debug(message: "Wrong message name = \(message.name)")
             }
-        default:
-            Logger.debug(message: "Wrong message name = \(message.name)")
+        } else {
+            Logger.debug(message: "Wrong message body type: body=\(message.body as? String)")
         }
     }
 }

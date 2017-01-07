@@ -213,24 +213,17 @@ extension ObjectSerializer: WKScriptMessageHandler {
         let jsUtilsScript = WKUserScript(source: wvBindings.jsSource(of: "Utils"),
                                          injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
                                          forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
-            webView.configuration.userContentController.addUserScript(jsUtilsScript)
-        }
         let jsReportSourceScript = WKUserScript(source: wvBindings.jsSource(of: "WKWebViewReport"),
                                                 injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
                                                 forMainFrameOnly: true)
+        if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
+            webView.configuration.userContentController.addUserScript(jsUtilsScript)
+        }
         if !webView.configuration.userContentController.userScripts.contains(jsReportSourceScript) {
             webView.configuration.userContentController.addUserScript(jsReportSourceScript)
         }
-        let jsReportExcuteScript = WKUserScript(source: wvBindings.jsSource(of: "WebViewReport.excute"),
-                                                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                                                forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsReportExcuteScript) {
-            webView.configuration.userContentController.addUserScript(jsReportExcuteScript)
-        }
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewReporter")
         webView.configuration.userContentController.add(self, name: "WKWebViewReporter")
-        webView.evaluateJavaScript(wvBindings.jsSource(of: "WKWebViewReport"), completionHandler: nil)
         webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewReport.excute"), completionHandler: nil)
         
         return ["url": WebViewInfoStorage.global.path,
