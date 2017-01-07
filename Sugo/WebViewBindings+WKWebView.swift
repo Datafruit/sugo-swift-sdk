@@ -34,7 +34,6 @@ extension WebViewBindings: WKScriptMessageHandler {
         if self.wkWebViewJavaScriptInjected {
             webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindingsTrack")
             webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewBindingsTime")
-            webView.load(URLRequest(url: URL(string: "")!))
             self.wkWebViewJavaScriptInjected = false
             self.wkWebView = nil
         }

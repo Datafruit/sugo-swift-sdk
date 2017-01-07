@@ -40,7 +40,6 @@ extension WebViewBindings {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidFinishLoad(_:)),
                                            aClass: type(of: delegate),
                                            name: self.uiWebViewDidFinishLoadBlockName)
-                webView.loadRequest(URLRequest(url: URL(string: "")!))
                 self.uiWebViewJavaScriptInjected = false
                 self.uiWebViewSwizzleRunning = false
                 self.uiWebView = nil
