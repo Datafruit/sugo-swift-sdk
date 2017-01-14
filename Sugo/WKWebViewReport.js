@@ -47,7 +47,7 @@ sugo_report.reportNodes = function() {
     var parent_path = '';
     sugo_report.handleNodeChild(childrens, jsonArray, parent_path, 'report');
     var message = {
-        'path' : window.location.pathname,
+        'path' : sugo.relative_path,
         'clientWidth' : sugo_report.clientWidth,
         'clientHeight' : sugo_report.clientHeight,
         'nodes' : JSON.stringify(jsonArray)
