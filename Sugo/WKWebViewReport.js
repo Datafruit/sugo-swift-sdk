@@ -45,6 +45,8 @@ sugo_report.reportNodes = function() {
     var body = document.getElementsByTagName('body')[0];
     var childrens = body.children;
     var parent_path = '';
+    sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);
+    sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);
     sugo_report.handleNodeChild(childrens, jsonArray, parent_path, 'report');
     var message = {
         'path' : window.location.pathname,
