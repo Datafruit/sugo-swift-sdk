@@ -11,6 +11,7 @@ import UIKit
 class UIWebViewController: UIViewController  {
 
     @IBOutlet weak var webView: UIWebView!
+    var wv:UIWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +21,19 @@ class UIWebViewController: UIViewController  {
 //        let url = URL(string: "http://baidu.com")
         let url = URL(string: "http://dev.ufile.ucloud.cn/test.html")
         let request = URLRequest(url: url!)
-        self.webView.loadRequest(request)
-        self.view.addSubview(self.webView)
+        
+//        self.webView.loadRequest(request)
+//        self.view.addSubview(self.webView)
+        
+        self.wv = UIWebView(frame: self.view.frame)
+        self.wv.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.wv.translatesAutoresizingMaskIntoConstraints = false
+        print("autoresizingMask: \(self.wv.autoresizingMask)")
+        print("translatesAutoresizingMaskIntoConstraints: \(self.wv.translatesAutoresizingMaskIntoConstraints)")
+        self.wv.loadRequest(request)
+        self.view.addSubview(self.wv)
+        self.navigationController?.isNavigationBarHidden = true
+        
     }
     
     deinit {

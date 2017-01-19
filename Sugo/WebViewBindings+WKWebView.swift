@@ -130,12 +130,14 @@ extension WebViewBindings {
     
     var jsWKWebViewBindingsSource: String {
         return self.jsSource(of: "WebViewBindings.1")
-            + "sugo_bindings.current_page = '\(self.wkVCPath)::' + window.location.pathname;\n"
+            + "sugo_bindings.current_page = '\(self.wkVCPath)::' + sugo.relative_path;\n"
             + "sugo_bindings.h5_event_bindings = \(self.stringBindings);\n"
             + self.jsSource(of: "WebViewBindings.2")
     }
     var jsWKWebViewTrack: String {
-        return self.jsSource(of: "WKWebViewTrack")
+        return self.jsSource(of: "WebViewTrack")
+            + "sugo.relative_path = window.location.pathname.replace('', '');"
+            + self.jsSource(of: "WebViewTrack.WK")
     }
 }
 
