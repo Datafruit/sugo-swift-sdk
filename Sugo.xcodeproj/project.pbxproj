@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1400958E1E3048CB0028ABC7 /* SugoURLs.plist */; };
 		1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408088E1E1F808F009DB44A /* UIWebViewReport.js */; };
 		140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808931E1F81A5009DB44A /* WebViewBindings.1.js */; };
 		140808961E1F81C7009DB44A /* WKWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808951E1F81C7009DB44A /* WKWebViewReport.js */; };
@@ -87,6 +88,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1400958E1E3048CB0028ABC7 /* SugoURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SugoURLs.plist; sourceTree = "<group>"; };
 		1408088E1E1F808F009DB44A /* UIWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = UIWebViewReport.js; path = Sugo/UIWebViewReport.js; sourceTree = SOURCE_ROOT; };
 		140808931E1F81A5009DB44A /* WebViewBindings.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.1.js; sourceTree = "<group>"; };
 		140808951E1F81C7009DB44A /* WKWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WKWebViewReport.js; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				14EADCBC1DF65A5000E6B711 /* Sugo.h */,
+				1400958E1E3048CB0028ABC7 /* SugoURLs.plist */,
 				14EADCBD1DF65A5000E6B711 /* Info.plist */,
 				140808901E1F80C3009DB44A /* JavaScript */,
 			);
@@ -527,6 +530,7 @@
 				140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */,
 				1408089E1E1F83F3009DB44A /* WKWebViewTrack.js in Resources */,
 				140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */,
+				1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */,
 				1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */,
 				140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */,
 				1408089C1E1F83D4009DB44A /* UIWebViewTrack.js in Resources */,
