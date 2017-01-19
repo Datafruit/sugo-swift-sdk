@@ -12,7 +12,7 @@ import Foundation
 struct BasePath {
     
     static var BindingEventsURL = ServerURL.bindings
-    static var CollectEventsAPI = ServerURL.collect
+    static var CollectEventsAPI = ServerURL.collection
 
     static func buildURL(base: String, path: String, queryItems: [URLQueryItem]?) -> URL? {
         guard let url = URL(string: base) else {

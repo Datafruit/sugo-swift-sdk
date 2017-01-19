@@ -68,7 +68,7 @@ open class Sugo {
             fatalError("You have to call initialize(token:) before calling the main instance, " +
                 "or define a new main instance if removing the main one")
         }
-
+        
         return instance!
     }
 
@@ -88,6 +88,19 @@ open class Sugo {
      */
     open class func removeInstance(name: String) {
         SugoManager.sharedInstance.removeInstance(name: name)
+    }
+    
+    class func loadConfigurationPropertyList(name: String) -> InternalProperties {
+        var configuration = InternalProperties()
+        let bundle = Bundle(for: Sugo.self)
+        if let url = bundle.url(forResource: name, withExtension: "plist"),
+            let plist = try? PropertyListSerialization.propertyList(from: Data(contentsOf: url),
+                                                                options: PropertyListSerialization.ReadOptions.mutableContainersAndLeaves,
+                                                                format: nil),
+            let c = plist as? InternalProperties {
+            configuration = c
+        }
+        return configuration
     }
 
 }
@@ -114,7 +127,7 @@ class SugoManager {
                                     flushInterval:  flushInterval)
         mainInstance = instance
         instances[instanceName] = instance
-
+        
         return instance
     }
 
