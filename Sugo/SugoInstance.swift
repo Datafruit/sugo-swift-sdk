@@ -81,7 +81,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
             return flushInstance.useIPAddressForGeoLocation
         }
     }
-
+    
     /// The base URL used for Sugo API requests.
     /// Useful if you need to proxy Sugo requests.
     /// Defaults to https://sugo.io
@@ -167,7 +167,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         if let apiToken = apiToken, !apiToken.isEmpty {
             self.apiToken = apiToken
         }
-
+        
         trackInstance = Track(apiToken: self.apiToken)
         flushInstance.delegate = self
         let label = "io.sugo.\(self.apiToken)"
@@ -180,6 +180,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         #if os(iOS)
             executeCachedCodelessBindings()
         #endif
+        
     }
 
     private func setupListeners() {
@@ -225,6 +226,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         self.track(eventName: "Launched")
         self.time(event: "stay_event")
+        
+        Logger.debug(message: "SugoConfiguration:\n\(SugoConfiguration.URLs)")
         
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)

@@ -15,6 +15,7 @@ class ActionCompleteViewController: UIViewController {
     @IBOutlet weak var descLabel: UILabel!
     var actionStr: String?
     var descStr: String?
+    var cancleButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,11 @@ class ActionCompleteViewController: UIViewController {
         
         actionLabel.text = actionStr
         descLabel.text = descStr
+        
+        self.cancleButton = UIButton(frame: CGRect(x: 20, y: 20, width: 48, height: 48))
+        self.cancleButton.backgroundColor = UIColor.cyan
+        self.view.addSubview(self.cancleButton)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {

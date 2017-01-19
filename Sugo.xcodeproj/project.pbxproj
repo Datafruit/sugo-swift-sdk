@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1400958E1E3048CB0028ABC7 /* SugoURLs.plist */; };
 		1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408088E1E1F808F009DB44A /* UIWebViewReport.js */; };
 		140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808931E1F81A5009DB44A /* WebViewBindings.1.js */; };
 		140808961E1F81C7009DB44A /* WKWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808951E1F81C7009DB44A /* WKWebViewReport.js */; };
 		1408089A1E1F82B2009DB44A /* Utils.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808991E1F82B1009DB44A /* Utils.js */; };
-		1408089C1E1F83D4009DB44A /* UIWebViewTrack.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089B1E1F83D4009DB44A /* UIWebViewTrack.js */; };
-		1408089E1E1F83F3009DB44A /* WKWebViewTrack.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089D1E1F83F3009DB44A /* WKWebViewTrack.js */; };
+		1408089C1E1F83D4009DB44A /* WebViewTrack.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089B1E1F83D4009DB44A /* WebViewTrack.UI.js */; };
+		1408089E1E1F83F3009DB44A /* WebViewTrack.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089D1E1F83F3009DB44A /* WebViewTrack.WK.js */; };
 		140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A61E1F8965009DB44A /* WebViewBindings.2.js */; };
 		140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A91E1F898B009DB44A /* WebViewBindings.excute.js */; };
 		140808AC1E1F89A9009DB44A /* WebViewReport.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */; };
@@ -23,6 +24,7 @@
 		1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */; };
 		148F37171E07B38900E2A98D /* Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37161E07B38900E2A98D /* Attributes.swift */; };
 		148F37191E07B52C00E2A98D /* AttributesPaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37181E07B52C00E2A98D /* AttributesPaser.swift */; };
+		14A932FA1E2A162300628BE2 /* WebViewTrack.js in Resources */ = {isa = PBXBuildFile; fileRef = 14A932F91E2A162300628BE2 /* WebViewTrack.js */; };
 		14C7E7AA1DF6A37500CB906A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7A91DF6A37500CB906A /* UIKit.framework */; };
 		14EADCCA1DF65A5000E6B711 /* Sugo.h in Headers */ = {isa = PBXBuildFile; fileRef = 14EADCBC1DF65A5000E6B711 /* Sugo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14EADCD51DF65A5B00E6B711 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD41DF65A5B00E6B711 /* Foundation.framework */; };
@@ -87,12 +89,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1400958E1E3048CB0028ABC7 /* SugoURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SugoURLs.plist; sourceTree = "<group>"; };
 		1408088E1E1F808F009DB44A /* UIWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = UIWebViewReport.js; path = Sugo/UIWebViewReport.js; sourceTree = SOURCE_ROOT; };
 		140808931E1F81A5009DB44A /* WebViewBindings.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.1.js; sourceTree = "<group>"; };
 		140808951E1F81C7009DB44A /* WKWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WKWebViewReport.js; sourceTree = "<group>"; };
 		140808991E1F82B1009DB44A /* Utils.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Utils.js; sourceTree = "<group>"; };
-		1408089B1E1F83D4009DB44A /* UIWebViewTrack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = UIWebViewTrack.js; sourceTree = "<group>"; };
-		1408089D1E1F83F3009DB44A /* WKWebViewTrack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WKWebViewTrack.js; sourceTree = "<group>"; };
+		1408089B1E1F83D4009DB44A /* WebViewTrack.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewTrack.UI.js; sourceTree = "<group>"; };
+		1408089D1E1F83F3009DB44A /* WebViewTrack.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewTrack.WK.js; sourceTree = "<group>"; };
 		140808A61E1F8965009DB44A /* WebViewBindings.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.2.js; sourceTree = "<group>"; };
 		140808A91E1F898B009DB44A /* WebViewBindings.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.excute.js; sourceTree = "<group>"; };
 		140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.excute.js; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		1487ACA41DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILayoutSupportToNSString.swift; path = Sugo/UILayoutSupportToNSString.swift; sourceTree = SOURCE_ROOT; };
 		148F37161E07B38900E2A98D /* Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attributes.swift; sourceTree = "<group>"; };
 		148F37181E07B52C00E2A98D /* AttributesPaser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributesPaser.swift; sourceTree = "<group>"; };
+		14A932F91E2A162300628BE2 /* WebViewTrack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewTrack.js; path = Sugo/WebViewTrack.js; sourceTree = SOURCE_ROOT; };
 		14C7E7A91DF6A37500CB906A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		14EADCB91DF65A5000E6B711 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EADCBC1DF65A5000E6B711 /* Sugo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sugo.h; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				140808991E1F82B1009DB44A /* Utils.js */,
+				14A932F81E2A157800628BE2 /* WebViewTrack */,
 				140808BD1E1F92CE009DB44A /* WebViewReport */,
 				140808BC1E1F8F83009DB44A /* WebViewBindings */,
 			);
@@ -199,8 +204,6 @@
 		140808BC1E1F8F83009DB44A /* WebViewBindings */ = {
 			isa = PBXGroup;
 			children = (
-				1408089B1E1F83D4009DB44A /* UIWebViewTrack.js */,
-				1408089D1E1F83F3009DB44A /* WKWebViewTrack.js */,
 				140808931E1F81A5009DB44A /* WebViewBindings.1.js */,
 				140808A61E1F8965009DB44A /* WebViewBindings.2.js */,
 				140808A91E1F898B009DB44A /* WebViewBindings.excute.js */,
@@ -259,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				14EADCBC1DF65A5000E6B711 /* Sugo.h */,
+				1400958E1E3048CB0028ABC7 /* SugoURLs.plist */,
 				14EADCBD1DF65A5000E6B711 /* Info.plist */,
 				140808901E1F80C3009DB44A /* JavaScript */,
 			);
@@ -401,6 +405,16 @@
 			name = Injection;
 			sourceTree = "<group>";
 		};
+		14A932F81E2A157800628BE2 /* WebViewTrack */ = {
+			isa = PBXGroup;
+			children = (
+				14A932F91E2A162300628BE2 /* WebViewTrack.js */,
+				1408089B1E1F83D4009DB44A /* WebViewTrack.UI.js */,
+				1408089D1E1F83F3009DB44A /* WebViewTrack.WK.js */,
+			);
+			name = WebViewTrack;
+			sourceTree = "<group>";
+		};
 		14EADCAF1DF65A5000E6B711 = {
 			isa = PBXGroup;
 			children = (
@@ -525,11 +539,13 @@
 				140808AC1E1F89A9009DB44A /* WebViewReport.excute.js in Resources */,
 				1408089A1E1F82B2009DB44A /* Utils.js in Resources */,
 				140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */,
-				1408089E1E1F83F3009DB44A /* WKWebViewTrack.js in Resources */,
+				14A932FA1E2A162300628BE2 /* WebViewTrack.js in Resources */,
+				1408089E1E1F83F3009DB44A /* WebViewTrack.WK.js in Resources */,
 				140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */,
+				1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */,
 				1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */,
 				140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */,
-				1408089C1E1F83D4009DB44A /* UIWebViewTrack.js in Resources */,
+				1408089C1E1F83D4009DB44A /* WebViewTrack.UI.js in Resources */,
 				140808961E1F81C7009DB44A /* WKWebViewReport.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

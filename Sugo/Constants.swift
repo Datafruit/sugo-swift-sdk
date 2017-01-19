@@ -32,18 +32,18 @@ struct SugoPermission {
     static let canObtainIFA = false
 }
 
+struct SugoConfiguration {
+    
+    static let URLs = Sugo.loadConfigurationPropertyList(name: "SugoURLs") as! [String: String]
+}
+
 struct ServerURL {
     /**
      static let bindings = "Address_For_Bindings"
      static let collect = "Address_For_Collecting_events"
      static let codeless = "Address_For_Codeless_Bindings"
      **/
-    /**
-     static let bindings     = "http://astro.sugo.io"
-     static let collect      = "http://collect.sugo.io:81"
-     static let codeless     = "http://sugo.io:8887"
-    **/
-    static let bindings     = "http://192.168.0.212:8000"
-    static let collect      = "http://collect.sugo.net"
-    static let codeless     = "http://192.168.0.212:8887"
+    static let bindings     = SugoConfiguration.URLs["Bindings"]!
+    static let collection   = SugoConfiguration.URLs["Collection"]!
+    static let codeless     = SugoConfiguration.URLs["Codeless"]!
 }
