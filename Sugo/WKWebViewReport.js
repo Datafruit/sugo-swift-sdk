@@ -4,10 +4,8 @@
 
   Created by Zack on 6/1/17.
   Copyright © 2017年 sugo. All rights reserved.
- */
+*/
 var sugo_report = {};
-sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);
-sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);
 sugo_report.isElementInViewport = function(rect) {
     return (
             rect.top >= 0 &&
