@@ -87,7 +87,7 @@ extension WebViewBindings {
         guard self.uiVCPath.isEmpty else {
             return
         }
-        var responder: UIResponder = webView
+        var responder: UIResponder = webView.superview!
         while responder.next != nil {
             responder = responder.next!
             if responder is UIViewController {
@@ -116,7 +116,7 @@ extension WebViewBindings {
         guard self.wkVCPath.isEmpty else {
             return
         }
-        var responder: UIResponder = webView
+        var responder: UIResponder = webView.superview!
         while responder.next != nil {
             responder = responder.next!
             if responder is UIViewController {
