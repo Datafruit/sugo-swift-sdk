@@ -91,7 +91,7 @@ extension UIViewController {
         }
     }
     
-    static var sugCurrentViewController: UIViewController? {
+    static var sugoCurrentViewController: UIViewController? {
         
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             return searchViewController(from: rootViewController)

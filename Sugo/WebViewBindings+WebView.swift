@@ -87,7 +87,7 @@ extension WebViewBindings {
         guard self.uiVCPath.isEmpty else {
             return
         }
-        if let vc = UIViewController.sugCurrentViewController {
+        if let vc = UIViewController.sugoCurrentViewController {
             self.uiVCPath = NSStringFromClass(vc.classForCoder)
             Logger.debug(message: "view controller name: \(self.uiVCPath)")
         }
@@ -111,7 +111,7 @@ extension WebViewBindings {
         guard self.wkVCPath.isEmpty else {
             return
         }
-        if let vc = UIViewController.sugCurrentViewController {
+        if let vc = UIViewController.sugoCurrentViewController {
             self.wkVCPath = NSStringFromClass(vc.classForCoder)
             Logger.debug(message: "view controller name: \(self.wkVCPath)")
         }
