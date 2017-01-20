@@ -35,6 +35,7 @@ struct SugoPermission {
 struct SugoConfiguration {
     
     static let URLs = Sugo.loadConfigurationPropertyList(name: "SugoURLs") as! [String: String]
+    static let Dimension = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionTable") as! [String: String]
 }
 
 struct ServerURL {
