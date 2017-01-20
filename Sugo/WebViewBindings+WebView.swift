@@ -87,14 +87,9 @@ extension WebViewBindings {
         guard self.uiVCPath.isEmpty else {
             return
         }
-        var responder: UIResponder = webView.superview!
-        while responder.next != nil {
-            responder = responder.next!
-            if responder is UIViewController {
-                self.uiVCPath = NSStringFromClass(responder.classForCoder)
-                Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                break
-            }
+        if let vc = UIViewController.sugCurrentViewController {
+            self.uiVCPath = NSStringFromClass(vc.classForCoder)
+            Logger.debug(message: "view controller name: \(self.uiVCPath)")
         }
         self.uiWebView = webView
         self.startUIWebViewBindings(webView: &(self.uiWebView!))
@@ -116,14 +111,9 @@ extension WebViewBindings {
         guard self.wkVCPath.isEmpty else {
             return
         }
-        var responder: UIResponder = webView.superview!
-        while responder.next != nil {
-            responder = responder.next!
-            if responder is UIViewController {
-                self.wkVCPath = NSStringFromClass(responder.classForCoder)
-                Logger.debug(message: "view controller name: \(NSStringFromClass(responder.classForCoder))")
-                break
-            }
+        if let vc = UIViewController.sugCurrentViewController {
+            self.wkVCPath = NSStringFromClass(vc.classForCoder)
+            Logger.debug(message: "view controller name: \(self.wkVCPath)")
         }
         self.wkWebView = webView
         self.startWKWebViewBindings(webView: &(self.wkWebView!))

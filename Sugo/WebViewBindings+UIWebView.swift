@@ -84,7 +84,7 @@ extension WebViewBindings {
             jsContext.evaluateScript(self.jsUIWebViewTrack)
             jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
             jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
-            Logger.debug(message: "UI JS Track:\n\(self.jsUIWebViewTrack)")
+            
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
         }
