@@ -27,6 +27,7 @@
 		14A932FA1E2A162300628BE2 /* WebViewTrack.js in Resources */ = {isa = PBXBuildFile; fileRef = 14A932F91E2A162300628BE2 /* WebViewTrack.js */; };
 		14C4CC611E319EF8005ADF42 /* SugoEventsSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */; };
 		14C4CC671E31AF5F005ADF42 /* SugoCustomDimensionTable.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14C4CC661E31AF5F005ADF42 /* SugoCustomDimensionTable.plist */; };
+		14C4CC6D1E32354A005ADF42 /* UIViewController+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */; };
 		14C7E7AA1DF6A37500CB906A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7A91DF6A37500CB906A /* UIKit.framework */; };
 		14EADCCA1DF65A5000E6B711 /* Sugo.h in Headers */ = {isa = PBXBuildFile; fileRef = 14EADCBC1DF65A5000E6B711 /* Sugo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14EADCD51DF65A5B00E6B711 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD41DF65A5B00E6B711 /* Foundation.framework */; };
@@ -111,6 +112,7 @@
 		14A932F91E2A162300628BE2 /* WebViewTrack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewTrack.js; path = Sugo/WebViewTrack.js; sourceTree = SOURCE_ROOT; };
 		14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoEventsSerializer.swift; path = Sugo/SugoEventsSerializer.swift; sourceTree = SOURCE_ROOT; };
 		14C4CC661E31AF5F005ADF42 /* SugoCustomDimensionTable.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SugoCustomDimensionTable.plist; sourceTree = "<group>"; };
+		14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Sugo.swift"; path = "Sugo/UIViewController+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		14C7E7A91DF6A37500CB906A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		14EADCB91DF65A5000E6B711 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EADCBC1DF65A5000E6B711 /* Sugo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sugo.h; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				14EADD091DF65ACB00E6B711 /* SHA256.swift */,
 				14EADD071DF65ACB00E6B711 /* Persistence.swift */,
 				14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */,
+				14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				14EADD311DF65ACB00E6B711 /* Flush.swift in Sources */,
 				14EADD341DF65ACB00E6B711 /* JSONHandler.swift in Sources */,
 				14EADD1A1DF65ACB00E6B711 /* Decide.swift in Sources */,
+				14C4CC6D1E32354A005ADF42 /* UIViewController+Sugo.swift in Sources */,
 				14EADD471DF65ACB00E6B711 /* SSLSecurity.swift in Sources */,
 				14EADD3F1DF65ACB00E6B711 /* ObjectSerializer.swift in Sources */,
 				1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */,

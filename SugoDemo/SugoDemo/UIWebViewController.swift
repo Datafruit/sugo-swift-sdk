@@ -19,9 +19,9 @@ class UIWebViewController: UIViewController  {
         self.webView.delegate = self
         let url = URL(string: "http://www.jd.com")
         let request = URLRequest(url: url!)
+        
         self.webView.loadRequest(request)
         self.view.addSubview(self.webView)
-        
     }
     
     deinit {
