@@ -28,15 +28,16 @@ class Track {
                timedEvents: inout InternalProperties,
                superProperties: InternalProperties,
                distinctId: String,
-               epochInterval: Double) {
+               date: Date) {
+        
         var evn = eventName
         if evn == nil || evn!.characters.isEmpty {
             Logger.info(message: "sugo track called with empty event parameter. using 'mp_event'")
-            evn = "mp_event"
+            evn = "sugo_event"
         }
 
         assertPropertyTypes(properties)
-        let epochSeconds = Int(round(epochInterval))
+        let epochSeconds = Int(round(date.timeIntervalSince1970))
         let eventStartTime = timedEvents[evn!] as? Double
         var p = InternalProperties()
         let sugo = Sugo.mainInstance()
@@ -46,10 +47,10 @@ class Track {
             p += AutomaticProperties.properties
         }
         p["token"] = apiToken
-        p["time"] = epochSeconds
+        p["time"] = date
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
-            p["duration"] = Double(String(format: "%.3f", epochInterval - eventStartTime))
+            p["duration"] = Double(String(format: "%.2f", date.timeIntervalSince1970 - eventStartTime))
         }
         p["distinct_id"] = distinctId
         p += superProperties
@@ -59,10 +60,11 @@ class Track {
 
         var trackEvent: InternalProperties
         if let evid = eventID {
-            trackEvent = ["event_id": evid, "event_name": evn!, "properties": p]
+            trackEvent = ["event_id": evid, "event_name": evn!]
         } else {
-            trackEvent = ["event_name": evn!, "properties": p]
+            trackEvent = ["event_name": evn!]
         }
+        trackEvent += p
         eventsQueue.append(trackEvent)
 
         if eventsQueue.count > QueueConstants.queueSize {

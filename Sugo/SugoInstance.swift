@@ -578,7 +578,8 @@ extension SugoInstance {
      - parameter properties: properties dictionary
      */
     open func track(eventID: String? = nil, eventName: String?, properties: Properties? = nil) {
-        let epochInterval = Date().timeIntervalSince1970
+
+        let date = Date()
         serialQueue.async() {
             
             self.trackInstance.track(eventID: eventID,
@@ -588,7 +589,8 @@ extension SugoInstance {
                                      timedEvents: &self.timedEvents,
                                      superProperties: self.superProperties,
                                      distinctId: self.distinctId,
-                                     epochInterval: epochInterval)
+                                     date: date)
+
             if self.decideInstance.webSocketWrapper != nil
                 && self.decideInstance.webSocketWrapper!.connected
                 && self.isCodelessTesting {
