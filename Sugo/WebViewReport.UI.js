@@ -1,5 +1,5 @@
 /* 
-  UIWebViewReport.js
+  WebViewReport.UI.js
   Sugo
 
   Created by Zack on 6/1/17.
@@ -46,5 +46,5 @@ sugo_report.reportNodes = function() {
     sugo_report.clientWidth = (window.innerWidth || document.documentElement.clientWidth);
     sugo_report.clientHeight = (window.innerHeight || document.documentElement.clientHeight);
     sugo_report.handleNodeChild(childrens, jsonArray, parent_path, 'report');
-    WebViewJSExport.infoOfPathNodesWidthHeight(window.location.pathname, JSON.stringify(jsonArray), sugo_report.clientWidth, sugo_report.clientHeight);
+    WebViewJSExport.infoOfPathNodesWidthHeight(sugo.relative_path, JSON.stringify(jsonArray), sugo_report.clientWidth, sugo_report.clientHeight);
 };

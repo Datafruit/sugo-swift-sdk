@@ -1,5 +1,5 @@
 /* 
-  WKWebViewReport.js
+  WebViewReport.WK.js
   Sugo
 
   Created by Zack on 6/1/17.

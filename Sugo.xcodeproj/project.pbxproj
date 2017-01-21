@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1400958E1E3048CB0028ABC7 /* SugoURLs.plist */; };
-		1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408088E1E1F808F009DB44A /* UIWebViewReport.js */; };
+		1408088F1E1F808F009DB44A /* WebViewReport.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408088E1E1F808F009DB44A /* WebViewReport.UI.js */; };
 		140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808931E1F81A5009DB44A /* WebViewBindings.1.js */; };
-		140808961E1F81C7009DB44A /* WKWebViewReport.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808951E1F81C7009DB44A /* WKWebViewReport.js */; };
+		140808961E1F81C7009DB44A /* WebViewReport.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808951E1F81C7009DB44A /* WebViewReport.WK.js */; };
 		1408089A1E1F82B2009DB44A /* Utils.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808991E1F82B1009DB44A /* Utils.js */; };
 		1408089C1E1F83D4009DB44A /* WebViewTrack.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089B1E1F83D4009DB44A /* WebViewTrack.UI.js */; };
 		1408089E1E1F83F3009DB44A /* WebViewTrack.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 1408089D1E1F83F3009DB44A /* WebViewTrack.WK.js */; };
@@ -93,9 +93,9 @@
 
 /* Begin PBXFileReference section */
 		1400958E1E3048CB0028ABC7 /* SugoURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SugoURLs.plist; sourceTree = "<group>"; };
-		1408088E1E1F808F009DB44A /* UIWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = UIWebViewReport.js; path = Sugo/UIWebViewReport.js; sourceTree = SOURCE_ROOT; };
+		1408088E1E1F808F009DB44A /* WebViewReport.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewReport.UI.js; path = Sugo/WebViewReport.UI.js; sourceTree = SOURCE_ROOT; };
 		140808931E1F81A5009DB44A /* WebViewBindings.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.1.js; sourceTree = "<group>"; };
-		140808951E1F81C7009DB44A /* WKWebViewReport.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WKWebViewReport.js; sourceTree = "<group>"; };
+		140808951E1F81C7009DB44A /* WebViewReport.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.WK.js; sourceTree = "<group>"; };
 		140808991E1F82B1009DB44A /* Utils.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Utils.js; sourceTree = "<group>"; };
 		1408089B1E1F83D4009DB44A /* WebViewTrack.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewTrack.UI.js; sourceTree = "<group>"; };
 		1408089D1E1F83F3009DB44A /* WebViewTrack.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewTrack.WK.js; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 		140808BD1E1F92CE009DB44A /* WebViewReport */ = {
 			isa = PBXGroup;
 			children = (
-				1408088E1E1F808F009DB44A /* UIWebViewReport.js */,
-				140808951E1F81C7009DB44A /* WKWebViewReport.js */,
+				1408088E1E1F808F009DB44A /* WebViewReport.UI.js */,
+				140808951E1F81C7009DB44A /* WebViewReport.WK.js */,
 				140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */,
 			);
 			name = WebViewReport;
@@ -553,10 +553,10 @@
 				1408089E1E1F83F3009DB44A /* WebViewTrack.WK.js in Resources */,
 				140808941E1F81A5009DB44A /* WebViewBindings.1.js in Resources */,
 				1400958F1E3048CB0028ABC7 /* SugoURLs.plist in Resources */,
-				1408088F1E1F808F009DB44A /* UIWebViewReport.js in Resources */,
+				1408088F1E1F808F009DB44A /* WebViewReport.UI.js in Resources */,
 				140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */,
 				1408089C1E1F83D4009DB44A /* WebViewTrack.UI.js in Resources */,
-				140808961E1F81C7009DB44A /* WKWebViewReport.js in Resources */,
+				140808961E1F81C7009DB44A /* WebViewReport.WK.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

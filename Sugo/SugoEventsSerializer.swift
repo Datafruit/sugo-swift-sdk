@@ -28,8 +28,6 @@ class SugoEventsSerializer {
             for key in object.keys.reversed() {
                 if !keys.contains(key) {
                     if object[key] is Int {
-                        types[key] = "i"
-                    } else if object[key] is Int64 {
                         types[key] = "l"
                     } else if object[key] is Date {
                         types[key] = "d"
@@ -94,12 +92,7 @@ class SugoEventsSerializer {
         
         let base64Encoded = d.base64EncodedString(options: .endLineWithCarriageReturn)
         
-        guard let b64 = base64Encoded
-            .addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
-                print("couldn't replace characters to allowed URL character set")
-                return nil
-        }
-        return b64
+        return base64Encoded
     }
 }
 
