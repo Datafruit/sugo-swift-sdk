@@ -80,8 +80,12 @@ class AutomaticProperties {
         return ""
     }
 
-    class func libVersion() -> String? {
-        return Bundle(for: self).infoDictionary?["CFBundleShortVersionString"] as? String
+    class func libVersion() -> String {
+        if let version = Bundle(for: self).infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return ""
+        }
     }
 
 }
