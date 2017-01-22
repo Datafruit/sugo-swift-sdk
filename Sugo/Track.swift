@@ -37,7 +37,7 @@ class Track {
         }
 
         assertPropertyTypes(properties)
-        let epochSeconds = Int(round(date.timeIntervalSince1970))
+        let epochSeconds = date.timeIntervalSince1970
         let eventStartTime = timedEvents[evn!] as? Double
         var p = InternalProperties()
         let sugo = Sugo.mainInstance()
@@ -50,7 +50,7 @@ class Track {
         p["time"] = date
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
-            p["duration"] = Double(String(format: "%.2f", date.timeIntervalSince1970 - eventStartTime))
+            p["duration"] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
         p["distinct_id"] = distinctId
         p += superProperties
