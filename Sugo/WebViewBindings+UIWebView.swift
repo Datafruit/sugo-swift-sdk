@@ -141,8 +141,17 @@ extension WebViewBindings {
     
     var jsUIWebViewTrack: String {
         
+        var relativePath = "sugo.relative_path = window.location.pathname"
+        if let replacement = Sugo.loadConfigurationPropertyList(name: "SugoResourcesPathReplacement") as? [String: String] {
+            for object in replacement {
+                relativePath = relativePath
+                    + ".replace(\(object.key != "" ? object.key : "''"), \(object.value != "" ? object.value : "''"))"
+            }
+            relativePath = relativePath + ";"
+        }
+        
         return self.jsSource(of: "WebViewTrack")
-            + "sugo.relative_path = window.location.pathname.replace('', '');"
+            + relativePath
             + self.jsSource(of: "WebViewTrack.UI")
     }
     
