@@ -578,7 +578,8 @@ extension SugoInstance {
      - parameter properties: properties dictionary
      */
     open func track(eventID: String? = nil, eventName: String?, properties: Properties? = nil) {
-        let epochInterval = Date().timeIntervalSince1970
+
+        let date = Date()
         serialQueue.async() {
             
             self.trackInstance.track(eventID: eventID,
@@ -588,7 +589,8 @@ extension SugoInstance {
                                      timedEvents: &self.timedEvents,
                                      superProperties: self.superProperties,
                                      distinctId: self.distinctId,
-                                     epochInterval: epochInterval)
+                                     date: date)
+
             if self.decideInstance.webSocketWrapper != nil
                 && self.decideInstance.webSocketWrapper!.connected
                 && self.isCodelessTesting {
@@ -769,36 +771,6 @@ extension SugoInstance {
                                  for: UIViewController.self,
                                  name: UUID().uuidString,
                                  block: viewDidDisappearBlock)
-    }
-}
-
-extension UIViewController {
-    
-    func sugoViewDidAppear(_ animated: Bool) {
-        let originalSelector = #selector(UIViewController.viewDidAppear(_:))
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
-            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
-            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
-            curriedImplementation(self, originalSelector, animated)
-            
-            for (_, block) in swizzle.blocks {
-                block(self, swizzle.selector, nil, nil)
-            }
-        }
-    }
-    func sugoViewDidDisappearBlock(_ animated: Bool) {
-        let originalSelector = #selector(UIViewController.viewDidDisappear(_:))
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
-            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
-            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
-            curriedImplementation(self, originalSelector, animated)
-            
-            for (_, block) in swizzle.blocks {
-                block(self, swizzle.selector, nil, nil)
-            }
-        }
     }
 }
 

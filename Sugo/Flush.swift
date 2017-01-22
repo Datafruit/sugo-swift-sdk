@@ -83,7 +83,7 @@ class Flush: AppLifecycle {
             let batchSize = min(queue.count, APIConstants.batchSize)
             let range = 0..<batchSize
             let batch = Array(queue[range])
-            let requestData = JSONHandler.encodeAPIData(batch)
+            let requestData = SugoEventsSerializer.encode(batch: batch)
             if let requestData = requestData {
                 let semaphore = DispatchSemaphore(value: 0)
                 #if os(iOS)

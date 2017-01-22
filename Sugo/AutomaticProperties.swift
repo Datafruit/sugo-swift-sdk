@@ -21,21 +21,20 @@ class AutomaticProperties {
         var p = InternalProperties()
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
+        let dimension = SugoConfiguration.Dimension
         if let infoDict = infoDict {
-            p["app_build_number"]     = infoDict["CFBundleVersion"]
-            p["app_version_string"]   = infoDict["CFBundleShortVersionString"]
+            p[dimension["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
+            p[dimension["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
         }
-        #if os(iOS)
-            p["carrier"] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
-        #endif
-        p["mp_lib"]             = "Swift"
-        p["lib_version"]       = AutomaticProperties.libVersion()
-        p["manufacturer"]      = "Apple"
-        p["os"]                = UIDevice.current.systemName
-        p["os_version"]        = UIDevice.current.systemVersion
-        p["model"]             = AutomaticProperties.deviceModel()
-        p["screen_height"]     = Int(size.height)
-        p["screen_width"]      = Int(size.width)
+        p[dimension["Carrier"]!] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
+        p[dimension["SDKType"]!] = "Swift"
+        p[dimension["SDKVersion"]!] = AutomaticProperties.libVersion()
+        p[dimension["Manufacturer"]!] = "Apple"
+        p[dimension["SystemName"]!] = UIDevice.current.systemName
+        p[dimension["SystemVersion"]!] = UIDevice.current.systemVersion
+        p[dimension["Model"]!] = AutomaticProperties.deviceModel()
+        p[dimension["ScreenWidth"]!] = Int(size.width)
+        p[dimension["ScreenHeight"]!] = Int(size.height)
         return p
     }()
 
@@ -81,8 +80,12 @@ class AutomaticProperties {
         return ""
     }
 
-    class func libVersion() -> String? {
-        return Bundle(for: self).infoDictionary?["CFBundleShortVersionString"] as? String
+    class func libVersion() -> String {
+        if let version = Bundle(for: self).infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return ""
+        }
     }
 
 }

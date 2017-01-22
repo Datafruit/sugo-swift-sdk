@@ -25,7 +25,7 @@ class DeviceInfoRequest: BaseWebSocketMessage {
 
             DispatchQueue.main.sync {
                 let currentDevice = UIDevice.current
-                let infoResponseInput = InfoResponseInput(systemName: currentDevice.systemName,
+                let infoResponseInput = InfoResponseInput(systemName: "iOS", //currentDevice.systemName,
                                                           systemVersion: currentDevice.systemVersion,
                                                           appVersion: Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
                                                           appRelease: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,

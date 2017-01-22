@@ -114,11 +114,12 @@ class Network {
     }
 
     class func trackIntegration(projectID: String, apiToken: String, distinct_id: String, completion: @escaping (Bool) -> ()) {
-        let requestData = JSONHandler.encodeAPIData([["event_name": "Integration",
-                                                      "properties": ["token": apiToken,
-                                                                     "mp_lib": "Swift",
-                                                                     "version": "3.0",
-                                                                     "distinct_id": distinct_id]]])
+        
+        let requestData = SugoEventsSerializer.encode(batch: [["event_name": "Integration",
+                                                               "token": apiToken,
+                                                               "sdk_type": "Swift",
+                                                               "sdk_version": AutomaticProperties.libVersion(),
+                                                               "distinct_id": distinct_id]])
 
         let responseParser: (Data) -> Int? = { data in
             let response = String(data: data, encoding: String.Encoding.utf8)
