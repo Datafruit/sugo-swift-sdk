@@ -17,6 +17,7 @@
 		140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A61E1F8965009DB44A /* WebViewBindings.2.js */; };
 		140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A91E1F898B009DB44A /* WebViewBindings.excute.js */; };
 		140808AC1E1F89A9009DB44A /* WebViewReport.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */; };
+		14250C191E349D5E0021793D /* SugoResourcesPathReplacement.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */; };
 		14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14364FE21DFA622600F7BE89 /* TrackMessage.swift */; };
 		147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EC1DF6698C001FF110 /* Sugo.swift */; };
 		147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EE1DF66B90001FF110 /* SugoType.swift */; };
@@ -102,6 +103,7 @@
 		140808A61E1F8965009DB44A /* WebViewBindings.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.2.js; sourceTree = "<group>"; };
 		140808A91E1F898B009DB44A /* WebViewBindings.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.excute.js; sourceTree = "<group>"; };
 		140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.excute.js; sourceTree = "<group>"; };
+		14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SugoResourcesPathReplacement.plist; path = Sugo/SugoResourcesPathReplacement.plist; sourceTree = SOURCE_ROOT; };
 		14364FE21DFA622600F7BE89 /* TrackMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackMessage.swift; path = Sugo/TrackMessage.swift; sourceTree = SOURCE_ROOT; };
 		147C00EC1DF6698C001FF110 /* Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sugo.swift; sourceTree = "<group>"; };
 		147C00EE1DF66B90001FF110 /* SugoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoType.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				14EADCBC1DF65A5000E6B711 /* Sugo.h */,
 				1400958E1E3048CB0028ABC7 /* SugoURLs.plist */,
 				14C4CC661E31AF5F005ADF42 /* SugoCustomDimensionTable.plist */,
+				14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */,
 				14EADCBD1DF65A5000E6B711 /* Info.plist */,
 				140808901E1F80C3009DB44A /* JavaScript */,
 			);
@@ -545,6 +548,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14250C191E349D5E0021793D /* SugoResourcesPathReplacement.plist in Resources */,
 				140808AC1E1F89A9009DB44A /* WebViewReport.excute.js in Resources */,
 				1408089A1E1F82B2009DB44A /* Utils.js in Resources */,
 				140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */,
