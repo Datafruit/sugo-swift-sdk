@@ -37,6 +37,7 @@ open class Sugo {
                                launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
                                flushInterval: Double = 60,
                                instanceName: String = UUID().uuidString) -> SugoInstance {
+        
         return SugoManager.sharedInstance.initialize(id:            projectID,
                                                      token:         apiToken,
                                                      launchOptions: launchOptions,
@@ -100,6 +101,7 @@ open class Sugo {
             let c = plist as? InternalProperties {
             configuration = c
         }
+        Logger.debug(message: "Configuration Property List:\n\(configuration)")
         return configuration
     }
 
@@ -127,6 +129,11 @@ class SugoManager {
                                     flushInterval:  flushInterval)
         mainInstance = instance
         instances[instanceName] = instance
+        
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            instance.track(eventName: value["AppEnter"]!)
+            instance.time(event: value["AppStay"]!)
+        }
         
         return instance
     }

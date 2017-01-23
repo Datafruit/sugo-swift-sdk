@@ -224,10 +224,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
-        self.track(eventName: "Launched")
-        self.time(event: "stay_event")
-        
-        Logger.debug(message: "SugoConfiguration:\n\(SugoConfiguration.URLs)")
         
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
@@ -257,7 +253,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         if flushOnBackground {
             flush()
         }
-
+        
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            self.track(eventName: value["BackgroundEnter"]!)
+            self.time(event: value["BackgroundStay"]!)
+        }
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
@@ -279,9 +279,50 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                 #endif
             }
         }
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            self.track(eventName: value["BackgroundStay"]!)
+            self.track(eventName: value["BackgroundExit"]!)
+        }
     }
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
+        
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["BackgroundStay"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["BackgroundExit"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["AppStay"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["AppExit"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+        }
+        self.flushInstance.flushEventsQueue(&self.eventsQueue)
         serialQueue.async() {
             self.archive()
         }
@@ -738,14 +779,17 @@ extension SugoInstance {
                 return
             }
 //            Logger.debug(message: "viewDidAppear")
-            self.time(event: "stay_event")
-            var pViewController: Properties
-            if let tittle = vc.title {
-                pViewController = ["page": tittle]
-            } else {
-                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+            
+            if let value = SugoConfiguration.DimensionValue as? [String: String] {
+                var pViewController: Properties
+                if let tittle = vc.title {
+                    pViewController = ["page": tittle]
+                } else {
+                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+                }
+                self.track(eventName: value["PageEnter"]!, properties: pViewController)
+                self.time(event: value["PageStay"]!)
             }
-            self.track(eventName: "enter_page_event", properties: pViewController)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
@@ -757,14 +801,18 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-//            Logger.debug(message: "viewDidDisappear")
-            var pViewController: Properties
-            if let tittle = vc.title {
-                pViewController = ["page": tittle]
-            } else {
-                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+            //            Logger.debug(message: "viewDidDisappear")
+            
+            if let value = SugoConfiguration.DimensionValue as? [String: String] {
+                var pViewController: Properties
+                if let tittle = vc.title {
+                    pViewController = ["page": tittle]
+                } else {
+                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+                }
+                self.track(eventName: value["PageStay"]!, properties: pViewController)
+                self.track(eventName: value["PageExit"]!, properties: pViewController)
             }
-            self.track(eventName: "stay_event", properties: pViewController)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),
