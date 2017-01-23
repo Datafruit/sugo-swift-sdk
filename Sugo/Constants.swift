@@ -42,9 +42,9 @@ struct SugoConfiguration {
 
 struct ServerURL {
     /**
-     static let bindings = "Address_For_Bindings"
-     static let collect = "Address_For_Collecting_events"
-     static let codeless = "Address_For_Codeless_Bindings"
+     static let bindings    = "Address_For_Bindings"
+     static let collection  = "Address_For_Collecting_events"
+     static let codeless    = "Address_For_Codeless_Bindings"
      **/
     static let bindings: String = {
         if let urls = SugoConfiguration.URLs as? [String: String],

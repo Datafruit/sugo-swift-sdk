@@ -22,6 +22,10 @@
 	<string>app_version</string>
 	<key>AppBundleShortVersionString</key>
 	<string>app_version_string</string>
+	<key>Time</key>
+	<string>time</string>
+	<key>Duration</key>
+	<string>duration</string>
 	<key>Manufacturer</key>
 	<string>manufacturer</string>
 	<key>Model</key>

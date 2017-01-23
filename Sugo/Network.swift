@@ -115,11 +115,19 @@ class Network {
 
     class func trackIntegration(projectID: String, apiToken: String, distinct_id: String, completion: @escaping (Bool) -> ()) {
         
-        let requestData = SugoEventsSerializer.encode(batch: [["event_name": "Integration",
-                                                               "token": apiToken,
-                                                               "sdk_type": "Swift",
-                                                               "sdk_version": AutomaticProperties.libVersion(),
-                                                               "distinct_id": distinct_id]])
+        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
+            return
+        }
+        guard let value = SugoConfiguration.DimensionValue as? [String: String] else {
+            return
+        }
+        
+        let requestData = SugoEventsSerializer.encode(batch: [[key["EventName"]!: value["Integration"]!,
+                                                               key["Token"]!: apiToken,
+                                                               key["SDKType"]!: "Swift",
+                                                               key["SDKVersion"]!: AutomaticProperties.libVersion(),
+                                                               key["DistinctID"]!: distinct_id,
+                                                               key["Time"]!: Date()]])
 
         let responseParser: (Data) -> Int? = { data in
             let response = String(data: data, encoding: String.Encoding.utf8)

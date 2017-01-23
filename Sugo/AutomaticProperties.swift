@@ -19,25 +19,25 @@ class AutomaticProperties {
 
     static var properties: InternalProperties = {
         
-        guard let dimension = SugoConfiguration.DimensionKey as? [String: String] else {
+        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
             return InternalProperties()
         }
         var p = InternalProperties()
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {
-            p[dimension["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
-            p[dimension["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
+            p[key["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
+            p[key["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
         }
-        p[dimension["Carrier"]!] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
-        p[dimension["SDKType"]!] = "Swift"
-        p[dimension["SDKVersion"]!] = AutomaticProperties.libVersion()
-        p[dimension["Manufacturer"]!] = "Apple"
-        p[dimension["SystemName"]!] = UIDevice.current.systemName
-        p[dimension["SystemVersion"]!] = UIDevice.current.systemVersion
-        p[dimension["Model"]!] = AutomaticProperties.deviceModel()
-        p[dimension["ScreenWidth"]!] = Int(size.width)
-        p[dimension["ScreenHeight"]!] = Int(size.height)
+        p[key["Carrier"]!] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
+        p[key["SDKType"]!] = "Swift"
+        p[key["SDKVersion"]!] = AutomaticProperties.libVersion()
+        p[key["Manufacturer"]!] = "Apple"
+        p[key["SystemName"]!] = UIDevice.current.systemName
+        p[key["SystemVersion"]!] = UIDevice.current.systemVersion
+        p[key["Model"]!] = AutomaticProperties.deviceModel()
+        p[key["ScreenWidth"]!] = Int(size.width)
+        p[key["ScreenHeight"]!] = Int(size.height)
         return p
     }()
 
