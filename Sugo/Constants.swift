@@ -34,9 +34,10 @@ struct SugoPermission {
 
 struct SugoConfiguration {
     
-    static let URLs = Sugo.loadConfigurationPropertyList(name: "SugoURLs")
-    static let Dimension = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionTable")
-    static let Replacement = Sugo.loadConfigurationPropertyList(name: "SugoResourcesPathReplacement")
+    static let URLs             = Sugo.loadConfigurationPropertyList(name: "SugoURLs")
+    static let DimensionKey     = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionKeyTable")
+    static let DimensionValue   = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionValueTable")
+    static let Replacement      = Sugo.loadConfigurationPropertyList(name: "SugoResourcesPathReplacement")
 }
 
 struct ServerURL {

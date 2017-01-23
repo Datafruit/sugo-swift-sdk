@@ -19,7 +19,7 @@ class AutomaticProperties {
 
     static var properties: InternalProperties = {
         
-        guard let dimension = SugoConfiguration.Dimension as? [String: String] else {
+        guard let dimension = SugoConfiguration.DimensionKey as? [String: String] else {
             return InternalProperties()
         }
         var p = InternalProperties()
