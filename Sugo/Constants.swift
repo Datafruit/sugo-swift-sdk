@@ -34,8 +34,9 @@ struct SugoPermission {
 
 struct SugoConfiguration {
     
-    static let URLs = Sugo.loadConfigurationPropertyList(name: "SugoURLs") as! [String: String]
-    static let Dimension = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionTable") as! [String: String]
+    static let URLs = Sugo.loadConfigurationPropertyList(name: "SugoURLs")
+    static let Dimension = Sugo.loadConfigurationPropertyList(name: "SugoCustomDimensionTable")
+    static let Replacement = Sugo.loadConfigurationPropertyList(name: "SugoResourcesPathReplacement")
 }
 
 struct ServerURL {
@@ -44,7 +45,25 @@ struct ServerURL {
      static let collect = "Address_For_Collecting_events"
      static let codeless = "Address_For_Codeless_Bindings"
      **/
-    static let bindings     = SugoConfiguration.URLs["Bindings"]!
-    static let collection   = SugoConfiguration.URLs["Collection"]!
-    static let codeless     = SugoConfiguration.URLs["Codeless"]!
+    static let bindings: String = {
+        if let urls = SugoConfiguration.URLs as? [String: String],
+            let bindings = urls["Bindings"] {
+            return bindings
+        }
+        return ""
+    }()
+    static let collection: String = {
+        if let urls = SugoConfiguration.URLs as? [String: String],
+            let bindings = urls["Collection"] {
+            return bindings
+        }
+        return ""
+    }()
+    static let codeless: String = {
+        if let urls = SugoConfiguration.URLs as? [String: String],
+            let bindings = urls["Codeless"] {
+            return bindings
+        }
+        return ""
+    }()
 }

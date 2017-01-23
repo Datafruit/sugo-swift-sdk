@@ -18,10 +18,13 @@ class AutomaticProperties {
     #endif
 
     static var properties: InternalProperties = {
+        
+        guard let dimension = SugoConfiguration.Dimension as? [String: String] else {
+            return InternalProperties()
+        }
         var p = InternalProperties()
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
-        let dimension = SugoConfiguration.Dimension
         if let infoDict = infoDict {
             p[dimension["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
             p[dimension["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
