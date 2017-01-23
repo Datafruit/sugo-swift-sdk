@@ -30,6 +30,10 @@ class Track {
                distinctId: String,
                date: Date) {
         
+        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
+            return
+        }
+        
         var evn = eventName
         if evn == nil || evn!.characters.isEmpty {
             Logger.info(message: "sugo track called with empty event parameter. using 'mp_event'")
@@ -46,13 +50,13 @@ class Track {
             || !sugo.isCodelessTesting {
             p += AutomaticProperties.properties
         }
-        p["token"] = apiToken
-        p["time"] = date
+        p[key["Token"]!] = apiToken
+        p[key["Time"]!] = date
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
-            p["duration"] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
+            p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
-        p["distinct_id"] = distinctId
+        p[key["DistinctID"]!] = distinctId
         p += superProperties
         if let properties = properties {
             p += properties
@@ -60,9 +64,9 @@ class Track {
 
         var trackEvent: InternalProperties
         if let evid = eventID {
-            trackEvent = ["event_id": evid, "event_name": evn!]
+            trackEvent = [key["EventID"]!: evid, key["EventName"]!: evn!]
         } else {
-            trackEvent = ["event_name": evn!]
+            trackEvent = [key["EventName"]!: evn!]
         }
         trackEvent += p
         eventsQueue.append(trackEvent)

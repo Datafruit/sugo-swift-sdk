@@ -224,10 +224,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
-        self.track(eventName: "Launched")
-        self.time(event: "stay_event")
-        
-        Logger.debug(message: "SugoConfiguration:\n\(SugoConfiguration.URLs)")
         
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
@@ -257,7 +253,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         if flushOnBackground {
             flush()
         }
-
+        
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            self.track(eventName: value["BackgroundEnter"]!)
+            self.time(event: value["BackgroundStay"]!)
+        }
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
@@ -279,9 +279,50 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                 #endif
             }
         }
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            self.track(eventName: value["BackgroundStay"]!)
+            self.track(eventName: value["BackgroundExit"]!)
+        }
     }
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
+        
+        if let value = SugoConfiguration.DimensionValue as? [String: String] {
+            
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["BackgroundStay"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["BackgroundExit"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["AppStay"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+            self.trackInstance.track(eventID: nil,
+                                     eventName: value["AppExit"]!,
+                                     properties: nil,
+                                     eventsQueue: &self.eventsQueue,
+                                     timedEvents: &self.timedEvents,
+                                     superProperties: self.superProperties,
+                                     distinctId: self.distinctId,
+                                     date: Date())
+        }
+        self.flushInstance.flushEventsQueue(&self.eventsQueue)
         serialQueue.async() {
             self.archive()
         }
