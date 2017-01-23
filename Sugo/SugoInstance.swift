@@ -779,14 +779,17 @@ extension SugoInstance {
                 return
             }
 //            Logger.debug(message: "viewDidAppear")
-            self.time(event: "stay_event")
-            var pViewController: Properties
-            if let tittle = vc.title {
-                pViewController = ["page": tittle]
-            } else {
-                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+            
+            if let value = SugoConfiguration.DimensionValue as? [String: String] {
+                var pViewController: Properties
+                if let tittle = vc.title {
+                    pViewController = ["page": tittle]
+                } else {
+                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+                }
+                self.track(eventName: value["PageEnter"]!, properties: pViewController)
+                self.time(event: value["PageStay"]!)
             }
-            self.track(eventName: "enter_page_event", properties: pViewController)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
@@ -798,14 +801,18 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-//            Logger.debug(message: "viewDidDisappear")
-            var pViewController: Properties
-            if let tittle = vc.title {
-                pViewController = ["page": tittle]
-            } else {
-                pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+            //            Logger.debug(message: "viewDidDisappear")
+            
+            if let value = SugoConfiguration.DimensionValue as? [String: String] {
+                var pViewController: Properties
+                if let tittle = vc.title {
+                    pViewController = ["page": tittle]
+                } else {
+                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
+                }
+                self.track(eventName: value["PageStay"]!, properties: pViewController)
+                self.track(eventName: value["PageExit"]!, properties: pViewController)
             }
-            self.track(eventName: "stay_event", properties: pViewController)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),
