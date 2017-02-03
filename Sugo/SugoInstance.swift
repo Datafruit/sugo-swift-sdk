@@ -781,13 +781,7 @@ extension SugoInstance {
 //            Logger.debug(message: "viewDidAppear")
             
             if let value = SugoConfiguration.DimensionValue as? [String: String] {
-                var pViewController: Properties
-                if let tittle = vc.title {
-                    pViewController = ["page": tittle]
-                } else {
-                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
-                }
-                self.track(eventName: value["PageEnter"]!, properties: pViewController)
+                self.track(eventName: value["PageEnter"]!)
                 self.time(event: value["PageStay"]!)
             }
         }
@@ -801,17 +795,11 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-            //            Logger.debug(message: "viewDidDisappear")
+//            Logger.debug(message: "viewDidDisappear")
             
             if let value = SugoConfiguration.DimensionValue as? [String: String] {
-                var pViewController: Properties
-                if let tittle = vc.title {
-                    pViewController = ["page": tittle]
-                } else {
-                    pViewController = ["page": NSStringFromClass(vc.classForCoder)]
-                }
-                self.track(eventName: value["PageStay"]!, properties: pViewController)
-                self.track(eventName: value["PageExit"]!, properties: pViewController)
+                self.track(eventName: value["PageStay"]!)
+                self.track(eventName: value["PageExit"]!)
             }
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),

@@ -50,6 +50,17 @@ class Track {
             || !sugo.isCodelessTesting {
             p += AutomaticProperties.properties
         }
+        
+        if let vc = UIViewController.sugoCurrentViewController {
+            p[key["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            if !SugoPageInfos.global.infos.isEmpty  {
+                for info in SugoPageInfos.global.infos {
+                    if info["page"] == NSStringFromClass(vc.classForCoder) {
+                        p[key["PageName"]!] = info["page_name"]
+                    }
+                }
+            }
+        }
         p[key["Token"]!] = apiToken
         p[key["Time"]!] = date
         if let eventStartTime = eventStartTime {

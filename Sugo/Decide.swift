@@ -78,6 +78,11 @@ class Decide {
                     WebViewBindings.global.decideBindings = htmlCodelessBindings
                     WebViewBindings.global.fillBindings()
                 }
+                
+                if let pageInfo = result["page_info"] as? [[String: String]] {
+                    SugoPageInfos.global.infos.removeAll()
+                    SugoPageInfos.global.infos = pageInfo
+                }
 
                 self.decideFetched = true
                 semaphore.signal()
