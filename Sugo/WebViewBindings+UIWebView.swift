@@ -176,8 +176,8 @@ extension WebViewBindings {
                 }
             }
         }
-        let pageName = "sugo.page_name = \(pn)"
-        let initCode = "sugo.init_code = \(ic)"
+        let pageName = "sugo.page_name = \(pn);"
+        let initCode = "sugo.init_code = \(ic);"
         
         return self.jsSource(of: "WebViewTrack")
             + relativePath
