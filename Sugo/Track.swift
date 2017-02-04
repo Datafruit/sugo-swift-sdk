@@ -45,11 +45,6 @@ class Track {
         let eventStartTime = timedEvents[evn!] as? Double
         var p = InternalProperties()
         let sugo = Sugo.mainInstance()
-        if sugo.decideInstance.webSocketWrapper == nil
-            || !sugo.decideInstance.webSocketWrapper!.connected
-            || !sugo.isCodelessTesting {
-            p += AutomaticProperties.properties
-        }
         
         if let vc = UIViewController.sugoCurrentViewController {
             p[key["PagePath"]!] = NSStringFromClass(vc.classForCoder)
@@ -62,7 +57,6 @@ class Track {
             }
         }
         p[key["Token"]!] = apiToken
-        p[key["Time"]!] = date
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
             p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
@@ -79,7 +73,16 @@ class Track {
         } else {
             trackEvent = [key["EventName"]!: evn!]
         }
-        trackEvent += p
+        if sugo.decideInstance.webSocketWrapper == nil
+            || !sugo.decideInstance.webSocketWrapper!.connected
+            || !sugo.isCodelessTesting {
+            p += AutomaticProperties.properties
+            p[key["Time"]!] = date
+            trackEvent += p
+        } else {
+            p[key["Time"]!] = epochSeconds
+            trackEvent["properties"] = p
+        }
         eventsQueue.append(trackEvent)
 
         if eventsQueue.count > QueueConstants.queueSize {
