@@ -6,6 +6,7 @@
 //  Copyright © 2016年 Sugo. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import JavaScriptCore
 
@@ -141,17 +142,47 @@ extension WebViewBindings {
     
     var jsUIWebViewTrack: String {
         
+        var nativePath = String()
+        if let path = self.uiWebView?.request?.url?.path {
+            nativePath =  path
+        }
         var relativePath = "sugo.relative_path = window.location.pathname"
         if let replacement = SugoConfiguration.Replacement as? [String: String] {
             for object in replacement {
                 relativePath = relativePath
-                    + ".replace(\(object.key != "" ? object.key : "''"), \(object.value != "" ? object.value : "''"))"
+                    + ".replace(/\(object.key != "" ? object.key : " ")/g, \(object.value != "" ? object.value : "''"))"
+                do {
+                    var re = try NSRegularExpression(pattern: "^\(object.key != "" ? object.key : "")$", options: NSRegularExpression.Options.anchorsMatchLines)
+                    nativePath = re.stringByReplacingMatches(in: nativePath,
+                                                             options: [],
+                                                             range: NSMakeRange(0, nativePath.characters.count),
+                                                             withTemplate: "\(object.value != "" ? object.value : ""))")
+                } catch {
+                    Logger.debug(message: "NSRegularExpression exception")
+                }
             }
             relativePath = relativePath + ";"
         }
         
+        var pn = "''"
+        var ic = "''"
+        
+        if !SugoPageInfos.global.infos.isEmpty {
+            for info in SugoPageInfos.global.infos {
+                if info["page"] == nativePath {
+                    pn = info["page"]!
+                    ic = info["code"]!
+                    break
+                }
+            }
+        }
+        let pageName = "sugo.page_name = \(pn);"
+        let initCode = "sugo.init_code = \(ic);"
+        
         return self.jsSource(of: "WebViewTrack")
             + relativePath
+            + pageName
+            + initCode
             + self.jsSource(of: "WebViewTrack.UI")
     }
     

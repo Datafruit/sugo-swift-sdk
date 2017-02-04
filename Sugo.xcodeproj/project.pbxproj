@@ -17,6 +17,7 @@
 		140808A71E1F8965009DB44A /* WebViewBindings.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A61E1F8965009DB44A /* WebViewBindings.2.js */; };
 		140808AA1E1F898B009DB44A /* WebViewBindings.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808A91E1F898B009DB44A /* WebViewBindings.excute.js */; };
 		140808AC1E1F89A9009DB44A /* WebViewReport.excute.js in Resources */ = {isa = PBXBuildFile; fileRef = 140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */; };
+		141DFD2D1E449D0900714BA7 /* SugoPageInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */; };
 		14250C191E349D5E0021793D /* SugoResourcesPathReplacement.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */; };
 		14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14364FE21DFA622600F7BE89 /* TrackMessage.swift */; };
 		145D21C71E35B06700E145D3 /* SugoCustomDimensionValueTable.plist in Resources */ = {isa = PBXBuildFile; fileRef = 145D21C61E35B06700E145D3 /* SugoCustomDimensionValueTable.plist */; };
@@ -104,6 +105,7 @@
 		140808A61E1F8965009DB44A /* WebViewBindings.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.2.js; sourceTree = "<group>"; };
 		140808A91E1F898B009DB44A /* WebViewBindings.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.excute.js; sourceTree = "<group>"; };
 		140808AB1E1F89A9009DB44A /* WebViewReport.excute.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.excute.js; sourceTree = "<group>"; };
+		141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoPageInfos.swift; path = Sugo/SugoPageInfos.swift; sourceTree = SOURCE_ROOT; };
 		14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SugoResourcesPathReplacement.plist; path = Sugo/SugoResourcesPathReplacement.plist; sourceTree = SOURCE_ROOT; };
 		14364FE21DFA622600F7BE89 /* TrackMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackMessage.swift; path = Sugo/TrackMessage.swift; sourceTree = SOURCE_ROOT; };
 		145D21C61E35B06700E145D3 /* SugoCustomDimensionValueTable.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SugoCustomDimensionValueTable.plist; path = Sugo/SugoCustomDimensionValueTable.plist; sourceTree = SOURCE_ROOT; };
@@ -407,6 +409,7 @@
 				14EADCDD1DF65ACA00E6B711 /* Codeless.swift */,
 				14EADCDE1DF65ACA00E6B711 /* Decide.swift */,
 				14EADCF01DF65ACA00E6B711 /* DecideRequest.swift */,
+				141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */,
 			);
 			name = Codeless;
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				14EADD2C1DF65ACB00E6B711 /* DecideRequest.swift in Sources */,
 				147C00F11DF66C17001FF110 /* SugoInstance.swift in Sources */,
 				14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */,
+				141DFD2D1E449D0900714BA7 /* SugoPageInfos.swift in Sources */,
 				14EADD191DF65ACB00E6B711 /* Codeless.swift in Sources */,
 				14EADD1B1DF65ACB00E6B711 /* WebViewBindings.swift in Sources */,
 				14EADD2F1DF65ACB00E6B711 /* Error.swift in Sources */,
