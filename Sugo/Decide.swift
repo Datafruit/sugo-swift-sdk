@@ -34,6 +34,52 @@ class Decide {
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
         var decideResponse = DecideResponse()
 
+        let userDefaults = UserDefaults.standard
+        if let resultData = userDefaults.data(forKey: "EventBindings") {
+            
+            let resultString = String(data: resultData, encoding: String.Encoding.utf8)
+            Logger.debug(message: "Cache decide result:\n\(resultString)")
+
+            do {
+                if let result = try JSONSerialization.jsonObject(with: resultData,
+                                                                 options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                    
+                    var parsedCodelessBindings = Set<CodelessBinding>()
+                    if let commonCodelessBindings = result["event_bindings"] as? [[String: Any]] {
+                        for commonBinding in commonCodelessBindings {
+                            if let binding = Codeless.createBinding(object: commonBinding) {
+                                parsedCodelessBindings.insert(binding)
+                            }
+                        }
+                    }
+                    
+                    let finishedCodelessBindings = self.codelessInstance.codelessBindings.subtracting(parsedCodelessBindings)
+                    for finishedBinding in finishedCodelessBindings {
+                        finishedBinding.stop()
+                    }
+                    
+                    let newCodelessBindings = parsedCodelessBindings.subtracting(self.codelessInstance.codelessBindings)
+                    decideResponse.newCodelessBindings = newCodelessBindings
+                    
+                    self.codelessInstance.codelessBindings.formUnion(newCodelessBindings)
+                    self.codelessInstance.codelessBindings.subtract(finishedCodelessBindings)
+                    
+                    if let htmlCodelessBindings = result["h5_event_bindings"] as? [[String: Any]] {
+                        decideResponse.htmlCodelessBindings = htmlCodelessBindings
+                        WebViewBindings.global.decideBindings = htmlCodelessBindings
+                        WebViewBindings.global.fillBindings()
+                    }
+                    
+                    if let pageInfo = result["page_info"] as? [[String: String]] {
+                        SugoPageInfos.global.infos.removeAll()
+                        SugoPageInfos.global.infos = pageInfo
+                    }
+                }
+            } catch {
+                Logger.debug(message: "Failed to serialize EventBindings")
+            }
+        }
+        
         if !decideFetched || forceFetch {
             let semaphore = DispatchSemaphore(value: 0)
             decideRequest.sendRequest(distinctId: distinctId, token: token) { decideResult in
@@ -44,9 +90,11 @@ class Decide {
                 }
                 
                 do {
-                    let resultJSON = try JSONSerialization.data(withJSONObject: result, options: JSONSerialization.WritingOptions.prettyPrinted)
-                    let resultString = String(data: resultJSON, encoding: String.Encoding.utf8)
+                    let resultData = try JSONSerialization.data(withJSONObject: result, options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                     Logger.debug(message: "Decide result:\n\(resultString)")
+                    userDefaults.set(resultData, forKey: "EventBindings")
+                    userDefaults.synchronize()
                 } catch {
                     Logger.debug(message: "Decide serialize result error")
                 }
