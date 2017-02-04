@@ -57,6 +57,7 @@ class Track {
             }
         }
         p[key["Token"]!] = apiToken
+        p[key["SessionID"]!] = Sugo.mainInstance().sessionID
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
             p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
