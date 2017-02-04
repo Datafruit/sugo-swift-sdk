@@ -142,7 +142,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     #endif
-
+    
+    var sessionID = ""
     var projectID = ""
     var apiToken = ""
     var superProperties = InternalProperties()
@@ -173,6 +174,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         let label = "io.sugo.\(self.apiToken)"
         serialQueue = DispatchQueue(label: label)
         distinctId = defaultDistinctId()
+        sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
         setupListeners()
         unarchive()

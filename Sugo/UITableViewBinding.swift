@@ -85,6 +85,9 @@ class UITableViewBinding: CodelessBinding {
                         if let a = self.attributes {
                             p += a.parse()
                         }
+                        if let key = SugoConfiguration.DimensionKey as? [String: String] {
+                            p[key["EventType"]!] = "click"
+                        }
                         p += ["cell_index": "\(indexPath.row)",
                             "cell_section": "\(indexPath.section)",
                             "cell_label": label]

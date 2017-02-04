@@ -220,6 +220,13 @@ class UIControlBinding: CodelessBinding {
             if let a = self.attributes {
                 p += a.parse()
             }
+            if let key = SugoConfiguration.DimensionKey as? [String: String] {
+                if controlEvent == UIControlEvents.editingDidBegin {
+                    p[key["EventType"]!] = "focus"
+                } else {
+                    p[key["EventType"]!] = "click"
+                }
+            }
             self.track(eventID: self.eventID,
                        eventName: self.eventName,
                        properties: p)
