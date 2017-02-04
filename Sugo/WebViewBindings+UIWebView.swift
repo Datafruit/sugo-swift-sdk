@@ -152,7 +152,7 @@ extension WebViewBindings {
                 relativePath = relativePath
                     + ".replace(/\(object.key != "" ? object.key : " ")/g, \(object.value != "" ? object.value : "''"))"
                 do {
-                    var re = try NSRegularExpression(pattern: "^\(object.key != "" ? object.key : "")$", options: NSRegularExpression.Options.anchorsMatchLines)
+                    let re = try NSRegularExpression(pattern: "^\(object.key != "" ? object.key : "")$", options: NSRegularExpression.Options.anchorsMatchLines)
                     nativePath = re.stringByReplacingMatches(in: nativePath,
                                                              options: [],
                                                              range: NSMakeRange(0, nativePath.characters.count),

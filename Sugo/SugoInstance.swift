@@ -777,7 +777,7 @@ extension SugoInstance {
             
         let viewDidAppearBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-            guard let vc = viewController as? UIViewController else {
+            guard (viewController as? UIViewController) != nil else {
                 return
             }
 //            Logger.debug(message: "viewDidAppear")
@@ -794,7 +794,7 @@ extension SugoInstance {
                                  block: viewDidAppearBlock)
         let viewDidDisappearBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-            guard let vc = viewController as? UIViewController else {
+            guard (viewController as? UIViewController) != nil else {
                 return
             }
 //            Logger.debug(message: "viewDidDisappear")
