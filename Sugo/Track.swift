@@ -57,7 +57,6 @@ class Track {
             }
         }
         p[key["Token"]!] = apiToken
-        p[key["Time"]!] = date
         if let eventStartTime = eventStartTime {
             timedEvents.removeValue(forKey: evn!)
             p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
@@ -78,8 +77,10 @@ class Track {
             || !sugo.decideInstance.webSocketWrapper!.connected
             || !sugo.isCodelessTesting {
             p += AutomaticProperties.properties
+            p[key["Time"]!] = date
             trackEvent += p
         } else {
+            p[key["Time"]!] = epochSeconds
             trackEvent["properties"] = p
         }
         eventsQueue.append(trackEvent)
