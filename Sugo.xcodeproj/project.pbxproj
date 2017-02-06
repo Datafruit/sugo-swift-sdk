@@ -20,6 +20,7 @@
 		141DFD2D1E449D0900714BA7 /* SugoPageInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */; };
 		14250C191E349D5E0021793D /* SugoResourcesPathReplacement.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */; };
 		14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14364FE21DFA622600F7BE89 /* TrackMessage.swift */; };
+		144203F31E4897D80013FFCC /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144203F21E4897D80013FFCC /* Reachability.swift */; };
 		145D21C71E35B06700E145D3 /* SugoCustomDimensionValueTable.plist in Resources */ = {isa = PBXBuildFile; fileRef = 145D21C61E35B06700E145D3 /* SugoCustomDimensionValueTable.plist */; };
 		147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EC1DF6698C001FF110 /* Sugo.swift */; };
 		147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00EE1DF66B90001FF110 /* SugoType.swift */; };
@@ -28,6 +29,7 @@
 		148F37171E07B38900E2A98D /* Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37161E07B38900E2A98D /* Attributes.swift */; };
 		148F37191E07B52C00E2A98D /* AttributesPaser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148F37181E07B52C00E2A98D /* AttributesPaser.swift */; };
 		14A932FA1E2A162300628BE2 /* WebViewTrack.js in Resources */ = {isa = PBXBuildFile; fileRef = 14A932F91E2A162300628BE2 /* WebViewTrack.js */; };
+		14B71B271E48798A0038E3D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14B71B261E48798A0038E3D6 /* SystemConfiguration.framework */; };
 		14C4CC611E319EF8005ADF42 /* SugoEventsSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */; };
 		14C4CC671E31AF5F005ADF42 /* SugoCustomDimensionKeyTable.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14C4CC661E31AF5F005ADF42 /* SugoCustomDimensionKeyTable.plist */; };
 		14C4CC6D1E32354A005ADF42 /* UIViewController+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */; };
@@ -108,6 +110,7 @@
 		141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoPageInfos.swift; path = Sugo/SugoPageInfos.swift; sourceTree = SOURCE_ROOT; };
 		14250C181E349D5E0021793D /* SugoResourcesPathReplacement.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SugoResourcesPathReplacement.plist; path = Sugo/SugoResourcesPathReplacement.plist; sourceTree = SOURCE_ROOT; };
 		14364FE21DFA622600F7BE89 /* TrackMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackMessage.swift; path = Sugo/TrackMessage.swift; sourceTree = SOURCE_ROOT; };
+		144203F21E4897D80013FFCC /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		145D21C61E35B06700E145D3 /* SugoCustomDimensionValueTable.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SugoCustomDimensionValueTable.plist; path = Sugo/SugoCustomDimensionValueTable.plist; sourceTree = SOURCE_ROOT; };
 		147C00EC1DF6698C001FF110 /* Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sugo.swift; sourceTree = "<group>"; };
 		147C00EE1DF66B90001FF110 /* SugoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoType.swift; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		148F37161E07B38900E2A98D /* Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attributes.swift; sourceTree = "<group>"; };
 		148F37181E07B52C00E2A98D /* AttributesPaser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributesPaser.swift; sourceTree = "<group>"; };
 		14A932F91E2A162300628BE2 /* WebViewTrack.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewTrack.js; path = Sugo/WebViewTrack.js; sourceTree = SOURCE_ROOT; };
+		14B71B261E48798A0038E3D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoEventsSerializer.swift; path = Sugo/SugoEventsSerializer.swift; sourceTree = SOURCE_ROOT; };
 		14C4CC661E31AF5F005ADF42 /* SugoCustomDimensionKeyTable.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SugoCustomDimensionKeyTable.plist; sourceTree = "<group>"; };
 		14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Sugo.swift"; path = "Sugo/UIViewController+Sugo.swift"; sourceTree = SOURCE_ROOT; };
@@ -191,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14B71B271E48798A0038E3D6 /* SystemConfiguration.framework in Frameworks */,
 				14EADCD71DF65A6900E6B711 /* CoreTelephony.framework in Frameworks */,
 				14EADCD91DF65A6F00E6B711 /* JavaScriptCore.framework in Frameworks */,
 				14EADCDB1DF65A7B00E6B711 /* WebKit.framework in Frameworks */,
@@ -293,6 +298,7 @@
 				14EADCF61DF65ACA00E6B711 /* FlushRequest.swift */,
 				14EADD161DF65ACB00E6B711 /* WebSocket.swift */,
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
+				144203F21E4897D80013FFCC /* Reachability.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -474,6 +480,7 @@
 		14EADCD31DF65A5B00E6B711 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14B71B261E48798A0038E3D6 /* SystemConfiguration.framework */,
 				14C7E7A91DF6A37500CB906A /* UIKit.framework */,
 				14EADCDA1DF65A7B00E6B711 /* WebKit.framework */,
 				14EADCD81DF65A6F00E6B711 /* JavaScriptCore.framework */,
@@ -640,6 +647,7 @@
 				14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */,
 				14EADD231DF65ACB00E6B711 /* BindingMessage.swift in Sources */,
 				14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */,
+				144203F31E4897D80013FFCC /* Reachability.swift in Sources */,
 				14EADD4B1DF65ACB00E6B711 /* UIColorToNSString.swift in Sources */,
 				14EADD4C1DF65ACB00E6B711 /* UIControlBinding.swift in Sources */,
 				14EADD291DF65ACB00E6B711 /* ClearMessage.swift in Sources */,

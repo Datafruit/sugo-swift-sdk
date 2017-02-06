@@ -41,6 +41,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     /// distinctId string that uniquely identifies the current user.
     open var distinctId = ""
     
+    open var reachability: Reachability?
+    
     /// urlSchemes url that gives key to device_info_response
     open var urlSchemesKeyValue: String?
 
@@ -176,6 +178,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
+        reachability = Reachability(hostname: ServerURL.collection)
         setupListeners()
         unarchive()
         
@@ -195,6 +198,17 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                                            selector: #selector(setCurrentRadio),
                                            name: .CTRadioAccessTechnologyDidChange,
                                            object: nil)
+            
+            do {
+                try self.reachability?.startNotifier()
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(self.reachabilityChanged(_:)),
+                                                       name: ReachabilityChangedNotification,
+                                                       object: self.reachability)
+            } catch {
+                Logger.debug(message: "Reachability exception")
+            }
+            
         #endif
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationWillTerminate(_:)),
@@ -398,6 +412,49 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         let currentRadio = AutomaticProperties.getCurrentRadio()
         serialQueue.async() {
             AutomaticProperties.properties["radio"] = currentRadio
+        }
+    }
+    
+    @objc func reachabilityChanged(_ note: Notification) {
+        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
+            return
+        }
+        let reachability = note.object as! Reachability
+        
+        var network = String()
+        if !reachability.isReachable {
+            network = ""
+        } else if reachability.isReachableViaWiFi {
+            network = "WiFi"
+        } else if reachability.isReachableViaWWAN {
+            let telephonyInfo = AutomaticProperties.getCurrentRadio()
+            if telephonyInfo == "GPRS" {
+                network = "2G"
+            } else if telephonyInfo == "Edge" {
+                network = "2G"
+            } else if telephonyInfo == "WCDMA" {
+                network = "3G"
+            } else if telephonyInfo == "HSDPA" {
+                network = "3G"
+            } else if telephonyInfo == "HSUPA" {
+                network = "3G"
+            } else if telephonyInfo == "CDMA1x" {
+                network = "2G"
+            } else if telephonyInfo == "CDMAEVDORev0" {
+                network = "3G"
+            } else if telephonyInfo == "CDMAEVDORevA" {
+                network = "3G"
+            } else if telephonyInfo == "CDMAEVDORevB" {
+                network = "3G"
+            } else if telephonyInfo == "LTE" {
+                network = "4G"
+            } else {
+                network = "other"
+            }
+        }
+        serialQueue.async() {
+            AutomaticProperties.properties[key["Reachability"]!] = network
+            Logger.debug(message: "Reachability: \(network)")
         }
     }
 
