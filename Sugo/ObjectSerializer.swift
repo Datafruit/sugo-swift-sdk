@@ -196,8 +196,6 @@ extension ObjectSerializer: WKScriptMessageHandler {
         let wvBindings = WebViewBindings.global
         jsContext.setObject(WebViewJSExport.self,
                             forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-        jsContext.evaluateScript(wvBindings.jsSource(of: "Utils"))
-        jsContext.evaluateScript(wvBindings.jsSource(of: "WebViewReport.UI"))
         jsContext.evaluateScript(wvBindings.jsSource(of: "WebViewReport.excute"))
         
         return ["url": WebViewInfoStorage.global.path,

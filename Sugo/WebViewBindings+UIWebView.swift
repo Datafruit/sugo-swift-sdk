@@ -56,6 +56,8 @@ extension WebViewBindings {
             jsContext.evaluateScript(self.jsUIWebViewTrack)
             jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
             jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
+            jsContext.evaluateScript(self.jsUtils)
+            jsContext.evaluateScript(self.jsUIWebViewReport)
         }
     }
     
@@ -85,6 +87,8 @@ extension WebViewBindings {
             jsContext.evaluateScript(self.jsUIWebViewTrack)
             jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
             jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
+            jsContext.evaluateScript(self.jsUtils)
+            jsContext.evaluateScript(self.jsUIWebViewReport)
             
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
@@ -127,6 +131,14 @@ extension UIWebView {
 }
 
 extension WebViewBindings {
+    
+    var jsUIWebViewReport: String {
+        return self.jsSource(of: "WebViewReport.UI")
+    }
+    
+    var jsUtils: String {
+        return self.jsSource(of: "Utils")
+    }
     
     var jsUIWebViewBindingsExcute: String {
         return self.jsSource(of: "WebViewBindings.excute")
