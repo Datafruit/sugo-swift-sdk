@@ -14,17 +14,27 @@ extension WebViewBindings: WKScriptMessageHandler {
     
     func startWKWebViewBindings(webView: inout WKWebView) {
         if !self.wkWebViewJavaScriptInjected {
+            self.wkWebViewCurrentJSSugo = self.wkJavaScriptSugo
             self.wkWebViewCurrentJSTrack = self.wkJavaScriptTrack
-            self.wkWebViewCurrentJSSource = self.wkJavaScriptSource
-            self.wkWebViewCurrentJSExcute = self.wkJavaScriptExcute
+            self.wkWebViewCurrentJSBindingsSource = self.wkJavaScriptBindingsSource
+            self.wkWebViewCurrentJSUtils = self.wkJavaScriptUtils
+            self.wkWebViewCurrentJSReportSource = self.wkJavaScriptReportSource
+            self.wkWebViewCurrentJSBindingsExcute = self.wkJavaScriptBindingsExcute
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSSugo)
             webView.configuration.userContentController
                 .addUserScript(self.wkWebViewCurrentJSTrack)
             webView.configuration.userContentController
-                .addUserScript(self.wkWebViewCurrentJSSource)
+                .addUserScript(self.wkWebViewCurrentJSBindingsSource)
             webView.configuration.userContentController
-                .addUserScript(self.wkWebViewCurrentJSExcute)
+                .addUserScript(self.wkWebViewCurrentJSUtils)
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSReportSource)
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSBindingsExcute)
             webView.configuration.userContentController.add(self, name: "WKWebViewBindingsTrack")
             webView.configuration.userContentController.add(self, name: "WKWebViewBindingsTime")
+            webView.configuration.userContentController.add(self, name: "WKWebViewReporter")
             self.wkWebViewJavaScriptInjected = true
             Logger.debug(message: "WKWebView Injected")
         }
@@ -42,22 +52,22 @@ extension WebViewBindings: WKScriptMessageHandler {
     func updateWKWebViewBindings(webView: inout WKWebView) {
         if self.wkWebViewJavaScriptInjected {
             var userScripts = webView.configuration.userContentController.userScripts
-            if let index = userScripts.index(of: self.wkWebViewCurrentJSSource) {
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSBindingsSource) {
                 userScripts.remove(at: index)
             }
-            if let index = userScripts.index(of: self.wkWebViewCurrentJSExcute) {
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSBindingsExcute) {
                 userScripts.remove(at: index)
             }
             webView.configuration.userContentController.removeAllUserScripts()
             for userScript in userScripts {
                 webView.configuration.userContentController.addUserScript(userScript)
             }
-            self.wkWebViewCurrentJSSource = self.wkJavaScriptSource
-            self.wkWebViewCurrentJSExcute = self.wkJavaScriptExcute
+            self.wkWebViewCurrentJSBindingsSource = self.wkJavaScriptBindingsSource
+            self.wkWebViewCurrentJSBindingsExcute = self.wkJavaScriptBindingsExcute
             webView.configuration.userContentController
-                .addUserScript(self.wkWebViewCurrentJSSource)
+                .addUserScript(self.wkWebViewCurrentJSBindingsSource)
             webView.configuration.userContentController
-                .addUserScript(self.wkJavaScriptExcute)
+                .addUserScript(self.wkWebViewCurrentJSBindingsExcute)
             Logger.debug(message: "WKWebView Updated")
         }
     }
@@ -95,6 +105,23 @@ extension WebViewBindings: WKScriptMessageHandler {
                     Sugo.mainInstance().time(event: eventName)
                     Logger.debug(message: "time event name = \(eventName)")
                 }
+                
+            case "WKWebViewReporter":
+                if let body = message.body as? [String: Any] {
+                    if let path = body["path"] as? String {
+                        WebViewInfoStorage.global.path = path
+                    }
+                    if let clientWidth = body["clientWidth"] as? String {
+                        WebViewInfoStorage.global.width = clientWidth
+                    }
+                    if let clientHeight = body["clientHeight"] as? String {
+                        WebViewInfoStorage.global.height = clientHeight
+                    }
+                    if let nodes = body["nodes"] as? String {
+                        WebViewInfoStorage.global.nodes = nodes
+                    }
+                }
+                
             default:
                 Logger.debug(message: "Wrong message name = \(message.name)")
             }
@@ -106,14 +133,8 @@ extension WebViewBindings: WKScriptMessageHandler {
 
 extension WebViewBindings {
     
-    var wkJavaScriptExcute: WKUserScript {
-        return WKUserScript(source: self.jsWKWebViewBindingsExcute,
-                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                            forMainFrameOnly: true)
-    }
-    
-    var wkJavaScriptSource: WKUserScript {
-        return WKUserScript(source: self.jsWKWebViewBindingsSource,
+    var wkJavaScriptSugo: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewSugo,
                             injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
                             forMainFrameOnly: true)
     }
@@ -124,16 +145,34 @@ extension WebViewBindings {
                             forMainFrameOnly: true)
     }
     
-    var jsWKWebViewBindingsExcute: String {
-        return self.jsSource(of: "WebViewBindings.excute")
+    var wkJavaScriptBindingsSource: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewBindingsSource,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
     }
     
-    var jsWKWebViewBindingsSource: String {
-        return self.jsSource(of: "WebViewBindings.1")
-            + "sugo_bindings.current_page = '\(self.wkVCPath)::' + sugo.relative_path;\n"
-            + "sugo_bindings.h5_event_bindings = \(self.stringBindings);\n"
-            + self.jsSource(of: "WebViewBindings.2")
+    var wkJavaScriptBindingsExcute: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewBindingsExcute,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
     }
+    
+    var wkJavaScriptUtils: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewUtils,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
+    }
+    
+    var wkJavaScriptReportSource: WKUserScript {
+        return WKUserScript(source: self.jsWKWebViewReportSource,
+                            injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
+                            forMainFrameOnly: true)
+    }
+    
+    var jsWKWebViewSugo: String {
+        return self.jsSource(of: "Sugo")
+    }
+    
     var jsWKWebViewTrack: String {
         
         var nativePath = String()
@@ -179,5 +218,24 @@ extension WebViewBindings {
             + initCode
             + self.jsSource(of: "WebViewTrack.WK")
     }
+    
+    var jsWKWebViewBindingsSource: String {
+        return "sugo.current_page = '\(self.wkVCPath)::' + sugo.relative_path;\n"
+            + "sugo.h5_event_bindings = \(self.stringBindings);\n"
+            + self.jsSource(of: "WebViewBindings.WK")
+    }
+    
+    var jsWKWebViewBindingsExcute: String {
+        return self.jsSource(of: "WebViewBindings.excute")
+    }
+    
+    var jsWKWebViewUtils: String {
+        return self.jsSource(of: "Utils")
+    }
+    
+    var jsWKWebViewReportSource: String {
+        return self.jsSource(of: "WebViewReport.WK")
+    }
+    
 }
 

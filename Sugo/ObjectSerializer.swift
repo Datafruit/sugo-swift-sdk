@@ -188,15 +188,12 @@ class ObjectSerializer: NSObject {
     }
 }
 
-extension ObjectSerializer: WKScriptMessageHandler {
+extension ObjectSerializer {
     
     func getUIWebViewHTMLInfo(from webView: UIWebView) -> [String: Any] {
         
-        let jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
         let wvBindings = WebViewBindings.global
-        jsContext.setObject(WebViewJSExport.self,
-                            forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-        jsContext.evaluateScript(wvBindings.jsSource(of: "WebViewReport.excute"))
+        webView.stringByEvaluatingJavaScript(from: wvBindings.jsSource(of: "WebViewReport.excute"))
         
         return ["url": WebViewInfoStorage.global.path,
                 "clientWidth": WebViewInfoStorage.global.width,
@@ -208,20 +205,6 @@ extension ObjectSerializer: WKScriptMessageHandler {
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
         let wvBindings = WebViewBindings.global
-        let jsUtilsScript = WKUserScript(source: wvBindings.jsSource(of: "Utils"),
-                                         injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                                         forMainFrameOnly: true)
-        let jsReportSourceScript = WKUserScript(source: wvBindings.jsSource(of: "WebViewReport.WK"),
-                                                injectionTime: WKUserScriptInjectionTime.atDocumentEnd,
-                                                forMainFrameOnly: true)
-        if !webView.configuration.userContentController.userScripts.contains(jsUtilsScript) {
-            webView.configuration.userContentController.addUserScript(jsUtilsScript)
-        }
-        if !webView.configuration.userContentController.userScripts.contains(jsReportSourceScript) {
-            webView.configuration.userContentController.addUserScript(jsReportSourceScript)
-        }
-        webView.configuration.userContentController.removeScriptMessageHandler(forName: "WKWebViewReporter")
-        webView.configuration.userContentController.add(self, name: "WKWebViewReporter")
         webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewReport.excute"), completionHandler: nil)
         
         return ["url": WebViewInfoStorage.global.path,
@@ -231,22 +214,4 @@ extension ObjectSerializer: WKScriptMessageHandler {
         ]
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "WKWebViewReporter" {
-            if let body = message.body as? [String: Any] {
-                if let path = body["path"] as? String {
-                    WebViewInfoStorage.global.path = path
-                }
-                if let clientWidth = body["clientWidth"] as? String {
-                    WebViewInfoStorage.global.width = clientWidth
-                }
-                if let clientHeight = body["clientHeight"] as? String {
-                    WebViewInfoStorage.global.height = clientHeight
-                }
-                if let nodes = body["nodes"] as? String {
-                    WebViewInfoStorage.global.nodes = nodes
-                }
-            }
-        }
-    }
 }

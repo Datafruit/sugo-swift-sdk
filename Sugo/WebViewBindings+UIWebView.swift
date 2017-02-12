@@ -50,14 +50,6 @@ extension WebViewBindings {
     
     func updateUIWebViewBindings(webView: inout UIWebView) {
         if self.uiWebViewSwizzleRunning {
-            let jsContext = webView.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-            jsContext.setObject(WebViewJSExport.self,
-                                forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-            jsContext.evaluateScript(self.jsUIWebViewTrack)
-            jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
-            jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
-            jsContext.evaluateScript(self.jsUtils)
-            jsContext.evaluateScript(self.jsUIWebViewReport)
         }
     }
     
@@ -84,11 +76,13 @@ extension WebViewBindings {
             let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
             jsContext.setObject(WebViewJSExport.self,
                                 forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-            jsContext.evaluateScript(self.jsUIWebViewTrack)
-            jsContext.evaluateScript(self.jsUIWebViewBindingsSource)
-            jsContext.evaluateScript(self.jsUIWebViewBindingsExcute)
-            jsContext.evaluateScript(self.jsUtils)
-            jsContext.evaluateScript(self.jsUIWebViewReport)
+            
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewSugo)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewTrack)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewBindingsSource)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewUtils)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewReportSource)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewBindingsExcute)
             
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
@@ -132,24 +126,8 @@ extension UIWebView {
 
 extension WebViewBindings {
     
-    var jsUIWebViewReport: String {
-        return self.jsSource(of: "WebViewReport.UI")
-    }
-    
-    var jsUtils: String {
-        return self.jsSource(of: "Utils")
-    }
-    
-    var jsUIWebViewBindingsExcute: String {
-        return self.jsSource(of: "WebViewBindings.excute")
-    }
-    
-    var jsUIWebViewBindingsSource: String {
-        
-        return self.jsSource(of: "WebViewBindings.1")
-                + "sugo_bindings.current_page = '\(self.uiVCPath)::' + sugo.relative_path;\n"
-                + "sugo_bindings.h5_event_bindings = \(self.stringBindings);\n"
-                + self.jsSource(of: "WebViewBindings.2")
+    var jsUIWebViewSugo: String {
+        return self.jsSource(of: "Sugo")
     }
     
     var jsUIWebViewTrack: String {
@@ -196,6 +174,25 @@ extension WebViewBindings {
             + pageName
             + initCode
             + self.jsSource(of: "WebViewTrack.UI")
+    }
+    
+    var jsUIWebViewBindingsSource: String {
+        
+        return "sugo.current_page = '\(self.uiVCPath)::' + sugo.relative_path;\n"
+            + "sugo.h5_event_bindings = \(self.stringBindings);\n"
+            + self.jsSource(of: "WebViewBindings.UI")
+    }
+    
+    var jsUIWebViewBindingsExcute: String {
+        return self.jsSource(of: "WebViewBindings.excute")
+    }
+    
+    var jsUIWebViewUtils: String {
+        return self.jsSource(of: "Utils")
+    }
+    
+    var jsUIWebViewReportSource: String {
+        return self.jsSource(of: "WebViewReport.UI")
     }
     
 }

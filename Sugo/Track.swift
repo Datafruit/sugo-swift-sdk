@@ -78,10 +78,10 @@ class Track {
             || !sugo.decideInstance.webSocketWrapper!.connected
             || !sugo.isCodelessTesting {
             p += AutomaticProperties.properties
-            p[key["Time"]!] = date
+            p[key["EventTime"]!] = date
             trackEvent += p
         } else {
-            p[key["Time"]!] = epochSeconds
+            p[key["EventTime"]!] = epochSeconds
             trackEvent["properties"] = p
         }
         eventsQueue.append(trackEvent)

@@ -35,7 +35,7 @@ class AutomaticProperties {
         p[key["Manufacturer"]!] = "Apple"
         p[key["SystemName"]!] = UIDevice.current.systemName
         p[key["SystemVersion"]!] = UIDevice.current.systemVersion
-        p[key["Model"]!] = AutomaticProperties.deviceModel()
+        p[key["DeviceModel"]!] = AutomaticProperties.deviceModel()
         p[key["ScreenWidth"]!] = Int(size.width)
         p[key["ScreenHeight"]!] = Int(size.height)
         return p
