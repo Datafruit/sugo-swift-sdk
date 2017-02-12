@@ -55,13 +55,19 @@ extension WebViewBindings: WKScriptMessageHandler {
             if let index = userScripts.index(of: self.wkWebViewCurrentJSBindingsSource) {
                 userScripts.remove(at: index)
             }
+            if let index = userScripts.index(of: self.wkWebViewCurrentJSBindingsExcute) {
+                userScripts.remove(at: index)
+            }
             webView.configuration.userContentController.removeAllUserScripts()
             for userScript in userScripts {
                 webView.configuration.userContentController.addUserScript(userScript)
             }
             self.wkWebViewCurrentJSBindingsSource = self.wkJavaScriptBindingsSource
+            self.wkWebViewCurrentJSBindingsExcute = self.wkJavaScriptBindingsExcute
             webView.configuration.userContentController
                 .addUserScript(self.wkWebViewCurrentJSBindingsSource)
+            webView.configuration.userContentController
+                .addUserScript(self.wkWebViewCurrentJSBindingsExcute)
             Logger.debug(message: "WKWebView Updated")
         }
     }
