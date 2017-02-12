@@ -127,7 +127,7 @@ class Network {
                                                                key["SDKType"]!: "Swift",
                                                                key["SDKVersion"]!: AutomaticProperties.libVersion(),
                                                                key["DistinctID"]!: distinct_id,
-                                                               key["Time"]!: Date()]])
+                                                               key["EventTime"]!: Date()]])
 
         let responseParser: (Data) -> Int? = { data in
             let response = String(data: data, encoding: String.Encoding.utf8)
