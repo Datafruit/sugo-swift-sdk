@@ -37,7 +37,10 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
 
     /// The a SugoDelegate object that gives control over Sugo network activity.
     open var delegate: SugoDelegate?
-
+    
+    /// distinctId string that uniquely identifies the current device.
+    open var deviceId = ""
+    
     /// distinctId string that uniquely identifies the current user.
     open var distinctId = ""
     
@@ -175,6 +178,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         flushInstance.delegate = self
         let label = "io.sugo.\(self.apiToken)"
         serialQueue = DispatchQueue(label: label)
+        deviceId = defaultDeviceId()
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
@@ -189,7 +193,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     private func setupListeners() {
-        trackIntegration()
         trackStayTime()
         let notificationCenter = NotificationCenter.default
         #if os(iOS)
@@ -241,6 +244,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         
+        trackIntegration()
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
@@ -308,42 +312,30 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
             self.trackInstance.track(eventID: nil,
                                      eventName: value["BackgroundStay"]!,
                                      properties: nil,
-                                     eventsQueue: &self.eventsQueue,
-                                     timedEvents: &self.timedEvents,
-                                     superProperties: self.superProperties,
-                                     distinctId: self.distinctId,
-                                     date: Date())
+                                     date: Date(),
+                                     sugo: self)
             self.trackInstance.track(eventID: nil,
                                      eventName: value["BackgroundExit"]!,
                                      properties: nil,
-                                     eventsQueue: &self.eventsQueue,
-                                     timedEvents: &self.timedEvents,
-                                     superProperties: self.superProperties,
-                                     distinctId: self.distinctId,
-                                     date: Date())
+                                     date: Date(),
+                                     sugo: self)
             self.trackInstance.track(eventID: nil,
                                      eventName: value["AppStay"]!,
                                      properties: nil,
-                                     eventsQueue: &self.eventsQueue,
-                                     timedEvents: &self.timedEvents,
-                                     superProperties: self.superProperties,
-                                     distinctId: self.distinctId,
-                                     date: Date())
+                                     date: Date(),
+                                     sugo: self)
             self.trackInstance.track(eventID: nil,
                                      eventName: value["AppExit"]!,
                                      properties: nil,
-                                     eventsQueue: &self.eventsQueue,
-                                     timedEvents: &self.timedEvents,
-                                     superProperties: self.superProperties,
-                                     distinctId: self.distinctId,
-                                     date: Date())
+                                     date: Date(),
+                                     sugo: self)
         }
         self.flushInstance.flushEventsQueue(&self.eventsQueue)
         serialQueue.async() {
             self.archive()
         }
     }
-
+    
     func defaultDistinctId() -> String {
         
         let userDefaults = UserDefaults.standard
@@ -351,13 +343,27 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         if let distinctId = userDefaults.string(forKey: defaultsKey) {
             return distinctId
         } else {
+            let distinctId = UUID().uuidString
+            userDefaults.set(distinctId, forKey: defaultsKey)
+            userDefaults.synchronize()
+            return distinctId
+        }
+    }
+
+    func defaultDeviceId() -> String {
+        
+        let userDefaults = UserDefaults.standard
+        let defaultsKey = "deviceIdKey"
+        if let deviceId = userDefaults.string(forKey: defaultsKey) {
+            return deviceId
+        } else {
             if SugoPermission.canObtainIFA {
-                var distinctId: String? = IFA()
-                if distinctId == nil && NSClassFromString("UIDevice") != nil {
-                    distinctId = UIDevice.current.identifierForVendor?.uuidString
+                var deviceId: String? = IFA()
+                if deviceId == nil && NSClassFromString("UIDevice") != nil {
+                    deviceId = UIDevice.current.identifierForVendor?.uuidString
                 }
-                if let distId = distinctId {
-                    userDefaults.set(distId, forKey: defaultsKey)
+                if let devId = deviceId {
+                    userDefaults.set(devId, forKey: defaultsKey)
                 } else {
                     userDefaults.set(UUID().uuidString, forKey: defaultsKey)
                 }
@@ -562,6 +568,7 @@ extension SugoInstance {
      */
     open func reset() {
         serialQueue.async() {
+            self.deviceId = self.defaultDeviceId()
             self.distinctId = self.defaultDistinctId()
             self.superProperties = InternalProperties()
             self.eventsQueue = Queue()
@@ -603,6 +610,10 @@ extension SugoInstance {
          timedEvents,
          distinctId,
          decideInstance.codelessInstance.codelessBindings) = Persistence.unarchive(token: apiToken)
+        
+        if deviceId == "" {
+            deviceId = defaultDeviceId()
+        }
 
         if distinctId == "" {
             distinctId = defaultDistinctId()
@@ -620,12 +631,10 @@ extension SugoInstance {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
             serialQueue.async() {
-                Network.trackIntegration(projectID: self.projectID, apiToken: self.apiToken, distinct_id: self.distinctId) {
-                    (success) in
-                    if success {
-                        UserDefaults.standard.set(true, forKey: defaultsKey)
-                        UserDefaults.standard.synchronize()
-                    }
+                if let value = SugoConfiguration.DimensionValue as? [String: String] {
+                    self.track(eventName: value["Integration"]!)
+                    UserDefaults.standard.set(true, forKey: defaultsKey)
+                    UserDefaults.standard.synchronize()
                 }
             }
         }
@@ -685,11 +694,8 @@ extension SugoInstance {
             self.trackInstance.track(eventID: eventID,
                                      eventName: eventName,
                                      properties: properties,
-                                     eventsQueue: &self.eventsQueue,
-                                     timedEvents: &self.timedEvents,
-                                     superProperties: self.superProperties,
-                                     distinctId: self.distinctId,
-                                     date: date)
+                                     date: date,
+                                     sugo: self)
 
             if self.decideInstance.webSocketWrapper != nil
                 && self.decideInstance.webSocketWrapper!.connected

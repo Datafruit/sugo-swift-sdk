@@ -74,11 +74,11 @@ class Network {
                 failure(.parseError, data, response)
                 return
             }
-//            Logger.debug(message: "Response Data:\(String(data: responseData, encoding: String.Encoding.utf8)!)")
-//            Logger.debug(message: "Response URL:\(httpResponse.url!)")
-//            Logger.debug(message: "Response State Code:\(httpResponse.statusCode)")
-//            Logger.debug(message: "Response Header Field:\n\(httpResponse.allHeaderFields)")
-//            Logger.debug(message: "Result:\(result)")
+            Logger.debug(message: "Response Data:\(String(data: responseData, encoding: String.Encoding.utf8)!)")
+            Logger.debug(message: "Response URL:\(httpResponse.url!)")
+            Logger.debug(message: "Response State Code:\(httpResponse.statusCode)")
+            Logger.debug(message: "Response Header Field:\n\(httpResponse.allHeaderFields)")
+            Logger.debug(message: "Result:\(result)")
             success(result, response)
         }.resume()
     }
@@ -112,53 +112,5 @@ class Network {
                         headers: headers,
                         parse: parse)
     }
-
-    class func trackIntegration(projectID: String, apiToken: String, distinct_id: String, completion: @escaping (Bool) -> ()) {
-        
-        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
-            return
-        }
-        guard let value = SugoConfiguration.DimensionValue as? [String: String] else {
-            return
-        }
-        
-        let requestData = SugoEventsSerializer.encode(batch: [[key["EventName"]!: value["Integration"]!,
-                                                               key["Token"]!: apiToken,
-                                                               key["SDKType"]!: "Swift",
-                                                               key["SDKVersion"]!: AutomaticProperties.libVersion(),
-                                                               key["DistinctID"]!: distinct_id,
-                                                               key["EventTime"]!: Date()]])
-
-        let responseParser: (Data) -> Int? = { data in
-            let response = String(data: data, encoding: String.Encoding.utf8)
-            if let response = response {
-                return Int(response) ?? 0
-            }
-            return nil
-        }
-
-        if let requestData = requestData {
-            let requestBody = requestData.data(using: String.Encoding.utf8)
-            
-            let resource = Network.buildResource(path: FlushType.events.rawValue,
-                                                 method: .post,
-                                                 requestBody: requestBody,
-                                                 queryItems: [URLQueryItem(name: "locate",
-                                                                           value: projectID)],
-                                                 headers: ["Accept-Encoding": "gzip"],
-                                                 parse: responseParser)
-
-            Network.apiRequest(base: BasePath.CollectEventsAPI,
-                               resource: resource,
-                               failure: { (reason, data, response) in
-                                Logger.debug(message: "failed to track integration")
-                                completion(false)
-                },
-                               success: { (result, response) in
-                                Logger.debug(message: "integration tracked")
-                                completion(true)
-                }
-            )
-        }
-    }
+    
 }

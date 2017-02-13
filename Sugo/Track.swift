@@ -20,15 +20,12 @@ class Track {
     init(apiToken: String) {
         self.apiToken = apiToken
     }
-
+    
     func track(eventID: String? = nil,
                eventName: String?,
                properties: Properties? = nil,
-               eventsQueue: inout Queue,
-               timedEvents: inout InternalProperties,
-               superProperties: InternalProperties,
-               distinctId: String,
-               date: Date) {
+               date: Date,
+               sugo: SugoInstance) {
         
         guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
             return
@@ -39,12 +36,11 @@ class Track {
             Logger.info(message: "sugo track called with empty event parameter. using 'mp_event'")
             evn = "sugo_event"
         }
-
+        
         assertPropertyTypes(properties)
         let epochSeconds = date.timeIntervalSince1970
-        let eventStartTime = timedEvents[evn!] as? Double
+        let eventStartTime = sugo.timedEvents[evn!] as? Double
         var p = InternalProperties()
-        let sugo = Sugo.mainInstance()
         
         if let vc = UIViewController.sugoCurrentViewController {
             p[key["PagePath"]!] = NSStringFromClass(vc.classForCoder)
@@ -57,17 +53,17 @@ class Track {
             }
         }
         p[key["Token"]!] = apiToken
-        p[key["SessionID"]!] = Sugo.mainInstance().sessionID
+        p[key["SessionID"]!] = sugo.sessionID
         if let eventStartTime = eventStartTime {
-            timedEvents.removeValue(forKey: evn!)
+            sugo.timedEvents.removeValue(forKey: evn!)
             p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
-        p[key["DistinctID"]!] = distinctId
-        p += superProperties
+        p[key["DistinctID"]!] = sugo.distinctId
+        p += sugo.superProperties
         if let properties = properties {
             p += properties
         }
-
+        
         var trackEvent: InternalProperties
         if let evid = eventID {
             trackEvent = [key["EventID"]!: evid, key["EventName"]!: evn!]
@@ -84,10 +80,10 @@ class Track {
             p[key["EventTime"]!] = epochSeconds
             trackEvent["properties"] = p
         }
-        eventsQueue.append(trackEvent)
-
-        if eventsQueue.count > QueueConstants.queueSize {
-            eventsQueue.remove(at: 0)
+        sugo.eventsQueue.append(trackEvent)
+        
+        if sugo.eventsQueue.count > QueueConstants.queueSize {
+            sugo.eventsQueue.remove(at: 0)
         }
     }
 
