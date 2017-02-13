@@ -58,6 +58,7 @@ class Track {
             sugo.timedEvents.removeValue(forKey: evn!)
             p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
+        p[key["DeviceID"]!] = sugo.deviceId
         p[key["DistinctID"]!] = sugo.distinctId
         p += sugo.superProperties
         if let properties = properties {
