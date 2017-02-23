@@ -11,8 +11,8 @@ import Foundation
 
 struct BasePath {
     
-    static var BindingEventsURL = ServerURL.bindings
-    static var CollectEventsAPI = ServerURL.collection
+    static var BindingEventsURL = SugoServerURL.bindings
+    static var CollectEventsAPI = SugoServerURL.collection
 
     static func buildURL(base: String, path: String, queryItems: [URLQueryItem]?) -> URL? {
         guard let url = URL(string: base) else {

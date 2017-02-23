@@ -9,11 +9,16 @@
 import Foundation
 
 
+
 class SugoEventsSerializer {
     
     class func encode(batch: [[String: Any]]) -> String? {
         
+        let userDefaults = UserDefaults.standard
+        let dimensions = userDefaults.object(forKey: "SugoDimensions") as! [[String: String]]
+        
         var types = [String: String]()
+        var localKeys = [String]()
         var keys = [String]()
         var values = [[String: Any]]()
         var dataString = String()
@@ -23,21 +28,54 @@ class SugoEventsSerializer {
         let ValuesSeperator = "\(Character(UnicodeScalar(1)))"
         let LinesSeperator = "\(Character(UnicodeScalar(2)))"
         
-        // Mark: - For types and keys
+        // Mark: - For keys
         for object in batch {
             for key in object.keys.reversed() {
-                if !keys.contains(key) {
-                    if object[key] is Int {
-                        types[key] = "l"
-                    } else if object[key] is Date {
-                        types[key] = "d"
-                    } else if object[key] is Float
-                        || object[key] is Double {
-                        types[key] = "f"
-                    } else {
-                        types[key] = "s"
-                    }
+                if !localKeys.contains(key) {
+                    localKeys.append(key)
+                }
+            }
+        }
+        
+        for dimension in dimensions {
+            let dimensionKey = dimension["name"]!
+            for key in localKeys {
+                if dimensionKey == key {
                     keys.append(key)
+                }
+            }
+        }
+        
+        // Mark: - For types
+        for dimension in dimensions {
+            let dimensionKey = dimension["name"]!
+            let dimensionType = dimension["type"]!
+            var type: String?
+            for key in keys {
+                if dimensionKey == key {
+                    switch dimensionType {
+                    case "0":
+                        type = "l"
+                        break
+                    case "1":
+                        type = "f"
+                        break
+                    case "2":
+                        type = "s"
+                        break
+                    case "4":
+                        type = "d"
+                        break
+                    case "5":
+                        type = "i"
+                        break
+                    default:
+                        break
+                    }
+                    if type != nil {
+                        types[key] = type!
+                    }
+                    break
                 }
             }
         }
@@ -59,7 +97,6 @@ class SugoEventsSerializer {
                     } else {
                         value[key] = object[key]
                     }
-                    
                 } else {
                     if types[key] == "s" {
                         value[key] = ""

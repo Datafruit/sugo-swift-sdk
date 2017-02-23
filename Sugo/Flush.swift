@@ -78,6 +78,11 @@ class Flush: AppLifecycle {
     }
 
     func flushQueueInBatches(_ queue: inout Queue, type: FlushType) {
+        
+        guard UserDefaults.standard.object(forKey: "SugoDimensions") != nil else {
+            return
+        }
+        
         while !queue.isEmpty {
             var shouldContinue = false
             let batchSize = min(queue.count, APIConstants.batchSize)

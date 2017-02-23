@@ -27,9 +27,7 @@ class Track {
                date: Date,
                sugo: SugoInstance) {
         
-        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
-            return
-        }
+        let keys = SugoDimensions.keys
         
         var evn = eventName
         if evn == nil || evn!.characters.isEmpty {
@@ -42,24 +40,14 @@ class Track {
         let eventStartTime = sugo.timedEvents[evn!] as? Double
         var p = InternalProperties()
         
-        if let vc = UIViewController.sugoCurrentViewController {
-            p[key["PagePath"]!] = NSStringFromClass(vc.classForCoder)
-            if !SugoPageInfos.global.infos.isEmpty  {
-                for info in SugoPageInfos.global.infos {
-                    if info["page"] == NSStringFromClass(vc.classForCoder) {
-                        p[key["PageName"]!] = info["page_name"]
-                    }
-                }
-            }
-        }
-        p[key["Token"]!] = apiToken
-        p[key["SessionID"]!] = sugo.sessionID
+        p[keys["Token"]!] = apiToken
+        p[keys["SessionID"]!] = sugo.sessionID
         if let eventStartTime = eventStartTime {
             sugo.timedEvents.removeValue(forKey: evn!)
-            p[key["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
+            p[keys["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
-        p[key["DeviceID"]!] = sugo.deviceId
-        p[key["DistinctID"]!] = sugo.distinctId
+        p[keys["DeviceID"]!] = sugo.deviceId
+        p[keys["DistinctID"]!] = sugo.distinctId
         p += sugo.superProperties
         if let properties = properties {
             p += properties
@@ -67,18 +55,18 @@ class Track {
         
         var trackEvent: InternalProperties
         if let evid = eventID {
-            trackEvent = [key["EventID"]!: evid, key["EventName"]!: evn!]
+            trackEvent = [keys["EventID"]!: evid, keys["EventName"]!: evn!]
         } else {
-            trackEvent = [key["EventName"]!: evn!]
+            trackEvent = [keys["EventName"]!: evn!]
         }
         if sugo.decideInstance.webSocketWrapper == nil
             || !sugo.decideInstance.webSocketWrapper!.connected
             || !sugo.isCodelessTesting {
             p += AutomaticProperties.properties
-            p[key["EventTime"]!] = date
+            p[keys["EventTime"]!] = date
             trackEvent += p
         } else {
-            p[key["EventTime"]!] = epochSeconds
+            p[keys["EventTime"]!] = epochSeconds
             trackEvent["properties"] = p
         }
         sugo.eventsQueue.append(trackEvent)

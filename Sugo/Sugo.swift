@@ -90,21 +90,6 @@ open class Sugo {
     open class func removeInstance(name: String) {
         SugoManager.sharedInstance.removeInstance(name: name)
     }
-    
-    class func loadConfigurationPropertyList(name: String) -> InternalProperties {
-        var configuration = InternalProperties()
-        let bundle = Bundle(for: Sugo.self)
-        if let url = bundle.url(forResource: name, withExtension: "plist"),
-            let plist = try? PropertyListSerialization.propertyList(from: Data(contentsOf: url),
-                                                                options: PropertyListSerialization.ReadOptions.mutableContainersAndLeaves,
-                                                                format: nil),
-            let c = plist as? InternalProperties {
-            configuration = c
-        }
-        Logger.debug(message: "Configuration Property List:\n\(configuration)")
-        return configuration
-    }
-
 }
 
 class SugoManager {
@@ -130,10 +115,9 @@ class SugoManager {
         mainInstance = instance
         instances[instanceName] = instance
         
-        if let value = SugoConfiguration.DimensionValue as? [String: String] {
-            instance.track(eventName: value["AppEnter"]!)
-            instance.time(event: value["AppStay"]!)
-        }
+        let values = SugoDimensions.values
+        instance.track(eventName: values["AppEnter"]!)
+        instance.time(event: values["AppStay"]!)
         
         return instance
     }
