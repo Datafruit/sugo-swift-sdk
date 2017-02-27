@@ -18,11 +18,12 @@ class DecideRequest: Network {
     struct DecideQueryItems {
         let version: URLQueryItem
         let lib: URLQueryItem
+        let projectId: URLQueryItem
         let token: URLQueryItem
         let distinctId: URLQueryItem
         let properties: URLQueryItem
 
-        init(distinctId: String, token: String) {
+        init(projectId: String, token: String, distinctId: String) {
             let infoDict = Bundle.main.infoDictionary
             if let infoDict = infoDict,
                 let version = infoDict["CFBundleShortVersionString"] {
@@ -33,6 +34,7 @@ class DecideRequest: Network {
                                             value: "1.0.0")
             }
             self.lib = URLQueryItem(name: "lib", value: "iphone")
+            self.projectId = URLQueryItem(name: "projectId", value: projectId)
             self.token = URLQueryItem(name: "token", value: token)
             self.distinctId = URLQueryItem(name: "distinct_id", value: distinctId)
 
@@ -47,12 +49,13 @@ class DecideRequest: Network {
         }
 
         func toArray() -> [URLQueryItem] {
-            return [version, lib, token, distinctId, properties]
+            return [version, lib, projectId, token, distinctId, properties]
         }
     }
 
-    func sendRequest(distinctId: String,
+    func sendRequest(projectId: String,
                      token: String,
+                     distinctId: String,
                      completion: @escaping (DecideResult?) -> Void) {
 
         let responseParser: (Data) -> DecideResult? = { data in
@@ -65,7 +68,9 @@ class DecideRequest: Network {
             return response as? DecideResult
         }
 
-        let queryItems = DecideQueryItems(distinctId: distinctId, token: token)
+        let queryItems = DecideQueryItems(projectId: projectId,
+                                          token: token,
+                                          distinctId: distinctId)
         let resource = Network.buildResource(path: decidePath,
                                              method: .get,
                                              queryItems: queryItems.toArray(),

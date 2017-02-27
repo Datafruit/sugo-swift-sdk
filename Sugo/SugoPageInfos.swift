@@ -10,7 +10,7 @@ import UIKit
 
 class SugoPageInfos: NSObject {
 
-    var infos: [[String: String]]
+    var infos: [[String: Any]]
     
     static var global: SugoPageInfos {
         return singleton

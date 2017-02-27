@@ -149,7 +149,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     #endif
     
     var sessionID = ""
-    var projectID = ""
+    var projectId = ""
     var apiToken = ""
     var superProperties = InternalProperties()
     var eventsQueue = Queue()
@@ -167,7 +167,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
          flushInterval: Double) {
 
         if let projectID = projectID, !projectID.isEmpty {
-            self.projectID = projectID
+            self.projectId = projectID
         }
         
         if let apiToken = apiToken, !apiToken.isEmpty {
@@ -178,6 +178,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         flushInstance.delegate = self
         let label = "io.sugo.\(self.apiToken)"
         serialQueue = DispatchQueue(label: label)
+        setupHomePath()
         deviceId = defaultDeviceId()
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
@@ -192,6 +193,13 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         
     }
 
+    private func setupHomePath() {
+        let homePathKey = "HomePath"
+        let rpr = [NSHomeDirectory():""]
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(rpr, forKey: homePathKey)
+    }
+    
     private func setupListeners() {
         trackStayTime()
         let notificationCenter = NotificationCenter.default
@@ -843,8 +851,9 @@ extension SugoInstance {
             var p = Properties()
             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
             for info in SugoPageInfos.global.infos {
-                if info["page"] == NSStringFromClass(vc.classForCoder) {
-                    p[keys["PageName"]!] = info["page_name"]
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder) {
+                    p[keys["PageName"]!] = infoPage
                     break
                 }
             }
@@ -867,8 +876,9 @@ extension SugoInstance {
             var p = Properties()
             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
             for info in SugoPageInfos.global.infos {
-                if info["page"] == NSStringFromClass(vc.classForCoder) {
-                    p[keys["PageName"]!] = info["page_name"]
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder) {
+                    p[keys["PageName"]!] = infoPage
                     break
                 }
             }
@@ -894,8 +904,9 @@ extension SugoInstance {
         }
         serialQueue.async {
             self.decideInstance.checkDecide(forceFetch: forceFetch,
-                                            distinctId: self.distinctId,
+                                            projectId: self.projectId,
                                             token: self.apiToken,
+                                            distinctId: self.distinctId,
                                             completion: completion)
         }
     }

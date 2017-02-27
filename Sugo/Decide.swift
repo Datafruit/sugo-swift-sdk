@@ -30,8 +30,9 @@ class Decide {
     let codelessSugoServerURL = SugoServerURL.codeless
 
     func checkDecide(forceFetch: Bool = false,
-                     distinctId: String,
+                     projectId: String,
                      token: String,
+                     distinctId: String,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
 
         let userDefaults = UserDefaults.standard
@@ -42,9 +43,9 @@ class Decide {
 
             do {
                 if let cacheObject = try JSONSerialization.jsonObject(with: cacheData,
-                                                                 options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                                                                      options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
                     
-                        handleDecide(object: cacheObject)
+                    handleDecide(object: cacheObject)
                 }
             } catch {
                 Logger.debug(message: "Failed to serialize EventBindings")
@@ -53,7 +54,9 @@ class Decide {
         
         if !decideFetched || forceFetch {
             let semaphore = DispatchSemaphore(value: 0)
-            decideRequest.sendRequest(distinctId: distinctId, token: token) { decideResult in
+            decideRequest.sendRequest(projectId: projectId,
+                                      token: token,
+                                      distinctId: distinctId) { decideResult in
                 guard let resultObject = decideResult else {
                     semaphore.signal()
                     completion(nil)
@@ -114,14 +117,15 @@ class Decide {
             WebViewBindings.global.fillBindings()
         }
         
-        if let pageInfo = object["page_info"] as? [[String: String]] {
+        if let pageInfo = object["page_info"] as? [[String: Any]] {
             SugoPageInfos.global.infos.removeAll()
             SugoPageInfos.global.infos = pageInfo
         }
         
-        if let dimensions = object["dimensions"] as? [[String: String]] {
+        if let dimensions = object["dimensions"] as? [[String: Any]] {
             let userDefaults = UserDefaults.standard
             userDefaults.set(dimensions, forKey: "SugoDimensions")
+            userDefaults.synchronize()
         }
     }
 

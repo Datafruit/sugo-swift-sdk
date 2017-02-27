@@ -42,9 +42,10 @@ class BindingRequest: BaseWebSocketMessage {
                     WebViewBindings.global.fillBindings()
                 }
                 
-                if let dimensions = self.payload["dimensions"] as? [[String: String]] {
+                if let dimensions = self.payload["dimensions"] as? [[String: Any]] {
                     let userDefaults = UserDefaults.standard
                     userDefaults.set(dimensions, forKey: "SugoDimensions")
+                    userDefaults.synchronize()
                 }
             }
 

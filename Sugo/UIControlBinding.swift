@@ -224,8 +224,9 @@ class UIControlBinding: CodelessBinding {
             if let vc = UIViewController.sugoCurrentViewController {
                 p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
                 for info in SugoPageInfos.global.infos {
-                    if info["page"] == NSStringFromClass(vc.classForCoder) {
-                        p[keys["PageName"]!] = info["page_name"]
+                    if let infoPage = info["page"] as? String,
+                        infoPage == NSStringFromClass(vc.classForCoder) {
+                        p[keys["PageName"]!] = infoPage
                         break
                     }
                 }

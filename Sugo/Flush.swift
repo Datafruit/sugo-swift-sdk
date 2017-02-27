@@ -79,7 +79,10 @@ class Flush: AppLifecycle {
 
     func flushQueueInBatches(_ queue: inout Queue, type: FlushType) {
         
-        guard UserDefaults.standard.object(forKey: "SugoDimensions") != nil else {
+        guard let dimensions = UserDefaults.standard.object(forKey: "SugoDimensions") as? [[String: Any]] else {
+            return
+        }
+        guard !dimensions.isEmpty else {
             return
         }
         

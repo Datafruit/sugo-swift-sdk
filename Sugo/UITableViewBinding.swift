@@ -85,17 +85,18 @@ class UITableViewBinding: CodelessBinding {
                         if let a = self.attributes {
                             p += a.parse()
                         }
-                        let key = SugoDimensions.keys
+                        let keys = SugoDimensions.keys
                         if let vc = UIViewController.sugoCurrentViewController {
-                            p[key["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+                            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
                             for info in SugoPageInfos.global.infos {
-                                if info["page"] == NSStringFromClass(vc.classForCoder) {
-                                    p[key["PageName"]!] = info["page_name"]
+                                if let infoPage = info["page"] as? String,
+                                    infoPage == NSStringFromClass(vc.classForCoder) {
+                                    p[keys["PageName"]!] = infoPage
                                     break
                                 }
                             }
                         }
-                        p[key["EventType"]!] = "click"
+                        p[keys["EventType"]!] = "click"
                         p += ["cell_index": "\(indexPath.row)",
                             "cell_section": "\(indexPath.section)",
                             "cell_label": label]

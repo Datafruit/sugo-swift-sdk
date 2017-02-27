@@ -15,7 +15,7 @@ class SugoEventsSerializer {
     class func encode(batch: [[String: Any]]) -> String? {
         
         let userDefaults = UserDefaults.standard
-        let dimensions = userDefaults.object(forKey: "SugoDimensions") as! [[String: String]]
+        let dimensions = userDefaults.object(forKey: "SugoDimensions") as! [[String: Any]]
         
         var types = [String: String]()
         var localKeys = [String]()
@@ -38,7 +38,7 @@ class SugoEventsSerializer {
         }
         
         for dimension in dimensions {
-            let dimensionKey = dimension["name"]!
+            let dimensionKey = "\(dimension["name"]!)"
             for key in localKeys {
                 if dimensionKey == key {
                     keys.append(key)
@@ -48,8 +48,8 @@ class SugoEventsSerializer {
         
         // Mark: - For types
         for dimension in dimensions {
-            let dimensionKey = dimension["name"]!
-            let dimensionType = dimension["type"]!
+            let dimensionKey = "\(dimension["name"]!)"
+            let dimensionType = "\(dimension["type"]!)"
             var type: String?
             for key in keys {
                 if dimensionKey == key {
@@ -83,7 +83,7 @@ class SugoEventsSerializer {
         for key in keys {
             dataString = dataString + types[key]! + TypeSeperator + key + KeysSeperator
         }
-        dataString.characters.removeLast()
+        dataString = dataString.substring(to: dataString.index(before: dataString.endIndex))
         dataString = dataString + LinesSeperator
         
         // Mark: - For values

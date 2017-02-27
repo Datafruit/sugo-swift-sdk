@@ -32,12 +32,12 @@ class FlushRequest: Network {
 
         let requestBody = requestData.data(using: String.Encoding.utf8)
 //        Logger.debug(message: requestData)
-        let projectID = Sugo.mainInstance().projectID
+        let projectId = Sugo.mainInstance().projectId
         let resource = Network.buildResource(path: type.rawValue,
                                              method: .post,
                                              requestBody: requestBody,
                                              queryItems: [URLQueryItem(name: "locate",
-                                                                       value: projectID)],
+                                                                       value: projectId)],
                                              headers: ["Accept-Encoding": "gzip"],
                                              parse: responseParser)
 
