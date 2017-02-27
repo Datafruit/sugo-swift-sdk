@@ -1,5 +1,5 @@
 //
-//  WebViewJSExport.swift
+//  SugoWebViewJSExport.swift
 //  Sugo
 //
 //  Created by Zack on 28/11/16.
@@ -11,14 +11,14 @@ import WebKit
 import JavaScriptCore
 
 
-@objc protocol WebViewJSExportProtocol: NSObjectProtocol, JSExport {
+@objc protocol SugoWebViewJSExportProtocol: NSObjectProtocol, JSExport {
     
     static func trackOf(id: String, name: String, properties: String)
     static func timeOf(event: String)
     static func infoOf(path: String, nodes: String, width: String, height: String)
 }
 
-class WebViewJSExport: NSObject, WebViewJSExportProtocol {
+class SugoWebViewJSExport: NSObject, SugoWebViewJSExportProtocol {
     
     class func trackOf(id: String, name: String, properties: String) {
        

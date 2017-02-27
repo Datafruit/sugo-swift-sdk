@@ -54,6 +54,9 @@ extension WebViewBindings {
     }
     
     func uiWebViewDidStartLoad(view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) {
+        let jsContext = (webView as! UIWebView).value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
+        jsContext.setObject(SugoWebViewJSExport.self,
+                            forKeyedSubscript: "SugoWebViewJSExport" as (NSCopying & NSObjectProtocol)!)
         if self.uiWebViewJavaScriptInjected {
             self.uiWebViewJavaScriptInjected = false
             Logger.debug(message: "UIWebView Uninjected")
@@ -74,16 +77,9 @@ extension WebViewBindings {
         }
         if !self.uiWebViewJavaScriptInjected {
             let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-            jsContext.setObject(WebViewJSExport.self,
-                                forKeyedSubscript: "WebViewJSExport" as (NSCopying & NSObjectProtocol)!)
-            
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewSugo)
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewTrack)
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewBindingsSource)
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewUtils)
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewReportSource)
-            wv.stringByEvaluatingJavaScript(from: self.jsUIWebViewBindingsExcute)
-            
+            jsContext.setObject(SugoWebViewJSExport.self,
+                                forKeyedSubscript: "SugoWebViewJSExport" as (NSCopying & NSObjectProtocol)!)
+            wv.stringByEvaluatingJavaScript(from: self.jsUIWebView)
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
         }
@@ -126,73 +122,123 @@ extension UIWebView {
 
 extension WebViewBindings {
     
-    var jsUIWebViewSugo: String {
-        return self.jsSource(of: "Sugo")
-    }
-    
-    var jsUIWebViewTrack: String {
+    var jsUIWebView: String {
         
-        var nativePath = String()
-        if let path = self.uiWebView?.request?.url?.path {
-            nativePath =  path
-        }
-        var relativePath = "sugo.relative_path = window.location.pathname"
-        if let replacement = SugoConfiguration.Replacement as? [String: String] {
-            for object in replacement {
-                relativePath = relativePath
-                    + ".replace(/\(object.key != "" ? object.key : " ")/g, \(object.value != "" ? object.value : "''"))"
-                do {
-                    let re = try NSRegularExpression(pattern: "^\(object.key != "" ? object.key : "")$", options: NSRegularExpression.Options.anchorsMatchLines)
-                    nativePath = re.stringByReplacingMatches(in: nativePath,
-                                                             options: [],
-                                                             range: NSMakeRange(0, nativePath.characters.count),
-                                                             withTemplate: "\(object.value != "" ? object.value : ""))")
-                } catch {
-                    Logger.debug(message: "NSRegularExpression exception")
-                }
-            }
-            relativePath = relativePath + ";"
-        }
-        
-        var pn = "''"
-        var ic = "''"
-        
-        if !SugoPageInfos.global.infos.isEmpty {
-            for info in SugoPageInfos.global.infos {
-                if info["page"] == nativePath {
-                    pn = info["page"]!
-                    ic = info["code"]!
-                    break
-                }
-            }
-        }
-        let pageName = "sugo.page_name = \(pn);"
-        let initCode = "sugo.init_code = \(ic);"
-        
-        return self.jsSource(of: "WebViewTrack")
-            + relativePath
-            + pageName
-            + initCode
-            + self.jsSource(of: "WebViewTrack.UI")
-    }
-    
-    var jsUIWebViewBindingsSource: String {
-        
-        return "sugo.current_page = '\(self.uiVCPath)::' + sugo.relative_path;\n"
-            + "sugo.h5_event_bindings = \(self.stringBindings);\n"
-            + self.jsSource(of: "WebViewBindings.UI")
-    }
-    
-    var jsUIWebViewBindingsExcute: String {
-        return self.jsSource(of: "WebViewBindings.excute")
+        let js = self.jsUIWebViewUtils
+                + self.jsUIWebViewSugoBegin
+                + self.jsUIWebViewVariables
+                + self.jsUIWebViewAPI
+                + self.jsUIWebViewBindings
+                + self.jsUIWebViewReport
+                + self.jsUIWebViewExcute
+                + self.jsUIWebViewSugoEnd
+        Logger.debug(message: "UIWebView JavaScript:\n\(js)")
+        return js
     }
     
     var jsUIWebViewUtils: String {
         return self.jsSource(of: "Utils")
     }
     
-    var jsUIWebViewReportSource: String {
+    var jsUIWebViewSugoBegin: String {
+        return self.jsSource(of: "SugoBegin")
+    }
+    
+    var jsUIWebViewVariables: String {
+        
+        var nativePath = String()
+        if let path = self.uiWebView?.request?.url?.path {
+            nativePath =  path
+        }
+        var relativePath = "sugo.relative_path = window.location.pathname"
+        
+        let userDefaults = UserDefaults.standard
+        if let rpr = userDefaults.object(forKey: "HomePath") as? [String: String] {
+            let homePath: String = rpr.keys.first!
+            let replacePath: String = rpr[homePath]!
+            relativePath = relativePath + ".replace('\(homePath)', '\(replacePath)')"
+            Logger.debug(message: "relativePath replace HomePath:\n\(relativePath)")
+            do {
+                let re = try NSRegularExpression(pattern: "^\(homePath)$",
+                                                    options: NSRegularExpression.Options.anchorsMatchLines)
+                nativePath = re.stringByReplacingMatches(in: nativePath,
+                                                         options: [],
+                                                         range: NSMakeRange(0, nativePath.characters.count),
+                                                         withTemplate: replacePath)
+            } catch {
+                Logger.debug(message: "NSRegularExpression exception")
+            }
+        }
+        
+        if let replacements = SugoConfiguration.Replacements as? [String: [String: String]] {
+            for replacement in replacements {
+                
+                let key = replacement.value.keys.first!
+                let value = replacement.value[key]!
+                
+                relativePath = relativePath
+                    + ".replace(\(key.characters.count >= 2 ? key : "''"), '\(value)')"
+            }
+        }
+        relativePath = relativePath + ";\n"
+        relativePath = relativePath + "sugo.relative_path += window.location.hash;\n"
+        Logger.debug(message: "relativePath:\n\(relativePath)")
+        
+        var infoObject = ["code": "", "page_name": ""]
+        if !SugoPageInfos.global.infos.isEmpty {
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == nativePath {
+                    infoObject["page_name"] = infoPage
+                    if let infoCode = info["code"] as? String {
+                        infoObject["code"] = infoCode
+                    }
+                    break
+                }
+            }
+        }
+        
+        var initInfo = "sugo.init = {};\n"
+        do {
+            let infoData = try JSONSerialization.data(withJSONObject: infoObject,
+                                                       options: JSONSerialization.WritingOptions.prettyPrinted)
+            let infoString = String(data: infoData, encoding: String.Encoding.utf8)!
+            initInfo = "sugo.init = \(infoString);\n"
+        } catch {
+            Logger.debug(message: "Sugo init info exception")
+        }
+        
+        let vcPath = "sugo.current_page = '\(self.uiVCPath)::' + window.location.pathname;\n"
+        let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
+        let variables = self.jsSource(of: "WebViewVariables")
+        
+        return relativePath
+            + initInfo
+            + vcPath
+            + bindings
+            + variables
+    }
+    
+    var jsUIWebViewAPI: String {
+        
+        return self.jsSource(of: "WebViewAPI.UI")
+    }
+    
+    var jsUIWebViewBindings: String {
+        
+        return self.jsSource(of: "WebViewBindings.UI")
+    }
+    
+    var jsUIWebViewReport: String {
         return self.jsSource(of: "WebViewReport.UI")
+    }
+    
+    var jsUIWebViewExcute: String {
+        return self.jsSource(of: "WebViewExcute.Sugo")
+    }
+    
+    var jsUIWebViewSugoEnd: String {
+        return self.jsSource(of: "SugoEnd")
     }
     
 }

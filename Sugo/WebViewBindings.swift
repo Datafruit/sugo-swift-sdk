@@ -41,12 +41,7 @@ class WebViewBindings: NSObject {
     lazy var wkDidMoveToWindowBlockName = UUID().uuidString
     lazy var wkRemoveFromSuperviewBlockName = UUID().uuidString
     lazy var wkWebViewDidFinishBlockName = UUID().uuidString
-    lazy var wkWebViewCurrentJSSugo = WKUserScript()
-    lazy var wkWebViewCurrentJSTrack = WKUserScript()
-    lazy var wkWebViewCurrentJSBindingsSource = WKUserScript()
-    lazy var wkWebViewCurrentJSBindingsExcute = WKUserScript()
-    lazy var wkWebViewCurrentJSUtils = WKUserScript()
-    lazy var wkWebViewCurrentJSReportSource = WKUserScript()
+    lazy var wkWebViewCurrentJS = WKUserScript()
     
     static var global: WebViewBindings {
         return singleton
