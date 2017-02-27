@@ -17,7 +17,7 @@ extension UIView {
             return encryptedStuff
         }
         let SALT = "1l0v3c4a8s4n018cl3d93kxled3kcle3j19384jdo2dk3"
-        let data = (input + SALT).data(using: .ascii)
+        let data = (input + SALT).data(using: .unicode)
         if let digest = data?.sha256()?.bytes {
             for i in 0..<20 {
                 encryptedStuff.appendFormat("%02x", digest[i])
