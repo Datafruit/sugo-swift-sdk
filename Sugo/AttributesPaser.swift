@@ -18,7 +18,7 @@ class AttributesPaser {
             let p = ObjectSelector(string: path)
             if let root = UIApplication.shared.keyWindow?.rootViewController {
                 var objects: [AnyObject]
-                objects = p.selectFrom(root: root, evaluateFinalPredicate: false)
+                objects = p.selectFrom(root: root)
                 aObjects += [key: objects]
             }
         }
