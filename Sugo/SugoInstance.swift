@@ -156,7 +156,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     var timedEvents = InternalProperties()
     var serialQueue: DispatchQueue!
     var taskId = UIBackgroundTaskInvalid
-    var isCodelessTesting: Bool = false
     let flushInstance = Flush()
     let trackInstance: Track
     let decideInstance = Decide()
@@ -659,16 +658,19 @@ extension SugoInstance {
      */
     open func flush(completion: (() -> Void)? = nil) {
         
-        if !self.isCodelessTesting {
-            serialQueue.async() {
-                if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
-                    return
-                }
-                self.flushInstance.flushEventsQueue(&self.eventsQueue)
-                self.archive()
-                if let completion = completion {
-                    DispatchQueue.main.async(execute: completion)
-                }
+        guard self.decideInstance.webSocketWrapper == nil
+            || !self.decideInstance.webSocketWrapper!.connected else {
+            return
+        }
+            
+        serialQueue.async() {
+            if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
+                return
+            }
+            self.flushInstance.flushEventsQueue(&self.eventsQueue)
+            self.archive()
+            if let completion = completion {
+                DispatchQueue.main.async(execute: completion)
             }
         }
     }
@@ -701,8 +703,7 @@ extension SugoInstance {
                                      sugo: self)
 
             if self.decideInstance.webSocketWrapper != nil
-                && self.decideInstance.webSocketWrapper!.connected
-                && self.isCodelessTesting {
+                && self.decideInstance.webSocketWrapper!.connected {
                 
                 if !self.eventsQueue.isEmpty {
                     

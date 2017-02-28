@@ -136,8 +136,7 @@ extension WebViewBindings {
         
         Logger.debug(message: "Object = \(object): K: \(keyPath) = V: \(change?[NSKeyValueChangeKey.newKey])")
         if keyPath == "stringBindings" {
-            if self.mode == WebViewBindingsMode.codeless
-                && Sugo.mainInstance().isCodelessTesting {
+            if self.mode == WebViewBindingsMode.codeless {
                 self.isWebViewNeedReload = true
             }
             if !self.isWebViewNeedReload {

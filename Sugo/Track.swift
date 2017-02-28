@@ -60,13 +60,12 @@ class Track {
             trackEvent = [keys["EventName"]!: evn!]
         }
         if sugo.decideInstance.webSocketWrapper == nil
-            || !sugo.decideInstance.webSocketWrapper!.connected
-            || !sugo.isCodelessTesting {
+            || !sugo.decideInstance.webSocketWrapper!.connected {
             p += AutomaticProperties.properties
             p[keys["EventTime"]!] = date
             trackEvent += p
         } else {
-            p[keys["EventTime"]!] = epochSeconds
+            p[keys["EventTime"]!] = String(format: "%.0f", epochSeconds * 1000)
             trackEvent["properties"] = p
         }
         sugo.eventsQueue.append(trackEvent)
