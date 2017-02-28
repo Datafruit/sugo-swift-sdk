@@ -142,7 +142,11 @@ extension WebViewBindings {
         
         var nativePath = String()
         if let path = self.wkWebView?.url?.path {
+            if let frament = self.wkWebView?.url?.fragment {
+            nativePath =  path + "#" + frament
+        } else {
             nativePath =  path
+            }
         }
         var relativePath = "sugo.relative_path = window.location.pathname"
         
