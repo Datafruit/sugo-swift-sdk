@@ -116,6 +116,7 @@ class SugoManager {
         instances[instanceName] = instance
         
         let values = SugoDimensions.values
+        instance.trackIntegration()
         instance.track(eventName: values["AppEnter"]!)
         instance.time(event: values["AppStay"]!)
         
