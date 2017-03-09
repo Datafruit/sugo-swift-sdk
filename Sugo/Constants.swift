@@ -34,9 +34,10 @@ struct SugoPermission {
 
 struct SugoConfiguration {
     
-    static let URLs             = SugoConfigurationPropertyList.load(name: "SugoURLs")
-    static let Dimensions       = SugoConfigurationPropertyList.load(name: "SugoCustomDimensions")
-    static let Replacements     = SugoConfigurationPropertyList.load(name: "SugoResourcesPathReplacements")
+    static let URLs                     = SugoConfigurationPropertyList.load(name: "SugoURLs")
+    static let Dimensions               = SugoConfigurationPropertyList.load(name: "SugoCustomDimensions")
+    static let PageEventsVCFilterList   = SugoConfigurationPropertyList.load(name: "SugoPageEventsViewControllerFilterList")
+    static let Replacements             = SugoConfigurationPropertyList.load(name: "SugoResourcesPathReplacements")
 }
 
 struct SugoServerURL {
@@ -81,11 +82,27 @@ struct SugoDimensions {
     }()
     
     static let values: [String: String] = {
-        
         if let configuration = SugoConfigurationPropertyList.load(name: "SugoCustomDimensions", key: "Values") as? [String: String] {
             return configuration
         }
         return [String: String]()
+    }()
+}
+
+struct SugoPageEventsVCFilterList {
+    
+    static let black: [String] = {
+        if let configuration = SugoConfiguration.PageEventsVCFilterList["Black"] as? [String] {
+            return configuration
+        }
+        return [String]()
+    }()
+    
+    static let white: [String] = {
+        if let configuration = SugoConfiguration.PageEventsVCFilterList["White"] as? [String] {
+            return configuration
+        }
+        return [String]()
     }()
 }
 
