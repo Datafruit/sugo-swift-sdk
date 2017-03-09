@@ -251,7 +251,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         
-        trackIntegration()
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
@@ -836,6 +835,11 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
+            for black in SugoPageEventsVCFilterList.black {
+                if black == NSStringFromClass(vc.classForCoder) {
+                    return
+                }
+            }
             let keys = SugoDimensions.keys
             let values = SugoDimensions.values
             var p = Properties()
@@ -860,7 +864,11 @@ extension SugoInstance {
             guard let vc = viewController as? UIViewController else {
                 return
             }
-            
+            for black in SugoPageEventsVCFilterList.black {
+                if black == NSStringFromClass(vc.classForCoder) {
+                    return
+                }
+            }
             let keys = SugoDimensions.keys
             let values = SugoDimensions.values
             var p = Properties()
@@ -928,6 +936,34 @@ extension SugoInstance {
             }
         }
         return false
+    }
+    
+    open func connectToCodeless(via url: URL) {
+        
+        Logger.debug(message: "url: \(url.absoluteString)")
+        guard let query = url.query else {
+            return
+        }
+        for queryItem in query.components(separatedBy: "&") {
+            let item = queryItem.components(separatedBy: "=")
+            if item.first! == "sKey" {
+                self.urlSchemesKeyValue = item.last!
+                break
+            }
+        }
+        
+        Logger.debug(message: "url s k v: \(self.urlSchemesKeyValue)")
+        guard self.urlSchemesKeyValue != nil && !self.urlSchemesKeyValue!.isEmpty else {
+            return
+        }
+        
+        for queryItem in query.components(separatedBy: "&") {
+            let item = queryItem.components(separatedBy: "=")
+            if item.first! == "token" && item.last! == self.apiToken {
+                self.connectToWebSocket()
+                break
+            }
+        }
     }
 }
 
