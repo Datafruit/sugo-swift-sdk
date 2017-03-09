@@ -52,6 +52,7 @@ class Track {
         if let properties = properties {
             p += properties
         }
+        p += AutomaticProperties.properties
         
         var trackEvent: InternalProperties
         if let evid = eventID {
@@ -59,16 +60,28 @@ class Track {
         } else {
             trackEvent = [keys["EventName"]!: evn!]
         }
-        if sugo.decideInstance.webSocketWrapper == nil
-            || !sugo.decideInstance.webSocketWrapper!.connected {
-            p += AutomaticProperties.properties
-            p[keys["EventTime"]!] = date
-            trackEvent += p
-        } else {
+        
+        var isCodeless = false
+        if sugo.decideInstance.webSocketWrapper != nil
+            && sugo.decideInstance.webSocketWrapper!.connected {
+            isCodeless = true
+        }
+        
+        if isCodeless {
             p[keys["EventTime"]!] = String(format: "%.0f", epochSeconds * 1000)
             trackEvent["properties"] = p
+        } else {
+            p[keys["EventTime"]!] = date
+            trackEvent += p
         }
+        
         sugo.eventsQueue.append(trackEvent)
+        
+        if isCodeless && !sugo.eventsQueue.isEmpty {
+            sugo.flushInstance.flushQueueViaWebSocket(connection: sugo.decideInstance.webSocketWrapper!,
+                                                      queue: sugo.eventsQueue)
+            sugo.eventsQueue.removeAll()
+        }
         
         if sugo.eventsQueue.count > QueueConstants.queueSize {
             sugo.eventsQueue.remove(at: 0)

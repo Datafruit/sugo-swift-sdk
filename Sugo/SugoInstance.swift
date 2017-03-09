@@ -695,23 +695,12 @@ extension SugoInstance {
 
         let date = Date()
         serialQueue.async() {
-            
             self.trackInstance.track(eventID: eventID,
                                      eventName: eventName,
                                      properties: properties,
                                      date: date,
                                      sugo: self)
-
-            if self.decideInstance.webSocketWrapper != nil
-                && self.decideInstance.webSocketWrapper!.connected {
-                
-                if !self.eventsQueue.isEmpty {
-                    
-                    self.flushInstance.flushQueueViaWebSocket(connection: self.decideInstance.webSocketWrapper!,
-                                                              queue: self.eventsQueue)
-                    self.eventsQueue.removeAll()
-                }
-            }
+            
             Persistence.archiveEvents(self.eventsQueue, token: self.apiToken)
         }
     }
