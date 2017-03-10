@@ -50,7 +50,7 @@
 		14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */; };
 		14EADD1D1DF65ACB00E6B711 /* WebViewBindings+UIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */; };
 		14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */; };
-		14EADD1F1DF65ACB00E6B711 /* WebViewJSExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */; };
+		14EADD1F1DF65ACB00E6B711 /* SugoWebViewJSExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */; };
 		14EADD201DF65ACB00E6B711 /* ApplicationStateSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE41DF65ACA00E6B711 /* ApplicationStateSerializer.swift */; };
 		14EADD211DF65ACB00E6B711 /* AutomaticProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE51DF65ACA00E6B711 /* AutomaticProperties.swift */; };
 		14EADD221DF65ACB00E6B711 /* BaseWebSocketMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE61DF65ACA00E6B711 /* BaseWebSocketMessage.swift */; };
@@ -148,7 +148,7 @@
 		14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WebView.swift"; sourceTree = "<group>"; };
 		14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+UIWebView.swift"; sourceTree = "<group>"; };
 		14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WKWebView.swift"; sourceTree = "<group>"; };
-		14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewJSExport.swift; sourceTree = "<group>"; };
+		14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoWebViewJSExport.swift; sourceTree = "<group>"; };
 		14EADCE41DF65ACA00E6B711 /* ApplicationStateSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationStateSerializer.swift; sourceTree = "<group>"; };
 		14EADCE51DF65ACA00E6B711 /* AutomaticProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomaticProperties.swift; sourceTree = "<group>"; };
 		14EADCE61DF65ACA00E6B711 /* BaseWebSocketMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseWebSocketMessage.swift; sourceTree = "<group>"; };
@@ -347,7 +347,7 @@
 				14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */,
 				14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */,
 				14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */,
-				14EADCE31DF65ACA00E6B711 /* WebViewJSExport.swift */,
+				14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */,
 			);
 			name = WebViewBindings;
 			sourceTree = "<group>";
@@ -615,7 +615,7 @@
 				14EADD2E1DF65ACB00E6B711 /* DisconnectMessage.swift in Sources */,
 				14EADD221DF65ACB00E6B711 /* BaseWebSocketMessage.swift in Sources */,
 				147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */,
-				14EADD1F1DF65ACB00E6B711 /* WebViewJSExport.swift in Sources */,
+				14EADD1F1DF65ACB00E6B711 /* SugoWebViewJSExport.swift in Sources */,
 				14EADD461DF65ACB00E6B711 /* SnapshotMessage.swift in Sources */,
 				14EADD441DF65ACB00E6B711 /* PrintLogging.swift in Sources */,
 				14EADD181DF65ACB00E6B711 /* WebViewInfoStorage.swift in Sources */,

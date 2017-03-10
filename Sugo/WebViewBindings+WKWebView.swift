@@ -28,6 +28,7 @@ extension WebViewBindings: WKScriptMessageHandler {
         if self.wkWebViewJavaScriptInjected {
             webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTrack")
             webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTime")
+            webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewReporter")
             self.wkWebViewJavaScriptInjected = false
             self.wkWebView = nil
         }
@@ -140,79 +141,58 @@ extension WebViewBindings {
     
     var jsWKWebViewVariables: String {
         
-        var nativePath = String()
-        if let path = self.wkWebView?.url?.path {
-            if let frament = self.wkWebView?.url?.fragment {
-            nativePath =  path + "#" + frament
-        } else {
-            nativePath =  path
-            }
-        }
-        var relativePath = "sugo.relative_path = window.location.pathname"
-        
         let userDefaults = UserDefaults.standard
+        var homePathKey = ""
+        var homePathValue = ""
         if let rpr = userDefaults.object(forKey: "HomePath") as? [String: String] {
-            let homePath: String = rpr.keys.first!
-            let replacePath: String = rpr[homePath]!
-            relativePath = relativePath + ".replace('\(homePath)', '\(replacePath)')"
-            Logger.debug(message: "relativePath replace HomePath:\n\(relativePath)")
-            do {
-                let re = try NSRegularExpression(pattern: "^\(homePath)$",
-                    options: NSRegularExpression.Options.anchorsMatchLines)
-                nativePath = re.stringByReplacingMatches(in: nativePath,
-                                                         options: [],
-                                                         range: NSMakeRange(0, nativePath.characters.count),
-                                                         withTemplate: replacePath)
-            } catch {
-                Logger.debug(message: "NSRegularExpression exception")
-            }
+            homePathKey = rpr.keys.first!
+            homePathValue = rpr[homePathKey]!
         }
-        
+        var res = [[String: String]]()
+        var resString = "[]"
         if let replacements = SugoConfiguration.Replacements as? [String: [String: String]] {
             for replacement in replacements {
-                
-                let key = replacement.value.keys.first!
-                let value = replacement.value[key]!
-                
-                relativePath = relativePath
-                    + ".replace(\(key.characters.count >= 2 ? key : "''"), '\(value)')"
+                let key: String = replacement.value.keys.first!
+                let value: String = replacement.value[key]!
+                res.append([key: value])
             }
-        }
-        relativePath = relativePath + ";\n"
-        relativePath = relativePath + "sugo.relative_path += window.location.hash;\n"
-        Logger.debug(message: "relativePath:\n\(relativePath)")
-        
-        var infoObject = ["code": "", "page_name": ""]
-        if !SugoPageInfos.global.infos.isEmpty {
-            for info in SugoPageInfos.global.infos {
-                if let infoPage = info["page"] as? String,
-                    infoPage == nativePath {
-                    infoObject["page_name"] = infoPage
-                    if let infoCode = info["code"] as? String {
-                        infoObject["code"] = infoCode
-                    }
-                    break
+            var resJSON = Data()
+            do {
+                resJSON = try JSONSerialization.data(withJSONObject: res,
+                                                     options: JSONSerialization.WritingOptions.prettyPrinted)
+                if let string = String(data: resJSON, encoding: String.Encoding.utf8) {
+                    resString = string
                 }
+            } catch {
+                Logger.debug(message: "exception: \(error), decoding resJSON data: \(resJSON) -> \(resString)")
             }
         }
-        
-        var initInfo = "sugo.init = {};\n"
-        do {
-            let infoData = try JSONSerialization.data(withJSONObject: infoObject,
-                                                      options: JSONSerialization.WritingOptions.prettyPrinted)
-            let infoString = String(data: infoData, encoding: String.Encoding.utf8)!
-            initInfo = "sugo.init = \(infoString);\n"
-        } catch {
-            Logger.debug(message: "Sugo init info exception")
+        var infosString = "[]"
+        if !SugoPageInfos.global.infos.isEmpty {
+            var infosJSON = Data()
+            do {
+                infosJSON = try JSONSerialization.data(withJSONObject: SugoPageInfos.global.infos,
+                                                       options: JSONSerialization.WritingOptions.prettyPrinted)
+                if let string = String(data: infosJSON, encoding: String.Encoding.utf8) {
+                    infosString = string
+                }
+            } catch {
+                Logger.debug(message: "exception: \(error), decoding resJSON data: \(infosJSON) -> \(infosString)")
+            }
         }
-        
-        let vcPath = "sugo.current_page = '\(self.wkVCPath)::' + window.location.pathname;\n"
+        let vcPath = "sugo.view_controller = '\(self.wkVCPath)';\n"
+        let homePath = "sugo.home_path = '\(homePathKey)';\n"
+        let homePathReplacement = "sugo.home_path_replacement = '\(homePathValue)';\n"
+        let regularExpressions = "sugo.regular_expressions = \(resString);\n"
+        let pageInfos = "sugo.page_infos = \(infosString);\n"
         let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
         let variables = self.jsSource(of: "WebViewVariables")
-        
-        return relativePath
-            + initInfo
-            + vcPath
+
+        return vcPath
+            + homePath
+            + homePathReplacement
+            + regularExpressions
+            + pageInfos
             + bindings
             + variables
     }
