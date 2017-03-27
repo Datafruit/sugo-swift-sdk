@@ -91,18 +91,21 @@ class SugoEventsSerializer {
             var value: [String: Any] = [String: Any]()
             for key in keys {
                 if object[key] != nil {
-                    
-                    if types[key] == "d" {
-                        value[key] = String(format: "%.0f", ((object[key] as! Date).timeIntervalSince1970 * 1000))
-                    } else {
+                    if types[key] == "i" {
                         value[key] = object[key]
+                    } else if types[key] == "l" {
+                        value[key] = object[key]
+                    } else if types[key] == "f" {
+                        value[key] = object[key]
+                    } else if types[key] == "d" {
+                        value[key] = String(format: "%.0f", ((object[key] as! Date).timeIntervalSince1970 * 1000))
+                    } else if types[key] == "s" {
+                        value[key] = object[key]
+                    } else {
+                        value[key] = ""
                     }
                 } else {
-                    if types[key] == "s" {
-                        value[key] = ""
-                    } else {
-                        value[key] = 0
-                    }
+                    value[key] = ""
                 }
             }
             values.append(value)
