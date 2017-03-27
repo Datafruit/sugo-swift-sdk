@@ -33,7 +33,8 @@ class AutomaticProperties {
         p[keys["Manufacturer"]!] = "Apple"
         p[keys["SystemName"]!] = UIDevice.current.systemName
         p[keys["SystemVersion"]!] = UIDevice.current.systemVersion
-        p[keys["DeviceModel"]!] = AutomaticProperties.deviceModel()
+        p[keys["DeviceBrand"]!] = AutomaticProperties.deviceModel()
+        p[keys["DeviceBrand"]!] = AutomaticProperties.deviceBrand()
         p[keys["ScreenWidth"]!] = Int(size.width)
         p[keys["ScreenHeight"]!] = Int(size.height)
         return p
@@ -66,6 +67,23 @@ class AutomaticProperties {
     }
     #endif
 
+    class func deviceBrand() -> String {
+        
+        let device = UIDevice.current
+        
+        switch device.userInterfaceIdiom {
+        case .phone:
+            return "iPhone"
+        case .pad:
+            return "iPad"
+        case .unspecified:
+            fallthrough
+        default:
+            return "Unrecognized"
+        }
+        
+    }
+    
     class func deviceModel() -> String {
         var systemInfo = utsname()
         uname(&systemInfo)
