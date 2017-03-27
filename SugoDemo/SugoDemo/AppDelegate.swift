@@ -67,7 +67,7 @@ extension AppDelegate {
         Sugo.initialize(id: id, token: token)
         Sugo.mainInstance().loggingEnabled = true
         Sugo.mainInstance().flushInterval = 5
-        Sugo.mainInstance().identify(distinctId: Sugo.mainInstance().distinctId)
+        Sugo.mainInstance().cacheInterval = 60
     }
     
 }
