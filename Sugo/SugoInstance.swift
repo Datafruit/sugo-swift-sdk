@@ -163,6 +163,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     var projectId = ""
     var apiToken = ""
     var superProperties = InternalProperties()
+    var priorityProperties = InternalProperties()
     var eventsQueue = Queue()
     var timedEvents = InternalProperties()
     var serialQueue: DispatchQueue!
@@ -586,6 +587,7 @@ extension SugoInstance {
             self.deviceId = self.defaultDeviceId()
             self.distinctId = self.defaultDistinctId()
             self.superProperties = InternalProperties()
+            self.priorityProperties = InternalProperties()
             self.eventsQueue = Queue()
             self.timedEvents = InternalProperties()
             self.decideInstance.decideFetched = false

@@ -49,6 +49,7 @@ class Track {
         p[keys["DeviceID"]!] = sugo.deviceId
         p[keys["DistinctID"]!] = sugo.distinctId
         p += sugo.superProperties
+        p += sugo.priorityProperties
         if let properties = properties {
             p += properties
         }
@@ -86,6 +87,18 @@ class Track {
         if sugo.eventsQueue.count > QueueConstants.queueSize {
             sugo.eventsQueue.remove(at: 0)
         }
+    }
+    
+    func obtainPriorityProperties() -> InternalProperties {
+        
+        var p = InternalProperties()
+        let userDefaults = UserDefaults.standard
+        if let priorityProperties = userDefaults.object(forKey: "SugoPriorityProperties") as? InternalProperties {
+            for key in priorityProperties.keys {
+                p[key] = priorityProperties[key]
+            }
+        }
+        return p
     }
 
     func registerSuperProperties(_ properties: Properties, superProperties: inout InternalProperties) {

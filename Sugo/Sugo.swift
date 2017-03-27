@@ -16,6 +16,13 @@ open class Sugo {
     public static var CollectionURL: String?
     public static var CodelessURL: String?
     
+    public class func registerPriorityProperties(priorityProperties: [String: Any]) {
+        
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(priorityProperties, forKey: "SugoPriorityProperties")
+        userDefaults.synchronize()
+    }
+    
     /**
      Initializes an instance of the API with the given project token.
 
