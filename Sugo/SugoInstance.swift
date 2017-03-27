@@ -710,6 +710,7 @@ extension SugoInstance {
                         for binding in decideResponse.newCodelessBindings {
                             binding.execute()
                         }
+                        WebViewBindings.global.isWebViewNeedInject = false;
                         WebViewBindings.global.fillBindings()
                     }
                 }

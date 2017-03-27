@@ -117,9 +117,12 @@ extension WebViewBindings {
             if self.mode == WebViewBindingsMode.codeless {
                 self.isWebViewNeedReload = true
             }
-            if !self.isWebViewNeedReload {
+            if !self.isWebViewNeedReload && self.isWebViewNeedInject {
                 stop()
                 execute()
+                if self.isWebViewNeedInject {
+                    self.isWebViewNeedInject = false
+                }
             }
         }
         

@@ -38,6 +38,7 @@ class BindingRequest: BaseWebSocketMessage {
                 if let events = self.payload["h5_events"] as? [[String: Any]] {
                     WebViewBindings.global.codelessBindings = events
                     WebViewBindings.global.mode = WebViewBindingsMode.codeless
+                    WebViewBindings.global.isWebViewNeedInject = true
                     // Stop and excute again
                     WebViewBindings.global.fillBindings()
                 }
