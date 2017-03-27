@@ -27,7 +27,7 @@ class Decide {
     var codelessInstance = Codeless()
     var webSocketWrapper: WebSocketWrapper?
     var enableVisualEditorForCodeless = true
-    let codelessSugoServerURL = SugoServerURL.codeless
+    let codelessSugoServerURL = (Sugo.CodelessURL != nil && !Sugo.CodelessURL!.isEmpty) ? Sugo.CodelessURL! : SugoServerURL.codeless
 
     func checkDecide(forceFetch: Bool = false,
                      sugoInstance: SugoInstance,

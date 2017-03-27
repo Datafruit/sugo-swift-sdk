@@ -11,7 +11,11 @@ import UIKit
 
 /// The primary class for integrating Sugo with your app.
 open class Sugo {
-
+    
+    public static var BindingsURL: String?
+    public static var CollectionURL: String?
+    public static var CodelessURL: String?
+    
     /**
      Initializes an instance of the API with the given project token.
 

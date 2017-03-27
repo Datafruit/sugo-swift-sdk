@@ -960,7 +960,6 @@ extension SugoInstance {
 }
 #endif
 
-
 extension SugoInstance {
     
     open func handle(url: URL) -> Bool {
