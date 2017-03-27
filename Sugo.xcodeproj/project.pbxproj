@@ -38,6 +38,7 @@
 		14C4CC611E319EF8005ADF42 /* SugoEventsSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */; };
 		14C4CC6D1E32354A005ADF42 /* UIViewController+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */; };
 		14C7E7AA1DF6A37500CB906A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14C7E7A91DF6A37500CB906A /* UIKit.framework */; };
+		14E2B25D1E88C85F004DF09F /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E2B25C1E88C85F004DF09F /* Cache.swift */; };
 		14EADCCA1DF65A5000E6B711 /* Sugo.h in Headers */ = {isa = PBXBuildFile; fileRef = 14EADCBC1DF65A5000E6B711 /* Sugo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14EADCD51DF65A5B00E6B711 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD41DF65A5B00E6B711 /* Foundation.framework */; };
 		14EADCD71DF65A6900E6B711 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14EADCD61DF65A6900E6B711 /* CoreTelephony.framework */; };
@@ -132,6 +133,7 @@
 		14C4CC601E319EF8005ADF42 /* SugoEventsSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoEventsSerializer.swift; path = Sugo/SugoEventsSerializer.swift; sourceTree = SOURCE_ROOT; };
 		14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Sugo.swift"; path = "Sugo/UIViewController+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		14C7E7A91DF6A37500CB906A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		14E2B25C1E88C85F004DF09F /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cache.swift; path = Sugo/Cache.swift; sourceTree = SOURCE_ROOT; };
 		14EADCB91DF65A5000E6B711 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EADCBC1DF65A5000E6B711 /* Sugo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sugo.h; sourceTree = "<group>"; };
 		14EADCBD1DF65A5000E6B711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				14EADD0B1DF65ACB00E6B711 /* SSLSecurity.swift */,
 				14EADCFE1DF65ACB00E6B711 /* Network.swift */,
 				14EADCF51DF65ACA00E6B711 /* Flush.swift */,
+				14E2B25C1E88C85F004DF09F /* Cache.swift */,
 				14EADCF61DF65ACA00E6B711 /* FlushRequest.swift */,
 				14EADD161DF65ACB00E6B711 /* WebSocket.swift */,
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
@@ -646,6 +649,7 @@
 				14EADD3B1DF65ACB00E6B711 /* NSAttributedStringToNSDictionary.swift in Sources */,
 				14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */,
 				14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */,
+				14E2B25D1E88C85F004DF09F /* Cache.swift in Sources */,
 				14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */,
 				14EADD2A1DF65ACB00E6B711 /* CodelessBinding.swift in Sources */,
 				14EADD2C1DF65ACB00E6B711 /* DecideRequest.swift in Sources */,

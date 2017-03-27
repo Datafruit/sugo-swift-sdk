@@ -33,7 +33,7 @@ protocol AppLifecycle {
 }
 
 /// The class that represents the Sugo Instance
-open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
+open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDelegate {
 
     /// The a SugoDelegate object that gives control over Sugo network activity.
     open var delegate: SugoDelegate?
@@ -61,6 +61,17 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         }
         get {
             return flushInstance.flushInterval
+        }
+    }
+    
+    /// Cache timer's interval.
+    /// Setting a cache interval of 0 will turn off the cache timer.
+    open var cacheInterval: Double {
+        set {
+            cacheInstance.cacheInterval = newValue
+        }
+        get {
+            return cacheInstance.cacheInterval
         }
     }
 
@@ -157,13 +168,15 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     var serialQueue: DispatchQueue!
     var taskId = UIBackgroundTaskInvalid
     let flushInstance = Flush()
+    let cacheInstance = Cache()
     let trackInstance: Track
     let decideInstance = Decide()
 
     init(projectID: String?,
          apiToken: String?,
          launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
-         flushInterval: Double) {
+         flushInterval: Double,
+         cacheInterval: Double) {
 
         if let projectID = projectID, !projectID.isEmpty {
             self.projectId = projectID
@@ -182,13 +195,10 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
+        cacheInstance._cacheInterval = cacheInterval
         reachability = Reachability(hostname: SugoServerURL.collection)
         setupListeners()
         unarchive()
-        
-        #if os(iOS)
-            executeCachedCodelessBindings()
-        #endif
         
     }
 
@@ -251,7 +261,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         
-        flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
                 if let decideResponse = decideResponse {
@@ -259,14 +268,18 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                         for binding in decideResponse.newCodelessBindings {
                             binding.execute()
                         }
+                        WebViewBindings.global.fillBindings()
                     }
                 }
             }
         #endif
+        flushInstance.applicationDidBecomeActive()
+        cacheInstance.applicationDidBecomeActive()
     }
 
     @objc private func applicationWillResignActive(_ notification: Notification) {
         flushInstance.applicationWillResignActive()
+        cacheInstance.applicationWillResignActive()
     }
 
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
@@ -676,6 +689,37 @@ extension SugoInstance {
 }
 
 extension SugoInstance {
+    // MARK: - Cache
+    
+    /**
+     Download binding data from the Sugo server.
+     
+     By default, binding data is cached from the Sugo servers every minute (the
+     default for `cacheInterval`), and on background (since
+     `cacheOnBackground` is on by default). You only need to call this
+     method manually if you want to force a cache at a particular moment.
+     
+     - parameter completion: an optional completion handler for when the cache has completed.
+     */
+    open func cache(completion: (() -> Void)? = nil) {
+        
+        #if os(iOS)
+            checkDecide { decideResponse in
+                if let decideResponse = decideResponse {
+                    DispatchQueue.main.sync {
+                        for binding in decideResponse.newCodelessBindings {
+                            binding.execute()
+                        }
+                        WebViewBindings.global.fillBindings()
+                    }
+                }
+            }
+        #endif
+    }
+}
+
+
+extension SugoInstance {
     // MARK: - Track
 
     /**
@@ -902,9 +946,7 @@ extension SugoInstance {
         }
         serialQueue.async {
             self.decideInstance.checkDecide(forceFetch: forceFetch,
-                                            projectId: self.projectId,
-                                            token: self.apiToken,
-                                            distinctId: self.distinctId,
+                                            sugoInstance: self,
                                             completion: completion)
         }
     }
@@ -913,13 +955,7 @@ extension SugoInstance {
     func connectToWebSocket() {
         decideInstance.connectToWebSocket(token: apiToken, sugoInstance: self)
     }
-
-    // MARK: - Codeless
-    func executeCachedCodelessBindings() {
-        for binding in decideInstance.codelessInstance.codelessBindings {
-            binding.execute()
-        }
-    }
+    
 }
 #endif
 

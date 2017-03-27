@@ -30,13 +30,12 @@ class Decide {
     let codelessSugoServerURL = SugoServerURL.codeless
 
     func checkDecide(forceFetch: Bool = false,
-                     projectId: String,
-                     token: String,
-                     distinctId: String,
+                     sugoInstance: SugoInstance,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
 
         let userDefaults = UserDefaults.standard
-        if let cacheData = userDefaults.data(forKey: "EventBindings") {
+        var object = [String: Any]()
+        if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
             
             let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
             Logger.debug(message: "Cache decide result:\n\(cacheString)")
@@ -44,8 +43,7 @@ class Decide {
             do {
                 if let cacheObject = try JSONSerialization.jsonObject(with: cacheData,
                                                                       options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-                    
-                    handleDecide(object: cacheObject)
+                    object = cacheObject
                 }
             } catch {
                 Logger.debug(message: "Failed to serialize EventBindings")
@@ -54,9 +52,9 @@ class Decide {
         
         if !decideFetched || forceFetch {
             let semaphore = DispatchSemaphore(value: 0)
-            decideRequest.sendRequest(projectId: projectId,
-                                      token: token,
-                                      distinctId: distinctId) { decideResult in
+            decideRequest.sendRequest(projectId: sugoInstance.projectId,
+                                      token: sugoInstance.apiToken,
+                                      distinctId: sugoInstance.distinctId) { decideResult in
                 guard let resultObject = decideResult else {
                     semaphore.signal()
                     completion(nil)
@@ -67,13 +65,12 @@ class Decide {
                     let resultData = try JSONSerialization.data(withJSONObject: resultObject, options: JSONSerialization.WritingOptions.prettyPrinted)
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                     Logger.debug(message: "Decide result:\n\(resultString)")
-                    userDefaults.set(resultData, forKey: "EventBindings")
+                    userDefaults.set(resultData, forKey: "SugoEventBindings")
                     userDefaults.synchronize()
                 } catch {
                     Logger.debug(message: "Decide serialize result error")
                 }
-
-                self.handleDecide(object: resultObject)
+                object = resultObject
 
                 self.decideFetched = true
                 semaphore.signal()
@@ -83,7 +80,7 @@ class Decide {
         } else {
             Logger.info(message: "decide cache found, skipping network request")
         }
-
+        handleDecide(object: object)
         Logger.info(message: "decide check found \(decideResponse.newCodelessBindings.count) " +
             "new codeless bindings out of \(codelessInstance.codelessBindings)")
 
@@ -114,7 +111,6 @@ class Decide {
         if let htmlCodelessBindings = object["h5_event_bindings"] as? [[String: Any]] {
             decideResponse.htmlCodelessBindings = htmlCodelessBindings
             WebViewBindings.global.decideBindings = htmlCodelessBindings
-            WebViewBindings.global.fillBindings()
         }
         
         if let pageInfo = object["page_info"] as? [[String: Any]] {
@@ -130,7 +126,7 @@ class Decide {
     }
 
     func connectToWebSocket(token: String, sugoInstance: SugoInstance, reconnect: Bool = false) {
-        var oldInterval = 0.0
+        
         let webSocketURL = "\(codelessSugoServerURL)/connect/\(token)"
         guard let url = URL(string: webSocketURL) else {
             Logger.error(message: "bad URL to connect to websocket \(webSocketURL)")
@@ -140,26 +136,19 @@ class Decide {
             guard let sugoInstance = sugoInstance else {
                 return
             }
-            oldInterval = sugoInstance.flushInterval
-            sugoInstance.flushInterval = 1
+            sugoInstance.eventsQueue.removeAll()
+            sugoInstance.flushInstance.stopFlushTimer()
             UIApplication.shared.isIdleTimerDisabled = true
-
-            for binding in self.codelessInstance.codelessBindings {
-                binding.stop()
-            }
+            
         }
 
         let disconnectCallback = { [weak sugoInstance] in
             guard let sugoInstance = sugoInstance else {
                 return
             }
-            sugoInstance.flushInterval = oldInterval
+            sugoInstance.eventsQueue.removeAll()
+            sugoInstance.flushInstance.startFlushTimer()
             UIApplication.shared.isIdleTimerDisabled = false
-
-            for binding in self.codelessInstance.codelessBindings {
-                binding.execute()
-            }
-            
 
         }
 
@@ -167,6 +156,8 @@ class Decide {
                                             keepTrying: reconnect,
                                             connectCallback: connectCallback,
                                             disconnectCallback: disconnectCallback)
+        
+        
     }
 
 }

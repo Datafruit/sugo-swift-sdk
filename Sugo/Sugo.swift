@@ -36,12 +36,14 @@ open class Sugo {
                                token apiToken: String,
                                launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
                                flushInterval: Double = 60,
+                               cacheInterval: Double = 3600,
                                instanceName: String = UUID().uuidString) -> SugoInstance {
         
         return SugoManager.sharedInstance.initialize(id:            projectID,
                                                      token:         apiToken,
                                                      launchOptions: launchOptions,
                                                      flushInterval: flushInterval,
+                                                     cacheInterval: cacheInterval,
                                                      instanceName:  instanceName)
     }
 
@@ -107,11 +109,13 @@ class SugoManager {
                     token apiToken: String,
                     launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
                     flushInterval: Double,
+                    cacheInterval: Double,
                     instanceName: String) -> SugoInstance {
         let instance = SugoInstance(projectID:      projectID,
                                     apiToken:       apiToken,
                                     launchOptions:  launchOptions,
-                                    flushInterval:  flushInterval)
+                                    flushInterval:  flushInterval,
+                                    cacheInterval:  cacheInterval)
         mainInstance = instance
         instances[instanceName] = instance
         
