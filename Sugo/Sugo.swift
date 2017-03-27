@@ -36,12 +36,14 @@ open class Sugo {
                                token apiToken: String,
                                launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
                                flushInterval: Double = 60,
+                               cacheInterval: Double = 3600,
                                instanceName: String = UUID().uuidString) -> SugoInstance {
         
         return SugoManager.sharedInstance.initialize(id:            projectID,
                                                      token:         apiToken,
                                                      launchOptions: launchOptions,
                                                      flushInterval: flushInterval,
+                                                     cacheInterval: cacheInterval,
                                                      instanceName:  instanceName)
     }
 
@@ -90,21 +92,6 @@ open class Sugo {
     open class func removeInstance(name: String) {
         SugoManager.sharedInstance.removeInstance(name: name)
     }
-    
-    class func loadConfigurationPropertyList(name: String) -> InternalProperties {
-        var configuration = InternalProperties()
-        let bundle = Bundle(for: Sugo.self)
-        if let url = bundle.url(forResource: name, withExtension: "plist"),
-            let plist = try? PropertyListSerialization.propertyList(from: Data(contentsOf: url),
-                                                                options: PropertyListSerialization.ReadOptions.mutableContainersAndLeaves,
-                                                                format: nil),
-            let c = plist as? InternalProperties {
-            configuration = c
-        }
-        Logger.debug(message: "Configuration Property List:\n\(configuration)")
-        return configuration
-    }
-
 }
 
 class SugoManager {
@@ -122,18 +109,20 @@ class SugoManager {
                     token apiToken: String,
                     launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
                     flushInterval: Double,
+                    cacheInterval: Double,
                     instanceName: String) -> SugoInstance {
         let instance = SugoInstance(projectID:      projectID,
                                     apiToken:       apiToken,
                                     launchOptions:  launchOptions,
-                                    flushInterval:  flushInterval)
+                                    flushInterval:  flushInterval,
+                                    cacheInterval:  cacheInterval)
         mainInstance = instance
         instances[instanceName] = instance
         
-        if let value = SugoConfiguration.DimensionValue as? [String: String] {
-            instance.track(eventName: value["AppEnter"]!)
-            instance.time(event: value["AppStay"]!)
-        }
+        let values = SugoDimensions.values
+        instance.trackIntegration()
+        instance.track(eventName: values["AppEnter"]!)
+        instance.time(event: values["AppStay"]!)
         
         return instance
     }

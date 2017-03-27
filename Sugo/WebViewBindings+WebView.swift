@@ -19,21 +19,11 @@ extension WebViewBindings {
                                      for: NSClassFromString("UIWebView")!,
                                      name: self.uiDidMoveToWindowBlockName,
                                      block: self.uiDidMoveToWindow)
-            Swizzler.swizzleSelector(#selector(UIWebView.removeFromSuperview),
-                                     withSelector: #selector(UIWebView.sugoWebViewRemoveFromSuperview),
-                                     for: NSClassFromString("UIWebView")!,
-                                     name: self.uiRemoveFromSuperviewBlockName,
-                                     block: self.uiRemoveFromSuperview)
             Swizzler.swizzleSelector(#selector(WKWebView.didMoveToWindow),
                                      withSelector: #selector(WKWebView.sugoWebViewDidMoveToWindow),
                                      for: WKWebView.self,
                                      name: self.wkDidMoveToWindowBlockName,
                                      block: self.wkDidMoveToWindow)
-            Swizzler.swizzleSelector(#selector(WKWebView.removeFromSuperview),
-                                     withSelector: #selector(WKWebView.sugoWebViewRemoveFromSuperview),
-                                     for: WKWebView.self,
-                                     name: self.wkRemoveFromSuperviewBlockName,
-                                     block: self.wkRemoveFromSuperview)
             self.viewSwizzleRunning = true
         }
     }
@@ -49,15 +39,9 @@ extension WebViewBindings {
             Swizzler.unswizzleSelector(#selector(UIWebView.didMoveToWindow),
                                        aClass: NSClassFromString("UIWebView")!,
                                        name: self.uiDidMoveToWindowBlockName)
-            Swizzler.unswizzleSelector(#selector(UIWebView.removeFromSuperview),
-                                       aClass: NSClassFromString("UIWebView")!,
-                                       name: self.uiRemoveFromSuperviewBlockName)
             Swizzler.unswizzleSelector(#selector(WKWebView.didMoveToWindow),
                                        aClass: WKWebView.self,
                                        name: self.wkDidMoveToWindowBlockName)
-            Swizzler.unswizzleSelector(#selector(WKWebView.removeFromSuperview),
-                                       aClass: WKWebView.self,
-                                       name: self.wkRemoveFromSuperviewBlockName)
             self.viewSwizzleRunning = false
         }
     }
@@ -84,7 +68,12 @@ extension WebViewBindings {
         guard let webView = view as? UIWebView else {
             return
         }
-        guard self.uiVCPath.isEmpty else {
+        if self.uiWebView != nil && self.uiWebView != webView {
+            self.uiVCPath.removeAll()
+            self.stopUIWebViewBindings(webView: self.uiWebView!)
+        } else if self.uiWebView != nil {
+            self.uiVCPath.removeAll()
+            self.stopUIWebViewBindings(webView: self.uiWebView!)
             return
         }
         if let vc = UIViewController.sugoCurrentViewController {
@@ -94,21 +83,18 @@ extension WebViewBindings {
         self.uiWebView = webView
         self.startUIWebViewBindings(webView: &(self.uiWebView!))
     }
-    
-    func uiRemoveFromSuperview(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
-        guard let webView = view as? UIWebView else {
-            return
-        }
-        self.uiVCPath.removeAll()
-        self.stopUIWebViewBindings(webView: webView)
-    }
 
     // Mark: - WKWebView
     func wkDidMoveToWindow(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
         guard let webView = view as? WKWebView else {
             return
         }
-        guard self.wkVCPath.isEmpty else {
+        if self.wkWebView != nil && self.wkWebView != webView {
+            self.wkVCPath.removeAll()
+            self.stopWKWebViewBindings(webView: self.wkWebView!)
+        } else if self.wkWebView != nil {
+            self.wkVCPath.removeAll()
+            self.stopWKWebViewBindings(webView: self.wkWebView!)
             return
         }
         if let vc = UIViewController.sugoCurrentViewController {
@@ -117,14 +103,6 @@ extension WebViewBindings {
         }
         self.wkWebView = webView
         self.startWKWebViewBindings(webView: &(self.wkWebView!))
-    }
-    
-    func wkRemoveFromSuperview(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
-        guard let webView = view as? WKWebView else {
-            return
-        }
-        self.wkVCPath.removeAll()
-        self.stopWKWebViewBindings(webView: webView)
     }
     
 }
@@ -136,8 +114,7 @@ extension WebViewBindings {
         
         Logger.debug(message: "Object = \(object): K: \(keyPath) = V: \(change?[NSKeyValueChangeKey.newKey])")
         if keyPath == "stringBindings" {
-            if self.mode == WebViewBindingsMode.codeless
-                && Sugo.mainInstance().isCodelessTesting {
+            if self.mode == WebViewBindingsMode.codeless {
                 self.isWebViewNeedReload = true
             }
             if !self.isWebViewNeedReload {

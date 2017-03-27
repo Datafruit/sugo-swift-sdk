@@ -32,21 +32,13 @@ class WebViewBindings: NSObject {
     lazy var uiWebViewSwizzleRunning = false
     lazy var uiWebViewJavaScriptInjected = false
     lazy var uiDidMoveToWindowBlockName = UUID().uuidString
-    lazy var uiRemoveFromSuperviewBlockName = UUID().uuidString
     lazy var uiWebViewDidStartLoadBlockName = UUID().uuidString
     lazy var uiWebViewDidFinishLoadBlockName = UUID().uuidString
     
     var wkWebView: WKWebView?
     lazy var wkWebViewJavaScriptInjected = false
     lazy var wkDidMoveToWindowBlockName = UUID().uuidString
-    lazy var wkRemoveFromSuperviewBlockName = UUID().uuidString
-    lazy var wkWebViewDidFinishBlockName = UUID().uuidString
-    lazy var wkWebViewCurrentJSSugo = WKUserScript()
-    lazy var wkWebViewCurrentJSTrack = WKUserScript()
-    lazy var wkWebViewCurrentJSBindingsSource = WKUserScript()
-    lazy var wkWebViewCurrentJSBindingsExcute = WKUserScript()
-    lazy var wkWebViewCurrentJSUtils = WKUserScript()
-    lazy var wkWebViewCurrentJSReportSource = WKUserScript()
+    lazy var wkWebViewCurrentJS = WKUserScript()
     
     static var global: WebViewBindings {
         return singleton
@@ -90,15 +82,12 @@ class WebViewBindings: NSObject {
         self.uiWebViewSwizzleRunning = false
         self.uiWebViewJavaScriptInjected = false
         self.uiDidMoveToWindowBlockName.removeAll()
-        self.uiRemoveFromSuperviewBlockName.removeAll()
         self.uiWebViewDidStartLoadBlockName.removeAll()
         self.uiWebViewDidFinishLoadBlockName.removeAll()
         
         self.wkWebView = nil
         self.wkWebViewJavaScriptInjected = false
         self.wkDidMoveToWindowBlockName.removeAll()
-        self.wkRemoveFromSuperviewBlockName.removeAll()
-        self.wkWebViewDidFinishBlockName.removeAll()        
     }
     
     func fillBindings() {

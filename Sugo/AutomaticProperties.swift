@@ -19,25 +19,24 @@ class AutomaticProperties {
 
     static var properties: InternalProperties = {
         
-        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
-            return InternalProperties()
-        }
+        let keys = SugoDimensions.keys
         var p = InternalProperties()
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {
-            p[key["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
-            p[key["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
+            p[keys["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
+            p[keys["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
         }
-        p[key["Carrier"]!] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
-        p[key["SDKType"]!] = "Swift"
-        p[key["SDKVersion"]!] = AutomaticProperties.libVersion()
-        p[key["Manufacturer"]!] = "Apple"
-        p[key["SystemName"]!] = UIDevice.current.systemName
-        p[key["SystemVersion"]!] = UIDevice.current.systemVersion
-        p[key["DeviceModel"]!] = AutomaticProperties.deviceModel()
-        p[key["ScreenWidth"]!] = Int(size.width)
-        p[key["ScreenHeight"]!] = Int(size.height)
+        p[keys["Carrier"]!] = AutomaticProperties.telephonyInfo.subscriberCellularProvider?.carrierName
+        p[keys["SDKType"]!] = "Swift"
+        p[keys["SDKVersion"]!] = AutomaticProperties.libVersion()
+        p[keys["Manufacturer"]!] = "Apple"
+        p[keys["SystemName"]!] = UIDevice.current.systemName
+        p[keys["SystemVersion"]!] = UIDevice.current.systemVersion
+        p[keys["DeviceBrand"]!] = AutomaticProperties.deviceModel()
+        p[keys["DeviceBrand"]!] = AutomaticProperties.deviceBrand()
+        p[keys["ScreenWidth"]!] = Int(size.width)
+        p[keys["ScreenHeight"]!] = Int(size.height)
         return p
     }()
 
@@ -68,6 +67,23 @@ class AutomaticProperties {
     }
     #endif
 
+    class func deviceBrand() -> String {
+        
+        let device = UIDevice.current
+        
+        switch device.userInterfaceIdiom {
+        case .phone:
+            return "iPhone"
+        case .pad:
+            return "iPad"
+        case .unspecified:
+            fallthrough
+        default:
+            return "Unrecognized"
+        }
+        
+    }
+    
     class func deviceModel() -> String {
         var systemInfo = utsname()
         uname(&systemInfo)

@@ -33,7 +33,7 @@ protocol AppLifecycle {
 }
 
 /// The class that represents the Sugo Instance
-open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
+open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDelegate {
 
     /// The a SugoDelegate object that gives control over Sugo network activity.
     open var delegate: SugoDelegate?
@@ -61,6 +61,17 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         }
         get {
             return flushInstance.flushInterval
+        }
+    }
+    
+    /// Cache timer's interval.
+    /// Setting a cache interval of 0 will turn off the cache timer.
+    open var cacheInterval: Double {
+        set {
+            cacheInstance.cacheInterval = newValue
+        }
+        get {
+            return cacheInstance.cacheInterval
         }
     }
 
@@ -149,25 +160,26 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     #endif
     
     var sessionID = ""
-    var projectID = ""
+    var projectId = ""
     var apiToken = ""
     var superProperties = InternalProperties()
     var eventsQueue = Queue()
     var timedEvents = InternalProperties()
     var serialQueue: DispatchQueue!
     var taskId = UIBackgroundTaskInvalid
-    var isCodelessTesting: Bool = false
     let flushInstance = Flush()
+    let cacheInstance = Cache()
     let trackInstance: Track
     let decideInstance = Decide()
 
     init(projectID: String?,
          apiToken: String?,
          launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
-         flushInterval: Double) {
+         flushInterval: Double,
+         cacheInterval: Double) {
 
         if let projectID = projectID, !projectID.isEmpty {
-            self.projectID = projectID
+            self.projectId = projectID
         }
         
         if let apiToken = apiToken, !apiToken.isEmpty {
@@ -178,20 +190,25 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
         flushInstance.delegate = self
         let label = "io.sugo.\(self.apiToken)"
         serialQueue = DispatchQueue(label: label)
+        setupHomePath()
         deviceId = defaultDeviceId()
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
-        reachability = Reachability(hostname: ServerURL.collection)
+        cacheInstance._cacheInterval = cacheInterval
+        reachability = Reachability(hostname: SugoServerURL.collection)
         setupListeners()
         unarchive()
         
-        #if os(iOS)
-            executeCachedCodelessBindings()
-        #endif
-        
     }
 
+    private func setupHomePath() {
+        let homePathKey = "HomePath"
+        let rpr = [NSHomeDirectory():""]
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(rpr, forKey: homePathKey)
+    }
+    
     private func setupListeners() {
         trackStayTime()
         let notificationCenter = NotificationCenter.default
@@ -244,8 +261,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         
-        trackIntegration()
-        flushInstance.applicationDidBecomeActive()
         #if os(iOS)
             checkDecide { decideResponse in
                 if let decideResponse = decideResponse {
@@ -253,14 +268,18 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                         for binding in decideResponse.newCodelessBindings {
                             binding.execute()
                         }
+                        WebViewBindings.global.fillBindings()
                     }
                 }
             }
         #endif
+        flushInstance.applicationDidBecomeActive()
+        cacheInstance.applicationDidBecomeActive()
     }
 
     @objc private func applicationWillResignActive(_ notification: Notification) {
         flushInstance.applicationWillResignActive()
+        cacheInstance.applicationWillResignActive()
     }
 
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
@@ -274,10 +293,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
             flush()
         }
         
-        if let value = SugoConfiguration.DimensionValue as? [String: String] {
-            self.track(eventName: value["BackgroundEnter"]!)
-            self.time(event: value["BackgroundStay"]!)
-        }
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundEnter"]!)
+        self.time(event: values["BackgroundStay"]!)
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
@@ -299,37 +317,35 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
                 #endif
             }
         }
-        if let value = SugoConfiguration.DimensionValue as? [String: String] {
-            self.track(eventName: value["BackgroundStay"]!)
-            self.track(eventName: value["BackgroundExit"]!)
-        }
+        
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundStay"]!)
+        self.track(eventName: values["BackgroundExit"]!)
     }
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
         
-        if let value = SugoConfiguration.DimensionValue as? [String: String] {
-            
-            self.trackInstance.track(eventID: nil,
-                                     eventName: value["BackgroundStay"]!,
-                                     properties: nil,
-                                     date: Date(),
-                                     sugo: self)
-            self.trackInstance.track(eventID: nil,
-                                     eventName: value["BackgroundExit"]!,
-                                     properties: nil,
-                                     date: Date(),
-                                     sugo: self)
-            self.trackInstance.track(eventID: nil,
-                                     eventName: value["AppStay"]!,
-                                     properties: nil,
-                                     date: Date(),
-                                     sugo: self)
-            self.trackInstance.track(eventID: nil,
-                                     eventName: value["AppExit"]!,
-                                     properties: nil,
-                                     date: Date(),
-                                     sugo: self)
-        }
+        let values = SugoDimensions.values
+        self.trackInstance.track(eventID: nil,
+                                 eventName: values["BackgroundStay"]!,
+                                 properties: nil,
+                                 date: Date(),
+                                 sugo: self)
+        self.trackInstance.track(eventID: nil,
+                                 eventName: values["BackgroundExit"]!,
+                                 properties: nil,
+                                 date: Date(),
+                                 sugo: self)
+        self.trackInstance.track(eventID: nil,
+                                 eventName: values["AppStay"]!,
+                                 properties: nil,
+                                 date: Date(),
+                                 sugo: self)
+        self.trackInstance.track(eventID: nil,
+                                 eventName: values["AppExit"]!,
+                                 properties: nil,
+                                 date: Date(),
+                                 sugo: self)
         self.flushInstance.flushEventsQueue(&self.eventsQueue)
         serialQueue.async() {
             self.archive()
@@ -422,9 +438,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
     }
     
     @objc func reachabilityChanged(_ note: Notification) {
-        guard let key = SugoConfiguration.DimensionKey as? [String: String] else {
-            return
-        }
+        
+        let keys = SugoDimensions.keys
         let reachability = note.object as! Reachability
         
         var network = String()
@@ -459,7 +474,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate {
             }
         }
         serialQueue.async() {
-            AutomaticProperties.properties[key["Reachability"]!] = network
+            AutomaticProperties.properties[keys["Reachability"]!] = network
             Logger.debug(message: "Reachability: \(network)")
         }
     }
@@ -631,11 +646,10 @@ extension SugoInstance {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
             serialQueue.async() {
-                if let value = SugoConfiguration.DimensionValue as? [String: String] {
-                    self.track(eventName: value["Integration"]!)
-                    UserDefaults.standard.set(true, forKey: defaultsKey)
-                    UserDefaults.standard.synchronize()
-                }
+                let values = SugoDimensions.values
+                self.track(eventName: values["Integration"]!)
+                UserDefaults.standard.set(true, forKey: defaultsKey)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -656,20 +670,54 @@ extension SugoInstance {
      */
     open func flush(completion: (() -> Void)? = nil) {
         
-        if !self.isCodelessTesting {
-            serialQueue.async() {
-                if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
-                    return
-                }
-                self.flushInstance.flushEventsQueue(&self.eventsQueue)
-                self.archive()
-                if let completion = completion {
-                    DispatchQueue.main.async(execute: completion)
-                }
+        guard self.decideInstance.webSocketWrapper == nil
+            || !self.decideInstance.webSocketWrapper!.connected else {
+            return
+        }
+            
+        serialQueue.async() {
+            if let shouldFlush = self.delegate?.sugoWillFlush(self), !shouldFlush {
+                return
+            }
+            self.flushInstance.flushEventsQueue(&self.eventsQueue)
+            self.archive()
+            if let completion = completion {
+                DispatchQueue.main.async(execute: completion)
             }
         }
     }
 }
+
+extension SugoInstance {
+    // MARK: - Cache
+    
+    /**
+     Download binding data from the Sugo server.
+     
+     By default, binding data is cached from the Sugo servers every minute (the
+     default for `cacheInterval`), and on background (since
+     `cacheOnBackground` is on by default). You only need to call this
+     method manually if you want to force a cache at a particular moment.
+     
+     - parameter completion: an optional completion handler for when the cache has completed.
+     */
+    open func cache(completion: (() -> Void)? = nil) {
+        
+        #if os(iOS)
+            checkDecide { decideResponse in
+                if let decideResponse = decideResponse {
+                    DispatchQueue.main.sync {
+                        for binding in decideResponse.newCodelessBindings {
+                            binding.execute()
+                        }
+                        WebViewBindings.global.fillBindings()
+                    }
+                }
+            }
+        #endif
+    }
+}
+
 
 extension SugoInstance {
     // MARK: - Track
@@ -690,24 +738,12 @@ extension SugoInstance {
 
         let date = Date()
         serialQueue.async() {
-            
             self.trackInstance.track(eventID: eventID,
                                      eventName: eventName,
                                      properties: properties,
                                      date: date,
                                      sugo: self)
-
-            if self.decideInstance.webSocketWrapper != nil
-                && self.decideInstance.webSocketWrapper!.connected
-                && self.isCodelessTesting {
-                
-                if !self.eventsQueue.isEmpty {
-                    
-                    self.flushInstance.flushQueueViaWebSocket(connection: self.decideInstance.webSocketWrapper!,
-                                                              queue: self.eventsQueue)
-                    self.eventsQueue.removeAll()
-                }
-            }
+            
             Persistence.archiveEvents(self.eventsQueue, token: self.apiToken)
         }
     }
@@ -840,15 +876,27 @@ extension SugoInstance {
             
         let viewDidAppearBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-            guard (viewController as? UIViewController) != nil else {
+            guard let vc = viewController as? UIViewController else {
                 return
             }
-//            Logger.debug(message: "viewDidAppear")
-            
-            if let value = SugoConfiguration.DimensionValue as? [String: String] {
-                self.track(eventName: value["PageEnter"]!)
-                self.time(event: value["PageStay"]!)
+            for black in SugoPageEventsVCFilterList.black {
+                if black == NSStringFromClass(vc.classForCoder) {
+                    return
+                }
             }
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder) {
+                    p[keys["PageName"]!] = infoPage
+                    break
+                }
+            }
+            self.track(eventName: values["PageEnter"]!, properties: p)
+            self.time(event: values["PageStay"]!)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
@@ -857,15 +905,27 @@ extension SugoInstance {
                                  block: viewDidAppearBlock)
         let viewDidDisappearBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-            guard (viewController as? UIViewController) != nil else {
+            guard let vc = viewController as? UIViewController else {
                 return
             }
-//            Logger.debug(message: "viewDidDisappear")
-            
-            if let value = SugoConfiguration.DimensionValue as? [String: String] {
-                self.track(eventName: value["PageStay"]!)
-                self.track(eventName: value["PageExit"]!)
+            for black in SugoPageEventsVCFilterList.black {
+                if black == NSStringFromClass(vc.classForCoder) {
+                    return
+                }
             }
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder) {
+                    p[keys["PageName"]!] = infoPage
+                    break
+                }
+            }
+            self.track(eventName: values["PageStay"]!, properties: p)
+            self.track(eventName: values["PageExit"]!, properties: p)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),
@@ -886,8 +946,7 @@ extension SugoInstance {
         }
         serialQueue.async {
             self.decideInstance.checkDecide(forceFetch: forceFetch,
-                                            distinctId: self.distinctId,
-                                            token: self.apiToken,
+                                            sugoInstance: self,
                                             completion: completion)
         }
     }
@@ -896,13 +955,7 @@ extension SugoInstance {
     func connectToWebSocket() {
         decideInstance.connectToWebSocket(token: apiToken, sugoInstance: self)
     }
-
-    // MARK: - Codeless
-    func executeCachedCodelessBindings() {
-        for binding in decideInstance.codelessInstance.codelessBindings {
-            binding.execute()
-        }
-    }
+    
 }
 #endif
 
@@ -919,6 +972,34 @@ extension SugoInstance {
             }
         }
         return false
+    }
+    
+    open func connectToCodeless(via url: URL) {
+        
+        Logger.debug(message: "url: \(url.absoluteString)")
+        guard let query = url.query else {
+            return
+        }
+        for queryItem in query.components(separatedBy: "&") {
+            let item = queryItem.components(separatedBy: "=")
+            if item.first! == "sKey" {
+                self.urlSchemesKeyValue = item.last!
+                break
+            }
+        }
+        
+        Logger.debug(message: "url s k v: \(self.urlSchemesKeyValue)")
+        guard self.urlSchemesKeyValue != nil && !self.urlSchemesKeyValue!.isEmpty else {
+            return
+        }
+        
+        for queryItem in query.components(separatedBy: "&") {
+            let item = queryItem.components(separatedBy: "=")
+            if item.first! == "token" && item.last! == self.apiToken {
+                self.connectToWebSocket()
+                break
+            }
+        }
     }
 }
 

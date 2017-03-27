@@ -41,6 +41,12 @@ class BindingRequest: BaseWebSocketMessage {
                     // Stop and excute again
                     WebViewBindings.global.fillBindings()
                 }
+                
+                if let dimensions = self.payload["dimensions"] as? [[String: Any]] {
+                    let userDefaults = UserDefaults.standard
+                    userDefaults.set(dimensions, forKey: "SugoDimensions")
+                    userDefaults.synchronize()
+                }
             }
 
             let response = BindingResponse()
