@@ -24,7 +24,7 @@ class ObjectFilter: CustomStringConvertible {
     }
 
     var description: String {
-        return "name: \(String(describing: name)), index: \(String(describing: index)), predicate: \(String(describing: predicate))]"
+        return "name: \(name.debugDescription), index: \(index.debugDescription), predicate: \(predicate.debugDescription)]"
     }
 
     func apply(on views: [AnyObject]) -> [AnyObject] {
