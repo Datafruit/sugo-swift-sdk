@@ -978,7 +978,7 @@ extension SugoInstance {
             }
         }
         
-        Logger.debug(message: "url s k v: \(self.urlSchemesKeyValue)")
+        Logger.debug(message: "url s k v: \(String(describing: self.urlSchemesKeyValue))")
         guard self.urlSchemesKeyValue != nil && !self.urlSchemesKeyValue!.isEmpty else {
             return
         }

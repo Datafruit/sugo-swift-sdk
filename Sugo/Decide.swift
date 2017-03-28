@@ -38,7 +38,7 @@ class Decide {
         if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
             
             let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
-            Logger.debug(message: "Cache decide result:\n\(cacheString)")
+            Logger.debug(message: "Cache decide result:\n\(String(describing: cacheString))")
 
             do {
                 if let cacheObject = try JSONSerialization.jsonObject(with: cacheData,
@@ -64,7 +64,7 @@ class Decide {
                 do {
                     let resultData = try JSONSerialization.data(withJSONObject: resultObject, options: JSONSerialization.WritingOptions.prettyPrinted)
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
-                    Logger.debug(message: "Decide result:\n\(resultString)")
+                    Logger.debug(message: "Decide result:\n\(String(describing: resultString))")
                     userDefaults.set(resultData, forKey: "SugoEventBindings")
                     userDefaults.synchronize()
                 } catch {

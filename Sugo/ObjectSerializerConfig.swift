@@ -179,7 +179,7 @@ class PropertyDescription {
 
         var setDict = dict["set"] as? [String: Any]
         if let readOnly = readOnly, !readOnly, setDict == nil {
-            setDict = ["selector": "set\(name?.capitalized):",
+            setDict = ["selector": "set\(name!.capitalized):",
                        "parameters": [["name": "value",
                                        "type": dict["type"]]]]
         }
