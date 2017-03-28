@@ -134,7 +134,10 @@ class SugoManager {
         instance.trackIntegration()
         instance.track(eventName: values["AppEnter"]!)
         instance.time(event: values["AppStay"]!)
-        instance.cache()
+        instance.cache { 
+            WebViewBindings.global.isWebViewNeedInject = true;
+            WebViewBindings.global.fillBindings()
+        }
         return instance
     }
 
