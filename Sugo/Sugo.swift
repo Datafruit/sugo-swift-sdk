@@ -134,7 +134,7 @@ class SugoManager {
         instance.trackIntegration()
         instance.track(eventName: values["AppEnter"]!)
         instance.time(event: values["AppStay"]!)
-        
+        instance.cache()
         return instance
     }
 

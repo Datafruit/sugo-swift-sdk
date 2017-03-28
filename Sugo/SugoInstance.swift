@@ -68,10 +68,10 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     /// Setting a cache interval of 0 will turn off the cache timer.
     open var cacheInterval: Double {
         set {
-            cacheInstance.cacheInterval = newValue
+            self.cacheInstance.cacheInterval = newValue
         }
         get {
-            return cacheInstance.cacheInterval
+            return self.cacheInstance.cacheInterval
         }
     }
 
@@ -189,6 +189,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         
         trackInstance = Track(apiToken: self.apiToken)
         flushInstance.delegate = self
+        cacheInstance.delegate = self
         let label = "io.sugo.\(self.apiToken)"
         serialQueue = DispatchQueue(label: label)
         setupHomePath()
@@ -196,7 +197,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         distinctId = defaultDistinctId()
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
-        cacheInstance._cacheInterval = cacheInterval
+        cacheInstance.cacheInterval = cacheInterval
         reachability = Reachability(hostname: SugoServerURL.collection)
         setupListeners()
         unarchive()
@@ -261,26 +262,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
 
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
-        
-        #if os(iOS)
-            checkDecide { decideResponse in
-                if let decideResponse = decideResponse {
-                    DispatchQueue.main.sync {
-                        for binding in decideResponse.newCodelessBindings {
-                            binding.execute()
-                        }
-                        WebViewBindings.global.fillBindings()
-                    }
-                }
-            }
-        #endif
         flushInstance.applicationDidBecomeActive()
-        cacheInstance.applicationDidBecomeActive()
     }
 
     @objc private func applicationWillResignActive(_ notification: Notification) {
         flushInstance.applicationWillResignActive()
-        cacheInstance.applicationWillResignActive()
     }
 
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
@@ -696,9 +682,8 @@ extension SugoInstance {
     /**
      Download binding data from the Sugo server.
      
-     By default, binding data is cached from the Sugo servers every minute (the
-     default for `cacheInterval`), and on background (since
-     `cacheOnBackground` is on by default). You only need to call this
+     By default, binding data is cached from the Sugo servers every hour (the
+     default for `cacheInterval`). You only need to call this
      method manually if you want to force a cache at a particular moment.
      
      - parameter completion: an optional completion handler for when the cache has completed.
@@ -706,7 +691,7 @@ extension SugoInstance {
     open func cache(completion: (() -> Void)? = nil) {
         
         #if os(iOS)
-            checkDecide { decideResponse in
+            checkDecide(forceFetch: true, completion: { (decideResponse) in
                 if let decideResponse = decideResponse {
                     DispatchQueue.main.sync {
                         for binding in decideResponse.newCodelessBindings {
@@ -716,8 +701,11 @@ extension SugoInstance {
                         WebViewBindings.global.fillBindings()
                     }
                 }
-            }
+            })
         #endif
+        if let completion = completion {
+            DispatchQueue.main.async(execute: completion)
+        }
     }
 }
 

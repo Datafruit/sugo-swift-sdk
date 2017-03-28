@@ -78,7 +78,6 @@ class Network {
             Logger.debug(message: "Response URL:\(httpResponse.url!)")
             Logger.debug(message: "Response State Code:\(httpResponse.statusCode)")
             Logger.debug(message: "Response Header Field:\n\(httpResponse.allHeaderFields)")
-            Logger.debug(message: "Result:\(result)")
             success(result, response)
         }.resume()
     }
