@@ -138,6 +138,7 @@ class Decide {
             }
             sugoInstance.eventsQueue.removeAll()
             sugoInstance.flushInstance.stopFlushTimer()
+            sugoInstance.cacheInstance.stopCacheTimer()
             UIApplication.shared.isIdleTimerDisabled = true
             
         }
@@ -148,6 +149,7 @@ class Decide {
             }
             sugoInstance.eventsQueue.removeAll()
             sugoInstance.flushInstance.startFlushTimer()
+            sugoInstance.cacheInstance.startCacheTimer()
             UIApplication.shared.isIdleTimerDisabled = false
 
         }
