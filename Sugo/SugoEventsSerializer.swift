@@ -134,6 +134,36 @@ class SugoEventsSerializer {
         
         return base64Encoded
     }
+    
+    class func convertToPropertiesFrom(collection: [String: Any]) -> Properties {
+        var p = Properties()
+        
+        for (key, value) in collection {
+            if value is Float {
+                p[key] = value as! Float
+            } else if value is Double {
+                p[key] = value as! Double
+            } else if value is String {
+                p[key] = value as! String
+            } else if value is Int {
+                p[key] = value as! Int
+            } else if value is UInt {
+                p[key] = value as! UInt
+            } else if value is Bool {
+                p[key] = value as! Bool
+            } else if value is Date {
+                p[key] = (value as! Date).timeIntervalSince1970
+            } else if value is URL {
+                p[key] = (value as! URL).absoluteString
+            } else if value is NSNull {
+                p[key] = ""
+            } else if value is [String: Any] {
+                p[key] = SugoEventsSerializer.convertToPropertiesFrom(collection: value as! [String: Any])
+            } 
+        }
+        
+        return p
+    }
 }
 
 
