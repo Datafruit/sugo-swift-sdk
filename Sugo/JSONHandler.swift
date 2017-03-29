@@ -78,5 +78,75 @@ class JSONHandler {
             return String(describing: obj)
         }
     }
+    
+    class func parseJSONObjectString(properties: String) -> Properties? {
+        
+        var deserializedObject: Properties? = nil
+        
+        do {
+            let pData = properties.data(using: String.Encoding.utf8)
+            let pObject = try JSONSerialization.jsonObject(with: pData!,
+                                                           options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
+            deserializedObject = JSONHandler.makeObjectDeserializable(pObject)
+        } catch {
+            Logger.debug(message: "exception: \(error)")
+        }
+        
+        return deserializedObject
+    }
+    
+    private class func makeObjectDeserializable(_ object: [String: Any]) -> Properties {
+    
+        var properties = Properties()
+        for (key, value) in object {
+            switch value {
+            case is Float:
+                properties[key] = value as! Float
+                
+            case is Double:
+                properties[key] = value as! Double
+                
+            case is UInt:
+                properties[key] = value as! UInt
+                
+            case is Int:
+                properties[key] = value as! Int
+                
+            case is String:
+                properties[key] = value as! String
+                
+            case let property as [SugoType]:
+                properties[key] = property
+                
+            case let property as Properties:
+                var deserializedDict = Properties()
+                _ = property.map() { (k, v) in
+                    deserializedDict[k] = makeObjectDeserializable(v as! [String : Any])
+                }
+                properties += deserializedDict
+                    
+            case let property as Date:
+                properties[key] = String(format: "%.0f", property.timeIntervalSince1970 * 1000)
+                
+            case let property as URL:
+                properties[key] = property.absoluteString
+                
+            default:
+                Logger.info(message: "enforcing string on value: \(value)")
+                properties[key] = String(describing: value)
+            }
+        }
+        return properties
+    }
 
 }
+
+
+
+
+
+
+
+
+
+

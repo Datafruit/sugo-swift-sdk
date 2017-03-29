@@ -67,6 +67,8 @@ extension AppDelegate {
 //        Sugo.BindingsURL = ""
 //        Sugo.CollectionURL = ""
 //        Sugo.CodelessURL = ""
+        let priorityProperties = [String: Any]()
+        Sugo.registerPriorityProperties(priorityProperties: priorityProperties)
         Sugo.initialize(id: id, token: token)
         Sugo.mainInstance().loggingEnabled = true
         Sugo.mainInstance().flushInterval = 5

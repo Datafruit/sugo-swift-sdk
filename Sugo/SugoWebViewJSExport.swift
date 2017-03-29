@@ -25,22 +25,15 @@ class SugoWebViewJSExport: NSObject, SugoWebViewJSExportProtocol {
         WebViewInfoStorage.global.eventID = id
         WebViewInfoStorage.global.eventName = name
         WebViewInfoStorage.global.properties = properties
-        do {
-            let pData = properties.data(using: String.Encoding.utf8)
-            let pJSON = try JSONSerialization.jsonObject(with: pData!,
-                                                      options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-            var p: Properties = Properties()
-            p += SugoEventsSerializer.convertToPropertiesFrom(collection: pJSON)
-            if !p.isEmpty {
-                Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
-                                          eventName: WebViewInfoStorage.global.eventName,
-                                          properties: p)
-            } else {
-                Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
-                                          eventName: WebViewInfoStorage.global.eventName)
-            }
-        } catch {
-            Logger.debug(message: "JSONSerialization exception")
+
+        
+        if let p = JSONHandler.parseJSONObjectString(properties: properties) {
+            Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
+                                      eventName: WebViewInfoStorage.global.eventName,
+                                      properties: p)
+        } else {
+            Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
+                                      eventName: WebViewInfoStorage.global.eventName)
         }
         
         Logger.debug(message: "id = \(WebViewInfoStorage.global.eventID), name = \(WebViewInfoStorage.global.eventName)")

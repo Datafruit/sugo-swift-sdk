@@ -66,12 +66,10 @@ extension WebViewBindings: WKScriptMessageHandler {
                     WebViewInfoStorage.global.properties = properties
                 }
                 
-                let pData = WebViewInfoStorage.global.properties.data(using: String.Encoding.utf8)
-                if let pJSON = try? JSONSerialization.jsonObject(with: pData!,
-                                                                 options: JSONSerialization.ReadingOptions.mutableContainers) as? Properties {
+                if let p = JSONHandler.parseJSONObjectString(properties: WebViewInfoStorage.global.properties) {
                     Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
                                               eventName: WebViewInfoStorage.global.eventName,
-                                              properties: pJSON)
+                                              properties: p)
                 } else {
                     Sugo.mainInstance().track(eventID: WebViewInfoStorage.global.eventID,
                                               eventName: WebViewInfoStorage.global.eventName)
