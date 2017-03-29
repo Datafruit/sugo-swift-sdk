@@ -15,39 +15,24 @@ protocol CacheDelegate {
     #endif
 }
 
-class Cache: AppLifecycle {
+class Cache {
     
     var timer: Timer?
     var delegate: CacheDelegate?
-    var cacheOnBackground = true
-    var _cacheInterval = 0.0
-    var cacheInterval: Double {
-        set {
-            objc_sync_enter(self)
-            _cacheInterval = newValue
-            objc_sync_exit(self)
-            
-            delegate?.cache(completion: nil)
+    var cacheInterval: Double = 3600 {
+        didSet {
             startCacheTimer()
-        }
-        get {
-            objc_sync_enter(self)
-            defer { objc_sync_exit(self) }
-            
-            return _cacheInterval
         }
     }
     
     func startCacheTimer() {
         stopCacheTimer()
         if cacheInterval > 0 {
-            DispatchQueue.main.async() {
-                self.timer = Timer.scheduledTimer(timeInterval: self.cacheInterval,
-                                                  target: self,
-                                                  selector: #selector(self.cacheSelector),
-                                                  userInfo: nil,
-                                                  repeats: true)
-            }
+            self.timer = Timer.scheduledTimer(timeInterval: self.cacheInterval,
+                                              target: self,
+                                              selector: #selector(self.cacheSelector),
+                                              userInfo: nil,
+                                              repeats: true)
         }
     }
     
@@ -56,21 +41,10 @@ class Cache: AppLifecycle {
     }
     
     func stopCacheTimer() {
-        if let timer = timer {
-            DispatchQueue.main.async() {
-                timer.invalidate()
-                self.timer = nil
-            }
+        if let timer = self.timer {
+            timer.invalidate()
+            self.timer = nil
         }
-    }
-    
-    // MARK: - Lifecycle
-    func applicationDidBecomeActive() {
-        startCacheTimer()
-    }
-    
-    func applicationWillResignActive() {
-        stopCacheTimer()
     }
     
 }

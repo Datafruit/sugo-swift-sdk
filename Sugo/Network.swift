@@ -11,8 +11,8 @@ import Foundation
 
 struct BasePath {
     
-    static var BindingEventsURL = SugoServerURL.bindings
-    static var CollectEventsAPI = SugoServerURL.collection
+    static var BindingEventsURL = (Sugo.BindingsURL != nil && !Sugo.BindingsURL!.isEmpty) ? Sugo.BindingsURL! : SugoServerURL.bindings
+    static var CollectEventsAPI = (Sugo.CollectionURL != nil && !Sugo.BindingsURL!.isEmpty) ? Sugo.CollectionURL! : SugoServerURL.collection
 
     static func buildURL(base: String, path: String, queryItems: [URLQueryItem]?) -> URL? {
         guard let url = URL(string: base) else {
@@ -78,7 +78,6 @@ class Network {
             Logger.debug(message: "Response URL:\(httpResponse.url!)")
             Logger.debug(message: "Response State Code:\(httpResponse.statusCode)")
             Logger.debug(message: "Response Header Field:\n\(httpResponse.allHeaderFields)")
-            Logger.debug(message: "Result:\(result)")
             success(result, response)
         }.resume()
     }

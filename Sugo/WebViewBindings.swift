@@ -27,6 +27,7 @@ class WebViewBindings: NSObject {
     
     lazy var viewSwizzleRunning = false
     dynamic var isWebViewNeedReload = false
+    var isWebViewNeedInject = true
     
     var uiWebView: UIWebView?
     lazy var uiWebViewSwizzleRunning = false

@@ -40,7 +40,7 @@ class Attributes: NSObject {
                 case NSStringFromClass(UIButton.classForCoder()):
                     let o = object as! UIButton
                     if let tittle = o.titleLabel {
-                        aValues += [key: "\(tittle)"]
+                        aValues += [key: "\(tittle.text ?? "")"]
                     } else {
                         aValues += [key: ""]
                     }
@@ -58,10 +58,10 @@ class Attributes: NSObject {
                     aValues += [key: "\(o.isOn)"]
                 case NSStringFromClass(UITextField.classForCoder()):
                     let o = object as! UITextField
-                    aValues += [key: "\(o.text)"]
+                    aValues += [key: "\(o.text ?? "")"]
                 default:
-                    aValues += [key: "\(self.paths[key])"]
-                    Logger.debug(message: "\(self.paths[key])")
+                    aValues += [key: "\(String(describing: self.paths[key]))"]
+                    Logger.debug(message: "\(self.paths[key].debugDescription)")
                 }
             }
         }

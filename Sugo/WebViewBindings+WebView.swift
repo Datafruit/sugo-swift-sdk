@@ -112,14 +112,17 @@ extension WebViewBindings {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
-        Logger.debug(message: "Object = \(object): K: \(keyPath) = V: \(change?[NSKeyValueChangeKey.newKey])")
+        Logger.debug(message: "Object = \(object.debugDescription): K: \(keyPath.debugDescription) = V: \((change?[NSKeyValueChangeKey.newKey]).debugDescription)")
         if keyPath == "stringBindings" {
             if self.mode == WebViewBindingsMode.codeless {
                 self.isWebViewNeedReload = true
             }
-            if !self.isWebViewNeedReload {
+            if !self.isWebViewNeedReload && self.isWebViewNeedInject {
                 stop()
                 execute()
+                if self.isWebViewNeedInject {
+                    self.isWebViewNeedInject = false
+                }
             }
         }
         

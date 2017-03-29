@@ -134,6 +134,7 @@ class SugoEventsSerializer {
         
         return base64Encoded
     }
+
 }
 
 

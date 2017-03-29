@@ -27,7 +27,7 @@ class Decide {
     var codelessInstance = Codeless()
     var webSocketWrapper: WebSocketWrapper?
     var enableVisualEditorForCodeless = true
-    let codelessSugoServerURL = SugoServerURL.codeless
+    let codelessSugoServerURL = (Sugo.CodelessURL != nil && !Sugo.CodelessURL!.isEmpty) ? Sugo.CodelessURL! : SugoServerURL.codeless
 
     func checkDecide(forceFetch: Bool = false,
                      sugoInstance: SugoInstance,
@@ -38,7 +38,7 @@ class Decide {
         if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
             
             let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
-            Logger.debug(message: "Cache decide result:\n\(cacheString)")
+            Logger.debug(message: "Cache decide result:\n\(cacheString.debugDescription)")
 
             do {
                 if let cacheObject = try JSONSerialization.jsonObject(with: cacheData,
@@ -64,7 +64,7 @@ class Decide {
                 do {
                     let resultData = try JSONSerialization.data(withJSONObject: resultObject, options: JSONSerialization.WritingOptions.prettyPrinted)
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
-                    Logger.debug(message: "Decide result:\n\(resultString)")
+                    Logger.debug(message: "Decide result:\n\(resultString.debugDescription)")
                     userDefaults.set(resultData, forKey: "SugoEventBindings")
                     userDefaults.synchronize()
                 } catch {
@@ -138,6 +138,7 @@ class Decide {
             }
             sugoInstance.eventsQueue.removeAll()
             sugoInstance.flushInstance.stopFlushTimer()
+            sugoInstance.cacheInstance.stopCacheTimer()
             UIApplication.shared.isIdleTimerDisabled = true
             
         }
@@ -148,6 +149,7 @@ class Decide {
             }
             sugoInstance.eventsQueue.removeAll()
             sugoInstance.flushInstance.startFlushTimer()
+            sugoInstance.cacheInstance.startCacheTimer()
             UIApplication.shared.isIdleTimerDisabled = false
 
         }

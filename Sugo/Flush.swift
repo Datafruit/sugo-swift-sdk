@@ -125,7 +125,7 @@ class Flush: AppLifecycle {
         let events: [String: AnyObject] = ["events": queue as AnyObject]
         let webSocketMessage = TrackMessage(payload: events)
         connection.send(message: webSocketMessage)
-        Logger.debug(message: "via web socket: \(webSocketMessage?.payload)")
+        Logger.debug(message: "via web socket: \(webSocketMessage!.payload)")
     }
 
     // MARK: - Lifecycle
