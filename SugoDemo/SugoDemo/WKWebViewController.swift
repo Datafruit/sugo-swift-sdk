@@ -23,8 +23,6 @@ class WKWebViewController: UIViewController, WKNavigationDelegate {
         let url = URL(string: "http://www.jd.com")
         let request = URLRequest(url: url!)
         self.webView.load(request)
-        
-        self.view.addSubview(self.webView)
     }
     
     override func didReceiveMemoryWarning() {

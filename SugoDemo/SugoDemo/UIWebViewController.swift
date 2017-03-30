@@ -21,7 +21,6 @@ class UIWebViewController: UIViewController  {
         let request = URLRequest(url: url!)
         
         self.webView.loadRequest(request)
-        self.view.addSubview(self.webView)
     }
     
     deinit {
