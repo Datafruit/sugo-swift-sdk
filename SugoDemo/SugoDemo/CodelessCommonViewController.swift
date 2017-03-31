@@ -46,6 +46,6 @@ class CodelessCommonViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("Tapped playground cell!")
+        print("\(#function): indexPath: \(indexPath.section).\(indexPath.row)")
     }
 }
