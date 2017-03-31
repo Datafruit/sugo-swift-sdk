@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		146DDDB11E8E3B8500354294 /* UITableViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */; };
 		147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C00FE1DF67587001FF110 /* AppDelegate.swift */; };
 		147C01041DF67587001FF110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01021DF67587001FF110 /* Main.storyboard */; };
 		147C01061DF67587001FF110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147C01051DF67587001FF110 /* Assets.xcassets */; };
@@ -18,6 +19,17 @@
 		147C012F1DF691A2001FF110 /* UIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012E1DF691A2001FF110 /* UIWebViewController.swift */; };
 		147C01311DF691AA001FF110 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01301DF691AA001FF110 /* WKWebViewController.swift */; };
 		147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */; };
+		147C47061E8D15E100C1DF08 /* Deprecated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C47051E8D15E100C1DF08 /* Deprecated.storyboard */; };
+		147C47091E8D177700C1DF08 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C47081E8D177600C1DF08 /* HomeTableViewController.swift */; };
+		147C470B1E8D179500C1DF08 /* InstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C470A1E8D179500C1DF08 /* InstructionsViewController.swift */; };
+		147C47101E8D17DF00C1DF08 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C470F1E8D17DF00C1DF08 /* ScanViewController.swift */; };
+		147C47121E8D17F100C1DF08 /* SwitchModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C47111E8D17F100C1DF08 /* SwitchModeViewController.swift */; };
+		147C47141E8D180900C1DF08 /* NativeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C47131E8D180900C1DF08 /* NativeTableViewController.swift */; };
+		147C47161E8D182900C1DF08 /* UIControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C47151E8D182900C1DF08 /* UIControlViewController.swift */; };
+		147C471A1E8D187300C1DF08 /* UITextViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C47191E8D187300C1DF08 /* UITextViewViewController.swift */; };
+		147C471C1E8D189A00C1DF08 /* WebTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */; };
+		147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */; };
+		147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +42,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		148A147E1E8C9D2C00798A4E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewViewController.swift; sourceTree = "<group>"; };
 		147C00FB1DF67587001FF110 /* SugoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SugoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		147C00FE1DF67587001FF110 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		147C01031DF67587001FF110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,6 +72,17 @@
 		147C012E1DF691A2001FF110 /* UIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewController.swift; sourceTree = "<group>"; };
 		147C01301DF691AA001FF110 /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCompleteViewController.swift; sourceTree = "<group>"; };
+		147C47051E8D15E100C1DF08 /* Deprecated.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Deprecated.storyboard; sourceTree = "<group>"; };
+		147C47081E8D177600C1DF08 /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		147C470A1E8D179500C1DF08 /* InstructionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstructionsViewController.swift; sourceTree = "<group>"; };
+		147C470F1E8D17DF00C1DF08 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
+		147C47111E8D17F100C1DF08 /* SwitchModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchModeViewController.swift; sourceTree = "<group>"; };
+		147C47131E8D180900C1DF08 /* NativeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeTableViewController.swift; sourceTree = "<group>"; };
+		147C47151E8D182900C1DF08 /* UIControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlViewController.swift; sourceTree = "<group>"; };
+		147C47191E8D187300C1DF08 /* UITextViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewViewController.swift; sourceTree = "<group>"; };
+		147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTableViewController.swift; sourceTree = "<group>"; };
+		147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewViewController.swift; sourceTree = "<group>"; };
+		147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,13 +126,10 @@
 			isa = PBXGroup;
 			children = (
 				147C00FE1DF67587001FF110 /* AppDelegate.swift */,
-				147C01281DF6913D001FF110 /* TrackingViewController.swift */,
-				147C012A1DF69169001FF110 /* UtilityViewController.swift */,
-				147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */,
-				147C012E1DF691A2001FF110 /* UIWebViewController.swift */,
-				147C01301DF691AA001FF110 /* WKWebViewController.swift */,
-				147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */,
+				147C47071E8D172900C1DF08 /* Demo */,
+				147C47041E8D159400C1DF08 /* Deprecated */,
 				147C01021DF67587001FF110 /* Main.storyboard */,
+				147C47051E8D15E100C1DF08 /* Deprecated.storyboard */,
 				147C01051DF67587001FF110 /* Assets.xcassets */,
 				147C01071DF67587001FF110 /* LaunchScreen.storyboard */,
 				147C010A1DF67587001FF110 /* Info.plist */,
@@ -119,6 +153,61 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		147C47041E8D159400C1DF08 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				147C01281DF6913D001FF110 /* TrackingViewController.swift */,
+				147C012A1DF69169001FF110 /* UtilityViewController.swift */,
+				147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */,
+				147C012E1DF691A2001FF110 /* UIWebViewController.swift */,
+				147C01301DF691AA001FF110 /* WKWebViewController.swift */,
+				147C01321DF69C23001FF110 /* ActionCompleteViewController.swift */,
+			);
+			name = Deprecated;
+			sourceTree = "<group>";
+		};
+		147C47071E8D172900C1DF08 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				147C47081E8D177600C1DF08 /* HomeTableViewController.swift */,
+				147C470A1E8D179500C1DF08 /* InstructionsViewController.swift */,
+				147C470C1E8D179E00C1DF08 /* Scan */,
+				147C470D1E8D17AC00C1DF08 /* Native */,
+				147C470E1E8D17B900C1DF08 /* Web */,
+			);
+			name = Demo;
+			sourceTree = "<group>";
+		};
+		147C470C1E8D179E00C1DF08 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				147C470F1E8D17DF00C1DF08 /* ScanViewController.swift */,
+				147C47111E8D17F100C1DF08 /* SwitchModeViewController.swift */,
+			);
+			name = Scan;
+			sourceTree = "<group>";
+		};
+		147C470D1E8D17AC00C1DF08 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				147C47131E8D180900C1DF08 /* NativeTableViewController.swift */,
+				147C47151E8D182900C1DF08 /* UIControlViewController.swift */,
+				146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */,
+				147C47191E8D187300C1DF08 /* UITextViewViewController.swift */,
+			);
+			name = Native;
+			sourceTree = "<group>";
+		};
+		147C470E1E8D17B900C1DF08 /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */,
+				147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */,
+				147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */,
+			);
+			name = Web;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,6 +218,7 @@
 				147C00F71DF67587001FF110 /* Sources */,
 				147C00F81DF67587001FF110 /* Frameworks */,
 				147C00F91DF67587001FF110 /* Resources */,
+				148A147E1E8C9D2C00798A4E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -203,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				147C01091DF67587001FF110 /* LaunchScreen.storyboard in Resources */,
+				147C47061E8D15E100C1DF08 /* Deprecated.storyboard in Resources */,
 				147C01061DF67587001FF110 /* Assets.xcassets in Resources */,
 				147C01041DF67587001FF110 /* Main.storyboard in Resources */,
 			);
@@ -222,13 +313,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */,
+				147C47091E8D177700C1DF08 /* HomeTableViewController.swift in Sources */,
+				147C47121E8D17F100C1DF08 /* SwitchModeViewController.swift in Sources */,
 				147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */,
+				147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */,
+				147C47161E8D182900C1DF08 /* UIControlViewController.swift in Sources */,
 				147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */,
+				147C47141E8D180900C1DF08 /* NativeTableViewController.swift in Sources */,
+				147C470B1E8D179500C1DF08 /* InstructionsViewController.swift in Sources */,
 				147C012F1DF691A2001FF110 /* UIWebViewController.swift in Sources */,
+				146DDDB11E8E3B8500354294 /* UITableViewViewController.swift in Sources */,
 				147C012B1DF69169001FF110 /* UtilityViewController.swift in Sources */,
 				147C01311DF691AA001FF110 /* WKWebViewController.swift in Sources */,
+				147C47101E8D17DF00C1DF08 /* ScanViewController.swift in Sources */,
+				147C471C1E8D189A00C1DF08 /* WebTableViewController.swift in Sources */,
 				147C01291DF6913D001FF110 /* TrackingViewController.swift in Sources */,
 				147C012D1DF6918C001FF110 /* CodelessCommonViewController.swift in Sources */,
+				147C471A1E8D187300C1DF08 /* UITextViewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
