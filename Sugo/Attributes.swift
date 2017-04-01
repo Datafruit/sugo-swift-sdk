@@ -59,6 +59,9 @@ class Attributes: NSObject {
                 case NSStringFromClass(UITextField.classForCoder()):
                     let o = object as! UITextField
                     aValues += [key: "\(o.text ?? "")"]
+                case NSStringFromClass(UITextView.classForCoder()):
+                    let o = object as! UITextView
+                    aValues += [key: "\(o.text ?? "")"]
                 default:
                     aValues += [key: "\(String(describing: self.paths[key]))"]
                     Logger.debug(message: "\(self.paths[key].debugDescription)")
