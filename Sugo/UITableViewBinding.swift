@@ -63,7 +63,8 @@ class UITableViewBinding: CodelessBinding {
                 }
                 if let root = UIApplication.shared.keyWindow?.rootViewController {
                     // select targets based off path
-                    if self.path.isSelected(leaf: tableView, from: root) {                        var p = Properties()
+                    if self.path.isSelected(leaf: tableView, from: root) {
+                        var p = Properties()
                         if let a = self.attributes {
                             p += a.parse()
                         }
