@@ -29,12 +29,12 @@ class SwitchModeViewController: UIViewController {
         print("url: \(self.urlString.debugDescription)")
         if let url = URL(string: self.urlString!) {
             Sugo.mainInstance().connectToCodeless(via: url)
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
     @IBAction func cancel(_ sender: UIButton) {
-        self.navigationController?.popToRootViewController(animated: true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
 }
