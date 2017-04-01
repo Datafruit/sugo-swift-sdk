@@ -98,7 +98,7 @@ class SugoEventsSerializer {
                     } else if types[key] == "f" {
                         value[key] = object[key]
                     } else if types[key] == "d" {
-                        value[key] = String(format: "%.0f", ((object[key] as! Date).timeIntervalSince1970 * 1000))
+                        value[key] = object[key]
                     } else if types[key] == "s" {
                         value[key] = object[key]
                     } else {

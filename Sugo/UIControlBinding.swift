@@ -221,6 +221,7 @@ class UIControlBinding: CodelessBinding {
                 p += a.parse()
             }
             let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
             if let vc = UIViewController.sugoCurrentViewController {
                 p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
                 for info in SugoPageInfos.global.infos {
@@ -232,9 +233,9 @@ class UIControlBinding: CodelessBinding {
                 }
             }
             if controlEvent == UIControlEvents.editingDidBegin {
-                p[keys["EventType"]!] = "focus"
+                p[keys["EventType"]!] = values["focus"]!
             } else {
-                p[keys["EventType"]!] = "click"
+                p[keys["EventType"]!] = values["click"]!
             }
             self.track(eventID: self.eventID,
                        eventName: self.eventName,

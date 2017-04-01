@@ -26,6 +26,20 @@ extension UIViewController {
         }
     }
     
+    @objc func sugoTextViewDidBeginEditing(_ textView: UITextView) {
+        let originalSelector = NSSelectorFromString("textViewDidBeginEditing:")
+        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+            let swizzle = Swizzler.swizzles[originalMethod] {
+            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, UITextView) -> Void
+            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+            curriedImplementation(self, originalSelector, textView)
+            
+            for (_, block) in swizzle.blocks {
+                block(self, swizzle.selector, textView, nil)
+            }
+        }
+    }
+    
 }
 
 extension UIViewController {

@@ -42,6 +42,7 @@ class Track {
         
         p[keys["Token"]!] = apiToken
         p[keys["SessionID"]!] = sugo.sessionID
+        p[keys["EventTime"]!] = String(format: "%.0f", epochSeconds * 1000)
         if let eventStartTime = eventStartTime {
             sugo.timedEvents.removeValue(forKey: evn!)
             p[keys["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
@@ -69,10 +70,8 @@ class Track {
         }
         
         if isCodeless {
-            p[keys["EventTime"]!] = String(format: "%.0f", epochSeconds * 1000)
             trackEvent["properties"] = p
         } else {
-            p[keys["EventTime"]!] = date
             trackEvent += p
         }
         
