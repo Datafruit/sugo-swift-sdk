@@ -44,8 +44,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     /// distinctId string that uniquely identifies the current user.
     open var distinctId = ""
     
-    open var reachability: Reachability?
-    
     /// urlSchemes url that gives key to device_info_response
     open var urlSchemesKeyValue: String?
 
@@ -172,6 +170,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     let cacheInstance = Cache()
     let trackInstance: Track
     let decideInstance = Decide()
+    let reachability = Reachability()!
 
     init(projectID: String?,
          apiToken: String?,
@@ -198,7 +197,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         sessionID = UUID().uuidString
         flushInstance._flushInterval = flushInterval
         cacheInstance.cacheInterval = cacheInterval
-        reachability = Reachability(hostname: SugoServerURL.collection)
         setupListeners()
         unarchive()
         
@@ -214,24 +212,23 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     private func setupListeners() {
         trackStayTime()
         let notificationCenter = NotificationCenter.default
-        #if os(iOS)
-            setCurrentRadio()
-            notificationCenter.addObserver(self,
-                                           selector: #selector(setCurrentRadio),
-                                           name: .CTRadioAccessTechnologyDidChange,
-                                           object: nil)
-            
-            do {
-                try self.reachability?.startNotifier()
-                NotificationCenter.default.addObserver(self,
-                                                       selector: #selector(self.reachabilityChanged(_:)),
-                                                       name: ReachabilityChangedNotification,
-                                                       object: self.reachability)
-            } catch {
-                Logger.debug(message: "Reachability exception")
-            }
-            
-        #endif
+        
+        setCurrentRadio()
+        notificationCenter.addObserver(self,
+                                       selector: #selector(setCurrentRadio),
+                                       name: .CTRadioAccessTechnologyDidChange,
+                                       object: nil)
+        
+        notificationCenter.addObserver(self,
+                                       selector: #selector(self.reachabilityChanged(_:)),
+                                       name: ReachabilityChangedNotification,
+                                       object: self.reachability)
+        do {
+            try self.reachability.startNotifier()
+        } catch {
+            Logger.debug(message: "Reachability exception")
+        }
+        
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationWillTerminate(_:)),
                                        name: .UIApplicationWillTerminate,
@@ -429,38 +426,32 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         let keys = SugoDimensions.keys
         let reachability = note.object as! Reachability
         
+        var has_wifi = "false"
         var network = String()
-        if !reachability.isReachable {
-            network = ""
-        } else if reachability.isReachableViaWiFi {
-            network = "WiFi"
-        } else if reachability.isReachableViaWWAN {
-            let telephonyInfo = AutomaticProperties.getCurrentRadio()
-            if telephonyInfo == "GPRS" {
-                network = "2G"
-            } else if telephonyInfo == "Edge" {
-                network = "2G"
-            } else if telephonyInfo == "WCDMA" {
-                network = "3G"
-            } else if telephonyInfo == "HSDPA" {
-                network = "3G"
-            } else if telephonyInfo == "HSUPA" {
-                network = "3G"
-            } else if telephonyInfo == "CDMA1x" {
-                network = "2G"
-            } else if telephonyInfo == "CDMAEVDORev0" {
-                network = "3G"
-            } else if telephonyInfo == "CDMAEVDORevA" {
-                network = "3G"
-            } else if telephonyInfo == "CDMAEVDORevB" {
-                network = "3G"
-            } else if telephonyInfo == "LTE" {
-                network = "4G"
-            } else {
-                network = "other"
+        if reachability.isReachable {
+            if reachability.isReachableViaWiFi {
+                has_wifi = "true"
+                network = "WiFi"
+            } else if let currentRadio = AutomaticProperties.getCurrentRadio() {
+                
+                let radio2G = ["GPRS", "Edge", "CDMA1x"]
+                let radio3G = ["WCDMA", "HSDPA", "HSUPA", "CDMAEVDORev0", "CDMAEVDORevA", "CDMAEVDORevB"]
+                let radio4G = ["LTE"]
+            
+                if radio4G.contains(currentRadio) {
+                    network = "4G"
+                } else if radio3G.contains(currentRadio) {
+                    network = "3G"
+                } else if radio2G.contains(currentRadio) {
+                    network = "2G"
+                } else {
+                    network = "other"
+                }
             }
         }
+        
         serialQueue.async() {
+            AutomaticProperties.properties["has_wifi"] = has_wifi
             AutomaticProperties.properties[keys["Reachability"]!] = network
             Logger.debug(message: "Reachability: \(network)")
         }
