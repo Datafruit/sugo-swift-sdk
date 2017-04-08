@@ -15,7 +15,7 @@ import UIKit
     }
 
     override class func allowsReverseTransformation() -> Bool {
-        return true
+        return false    // origin is true
     }
 
     override func transformedValue(_ value: Any?) -> Any? {
@@ -27,9 +27,8 @@ import UIKit
             let data = try attributedString.data(from: NSRange(location: 0,
                                                                length: attributedString.length),
                                                  documentAttributes: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType])
-            if let dataString = String(data: data, encoding: String.Encoding.utf8) {
-                return ["mime_type": "text/html",
-                        "data": dataString]
+            if String(data: data, encoding: String.Encoding.utf8) != nil {
+                return ["mime_type": "text/html"]
             }
         } catch {
             Logger.debug(message: "Failed to convert NSAttributedString to HTML")
@@ -37,25 +36,4 @@ import UIKit
         return nil
     }
 
-    override func reverseTransformedValue(_ value: Any?) -> Any? {
-        guard let dict = value as? NSDictionary else {
-            return nil
-        }
-
-        let mimeType = dict["mime_type"]
-        let dataString = dict["data"]
-
-        if let mimeType = mimeType as? String, mimeType == "text/html", let dataString = dataString as? String {
-            if let data = dataString.data(using: String.Encoding.utf8) {
-                do {
-                    return try NSAttributedString(data: data,
-                                                  options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
-                                                  documentAttributes: nil)
-                } catch {
-                    Logger.debug(message: "Failed to convert HTML to NSAttributedString")
-                }
-            }
-        }
-        return nil
-    }
 }
