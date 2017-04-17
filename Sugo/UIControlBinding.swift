@@ -47,7 +47,7 @@ class UIControlBinding: CodelessBinding {
         }
 
         var finalVerifyEvent: UIControlEvents
-        if let verifyEvent = object["control_event"] as? UInt, verifyEvent & UIControlEvents.allEvents.rawValue != 0 {
+        if let verifyEvent = object["verify_event"] as? UInt, verifyEvent & UIControlEvents.allEvents.rawValue != 0 {
             finalVerifyEvent = UIControlEvents(rawValue: verifyEvent)
         } else if controlEvent & UIControlEvents.allTouchEvents.rawValue != 0 {
             finalVerifyEvent = UIControlEvents.touchDown
@@ -136,7 +136,7 @@ class UIControlBinding: CodelessBinding {
                                 objects = []
                             }
                         } else {
-                            objects = self.path.selectFrom(root: root, evaluateFinalPredicate: false) as! [UIControl]
+                            objects = self.path.selectFrom(root: root) as! [UIControl]
                         }
 
                         for control in objects {
@@ -222,7 +222,7 @@ class UIControlBinding: CodelessBinding {
             }
             let keys = SugoDimensions.keys
             let values = SugoDimensions.values
-            if let vc = UIViewController.sugoCurrentUIViewController {
+            if let vc = UIViewController.sugoCurrentUIViewController() {
                 p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
                 for info in SugoPageInfos.global.infos {
                     if let infoPage = info["page"] as? String,

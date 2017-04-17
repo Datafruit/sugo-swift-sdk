@@ -74,6 +74,23 @@ extension UIViewController {
 
 extension UIViewController {
     
+    class func sugoCurrentUITabBarController() -> UITabBarController? {
+        let vc = UIViewController.sugoCurrentUIViewController()
+        return vc?.tabBarController
+    }
+    
+    class func sugoCurrentUINavigationController() -> UINavigationController? {
+        let vc = UIViewController.sugoCurrentUIViewController()
+        return vc?.navigationController
+    }
+    
+    class func sugoCurrentUIViewController() -> UIViewController? {
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            return searchViewController(from: rootViewController)
+        }
+        return nil
+    }
+    
     private class func searchViewController(from viewController: UIViewController) -> UIViewController? {
         
         if viewController.presentedViewController != nil,
@@ -89,7 +106,7 @@ extension UIViewController {
         } else if viewController is UINavigationController,
             let nvc = viewController as? UINavigationController {
             if !nvc.viewControllers.isEmpty {
-                return searchViewController(from: nvc.visibleViewController!)
+                return searchViewController(from: nvc.topViewController!)
             } else {
                 return viewController
             }
@@ -103,25 +120,6 @@ extension UIViewController {
         } else {
             return viewController
         }
-    }
-    
-    static var sugoCurrentUIViewController: UIViewController? {
-        
-        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
-            return searchViewController(from: rootViewController)
-        }
-        return nil
-        
-    }
-    
-    static var sugoCurrentUINavigationController: UINavigationController? {
-        let vc = UIViewController.sugoCurrentUIViewController
-        return vc?.navigationController
-    }
-    
-    static var sugoCurrentUITabBarController: UITabBarController? {
-        let vc = UIViewController.sugoCurrentUIViewController
-        return vc?.tabBarController
     }
     
 }

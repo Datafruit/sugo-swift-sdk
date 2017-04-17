@@ -76,7 +76,7 @@ extension WebViewBindings {
             self.stopUIWebViewBindings(webView: self.uiWebView!)
             return
         }
-        if let vc = UIViewController.sugoCurrentUIViewController {
+        if let vc = UIViewController.sugoCurrentUIViewController() {
             self.uiVCPath = NSStringFromClass(vc.classForCoder)
             Logger.debug(message: "view controller name: \(self.uiVCPath)")
         }
@@ -97,7 +97,7 @@ extension WebViewBindings {
             self.stopWKWebViewBindings(webView: self.wkWebView!)
             return
         }
-        if let vc = UIViewController.sugoCurrentUIViewController {
+        if let vc = UIViewController.sugoCurrentUIViewController() {
             self.wkVCPath = NSStringFromClass(vc.classForCoder)
             Logger.debug(message: "view controller name: \(self.wkVCPath)")
         }

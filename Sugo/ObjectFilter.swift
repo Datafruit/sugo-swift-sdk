@@ -129,24 +129,35 @@ class ObjectFilter: CustomStringConvertible {
     func getParents(of object: AnyObject) -> [AnyObject] {
         var result = [AnyObject]()
 
-        if let object = object as? UIView {
-            if let superview = object.superview {
+        if let view = object as? UIView {
+            if let superview = view.superview {
                 result.append(superview)
             }
 
-            if let nextResponder = object.next, nextResponder != object.superview {
+            if let nextResponder = view.next, nextResponder != view.superview {
                 result.append(nextResponder)
             }
-        } else if let object = object as? UIViewController {
-            if let parentViewController = object.parent {
-                result.append(parentViewController)
+        } else if let viewController = object as? UIViewController {
+            
+            if viewController.isKind(of: UINavigationController.classForCoder()) {
+                if viewController == UIViewController.sugoCurrentUINavigationController() {
+                    result.append(UIViewController.sugoCurrentUIViewController()!)
+                }
+            } else if viewController.isKind(of: UITabBarController.classForCoder()) {
+                if viewController == UIViewController.sugoCurrentUITabBarController() {
+                    result.append(UIViewController.sugoCurrentUIViewController()!)
+                }
+            } else {
+                if let parentViewController = viewController.parent {
+                    result.append(parentViewController)
+                }
+                
+                if let presentingViewController = viewController.presentingViewController {
+                    result.append(presentingViewController)
+                }
             }
 
-            if let presentingViewController = object.presentingViewController {
-                result.append(presentingViewController)
-            }
-
-            if let keyWindow = UIApplication.shared.keyWindow, keyWindow.rootViewController == object {
+            if let keyWindow = UIApplication.shared.keyWindow, keyWindow.rootViewController == viewController {
                 result.append(keyWindow)
             }
         }
@@ -168,14 +179,38 @@ class ObjectFilter: CustomStringConvertible {
                 }
             }
         } else if let viewController = object as? UIViewController {
-            for child in viewController.childViewControllers {
-                if searchClass == nil || child.isKind(of: searchClass!) {
-                    children.append(child)
+            
+            if let navigationController = viewController as? UINavigationController {
+                // UINavigationController
+                if let topViewController = navigationController.topViewController {
+                    children.append(topViewController)
                 }
-            }
-            if let presentedVC = viewController.presentedViewController,
-                (searchClass == nil || presentedVC.isKind(of: searchClass!)) {
-                children.append(presentedVC)
+            } else if let tabBarController = viewController as? UITabBarController {
+                // UITabBarController
+                if let selectedViewController = tabBarController.selectedViewController {
+                    children.append(selectedViewController)
+                }
+            } else {
+                // UINavigationController
+                if let navigationController = viewController.navigationController,
+                    (searchClass == nil || navigationController.isKind(of: searchClass!)) {
+                    children.append(navigationController)
+                }
+                // UITabBarController
+                if let tabBarController = viewController.tabBarController,
+                    (searchClass == nil || tabBarController.isKind(of: searchClass!)) {
+                    children.append(tabBarController)
+                }
+                // UIViewController
+                for child in viewController.childViewControllers {
+                    if searchClass == nil || child.isKind(of: searchClass!) {
+                        children.append(child)
+                    }
+                }
+                if let presentedVC = viewController.presentedViewController,
+                    (searchClass == nil || presentedVC.isKind(of: searchClass!)) {
+                    children.append(presentedVC)
+                }
             }
             if viewController.isViewLoaded && (searchClass == nil || viewController.view.isKind(of: searchClass!)) {
                 children.append(viewController.view)
