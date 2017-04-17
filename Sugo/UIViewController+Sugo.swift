@@ -105,13 +105,23 @@ extension UIViewController {
         }
     }
     
-    static var sugoCurrentViewController: UIViewController? {
+    static var sugoCurrentUIViewController: UIViewController? {
         
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             return searchViewController(from: rootViewController)
         }
         return nil
         
+    }
+    
+    static var sugoCurrentUINavigationController: UINavigationController? {
+        let vc = UIViewController.sugoCurrentUIViewController
+        return vc?.navigationController
+    }
+    
+    static var sugoCurrentUITabBarController: UITabBarController? {
+        let vc = UIViewController.sugoCurrentUIViewController
+        return vc?.tabBarController
     }
     
 }
