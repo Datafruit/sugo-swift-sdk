@@ -30,6 +30,13 @@ struct SugoPermission {
      It means SDK could only send UUID to server instead of IFA.
      */
     static let canObtainIFA = false
+    
+    /*
+     default to false.
+     It means SDK could not track page event.
+     */
+    static let canTrackNativePage   = false
+    static let canTrackWebPage      = false
 }
 
 struct SugoConfiguration {

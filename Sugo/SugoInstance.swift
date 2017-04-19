@@ -210,7 +210,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
     
     private func setupListeners() {
-        trackStayTime()
+        
+        if SugoPermission.canTrackNativePage {
+            trackStayTime()
+        }
+        
         let notificationCenter = NotificationCenter.default
         
         setCurrentRadio()
