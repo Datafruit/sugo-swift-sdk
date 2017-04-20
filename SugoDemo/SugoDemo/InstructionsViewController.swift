@@ -17,9 +17,9 @@ class InstructionsViewController: UIViewController, UIWebViewDelegate {
 
         // Do any additional setup after loading the view.
         self.webView.delegate = self
-//        let url = URL(string: "")
-//        let request = URLRequest(url: url!)
-//        self.webView.loadRequest(request)
+        let url = URL(string: "http://docs.sugo.io/")
+        let request = URLRequest(url: url!)
+        self.webView.loadRequest(request)
     }
 
     override func didReceiveMemoryWarning() {

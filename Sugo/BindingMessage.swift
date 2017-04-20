@@ -24,15 +24,12 @@ class BindingRequest: BaseWebSocketMessage {
             }
 
             DispatchQueue.main.sync {
-                var bindingCollection = connection.getSessionObjectSynchronized(for: "event_bindings") as? CodelessBindingCollection
-                if bindingCollection == nil {
-                    bindingCollection = CodelessBindingCollection()
-                    connection.setSessionObjectSynchronized(with: bindingCollection!, for: "event_bindings")
-                }
+                let bindingCollection = CodelessBindingCollection()
+                bindingCollection.bindings =  Array(Sugo.mainInstance().decideInstance.codelessInstance.codelessBindings)
 
                 if let events = self.payload["events"] as? [[String: Any]] {
                     Logger.debug(message: "Loading event bindings: \(events)")
-                    bindingCollection?.updateBindings(events)
+                    bindingCollection.updateBindings(events)
                 }
                 
                 if let events = self.payload["h5_events"] as? [[String: Any]] {

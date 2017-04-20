@@ -210,7 +210,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
     
     private func setupListeners() {
-        trackStayTime()
+        
+        if SugoPermission.canTrackNativePage {
+            trackStayTime()
+        }
+        
         let notificationCenter = NotificationCenter.default
         
         setCurrentRadio()
@@ -310,16 +314,16 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     @objc private func applicationWillTerminate(_ notification: Notification) {
         
         let values = SugoDimensions.values
-        self.trackInstance.track(eventID: nil,
-                                 eventName: values["BackgroundStay"]!,
-                                 properties: nil,
-                                 date: Date(),
-                                 sugo: self)
-        self.trackInstance.track(eventID: nil,
-                                 eventName: values["BackgroundExit"]!,
-                                 properties: nil,
-                                 date: Date(),
-                                 sugo: self)
+//        self.trackInstance.track(eventID: nil,
+//                                 eventName: values["BackgroundStay"]!,
+//                                 properties: nil,
+//                                 date: Date(),
+//                                 sugo: self)
+//        self.trackInstance.track(eventID: nil,
+//                                 eventName: values["BackgroundExit"]!,
+//                                 properties: nil,
+//                                 date: Date(),
+//                                 sugo: self)
         self.trackInstance.track(eventID: nil,
                                  eventName: values["AppStay"]!,
                                  properties: nil,

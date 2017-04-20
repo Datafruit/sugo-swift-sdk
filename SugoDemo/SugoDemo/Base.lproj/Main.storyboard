@@ -201,6 +201,9 @@
                                     <rect key="frame" x="309" y="12" width="20" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="tintColor" red="0.45882352939999999" green="0.40000000000000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="SugoViewId" value="Deprecated"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="deprecatedAction:" destination="Tzu-KL-8Dy" eventType="touchUpInside" id="Bpj-le-WnF"/>
                                     </connections>

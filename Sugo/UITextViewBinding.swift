@@ -71,7 +71,7 @@ class UITextViewBinding: CodelessBinding {
                         }
                         let keys = SugoDimensions.keys
                         let values = SugoDimensions.values
-                        if let vc = UIViewController.sugoCurrentViewController {
+                        if let vc = UIViewController.sugoCurrentUIViewController() {
                             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
                             for info in SugoPageInfos.global.infos {
                                 if let infoPage = info["page"] as? String,

@@ -191,6 +191,7 @@ extension WebViewBindings {
         let regularExpressions = "sugo.regular_expressions = \(resString);\n"
         let pageInfos = "sugo.page_infos = \(infosString);\n"
         let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
+        let canTrackWebPage = "sugo.can_track_web_page = \(SugoPermission.canTrackWebPage);\n"
         let variables = self.jsSource(of: "WebViewVariables")
         
         return vcPath
@@ -199,6 +200,7 @@ extension WebViewBindings {
             + regularExpressions
             + pageInfos
             + bindings
+            + canTrackWebPage
             + variables
     }
     

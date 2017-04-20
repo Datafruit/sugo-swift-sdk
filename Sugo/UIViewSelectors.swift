@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+private var key: Void?
+
 extension UIView {
 
     func mp_encryptHelper(input: String?) -> NSString {
@@ -52,8 +54,17 @@ extension UIView {
         return mp_encryptHelper(input: mp_text())
     }
 
+    var sugoViewId: String? {
+        get {
+            return objc_getAssociatedObject(self, &key) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &key, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
     func mp_viewId() -> String? {
-        return objc_getAssociatedObject(self, "sugoViewId") as? String
+        return sugoViewId
     }
 
     func mp_controllerVariable() -> String? {
