@@ -33,28 +33,38 @@ class Decide {
                      sugoInstance: SugoInstance,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
 
+        var responseObject = [String: Any]()
+        
         let userDefaults = UserDefaults.standard
-        var object = [String: Any]()
+        var cacheObject = [String: Any]()
+        var cacheVersion = -1;
+        
         if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
             
             let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
             Logger.debug(message: "Cache decide result:\n\(cacheString.debugDescription)")
 
             do {
-                if let cacheObject = try JSONSerialization.jsonObject(with: cacheData,
-                                                                      options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-                    object = cacheObject
+                if let co = try JSONSerialization.jsonObject(with: cacheData,
+                                                             options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                    cacheObject = co
                 }
             } catch {
-                Logger.debug(message: "Failed to serialize EventBindings")
+                Logger.debug(message: "Failed to serialize cache event bindings")
             }
+        }
+        
+        if let cv = cacheObject["event_bindings_version"] as? Int {
+            cacheVersion = cv
         }
         
         if !decideFetched || forceFetch {
             let semaphore = DispatchSemaphore(value: 0)
             decideRequest.sendRequest(projectId: sugoInstance.projectId,
                                       token: sugoInstance.apiToken,
-                                      distinctId: sugoInstance.distinctId) { decideResult in
+                                      distinctId: sugoInstance.distinctId,
+                                      eventBindingsVersion: cacheVersion) { decideResult in
+
                 guard let resultObject = decideResult else {
                     semaphore.signal()
                     completion(nil)
@@ -62,7 +72,8 @@ class Decide {
                 }
                 
                 do {
-                    let resultData = try JSONSerialization.data(withJSONObject: resultObject, options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let resultData = try JSONSerialization.data(withJSONObject: resultObject,
+                                                                options: JSONSerialization.WritingOptions.prettyPrinted)
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                     Logger.debug(message: "Decide result:\n\(resultString.debugDescription)")
                     userDefaults.set(resultData, forKey: "SugoEventBindings")
@@ -70,7 +81,8 @@ class Decide {
                 } catch {
                     Logger.debug(message: "Decide serialize result error")
                 }
-                object = resultObject
+                                        
+                responseObject = resultObject
 
                 self.decideFetched = true
                 semaphore.signal()
@@ -80,7 +92,14 @@ class Decide {
         } else {
             Logger.info(message: "decide cache found, skipping network request")
         }
-        handleDecide(object: object)
+        
+        let responseVersion = responseObject["event_bindings_version"] as? Int
+        if responseVersion != cacheVersion {
+            handleDecide(object: responseObject)
+        } else {
+            handleDecide(object: cacheObject)
+        }
+        
         Logger.info(message: "decide check found \(decideResponse.newCodelessBindings.count) " +
             "new codeless bindings out of \(codelessInstance.codelessBindings)")
 

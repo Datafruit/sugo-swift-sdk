@@ -22,8 +22,9 @@ class DecideRequest: Network {
         let token: URLQueryItem
         let distinctId: URLQueryItem
         let properties: URLQueryItem
+        let eventBindingsVersion: URLQueryItem
 
-        init(projectId: String, token: String, distinctId: String) {
+        init(projectId: String, token: String, distinctId: String, bindingsVersion: Int) {
             let infoDict = Bundle.main.infoDictionary
             if let infoDict = infoDict,
                 let version = infoDict["CFBundleShortVersionString"] {
@@ -37,7 +38,8 @@ class DecideRequest: Network {
             self.projectId = URLQueryItem(name: "projectId", value: projectId)
             self.token = URLQueryItem(name: "token", value: token)
             self.distinctId = URLQueryItem(name: "distinct_id", value: distinctId)
-
+            self.eventBindingsVersion = URLQueryItem(name: "event_bindings_version", value: "\(bindingsVersion)")
+            
             // workaround for a/b testing
             var devicePropertiesCopy = AutomaticProperties.deviceProperties
             devicePropertiesCopy["ios_lib_version"] = AutomaticProperties.libVersion()
@@ -49,13 +51,14 @@ class DecideRequest: Network {
         }
 
         func toArray() -> [URLQueryItem] {
-            return [version, lib, projectId, token, distinctId, properties]
+            return [version, lib, projectId, token, distinctId, eventBindingsVersion,  properties]
         }
     }
 
     func sendRequest(projectId: String,
                      token: String,
                      distinctId: String,
+                     eventBindingsVersion: Int,
                      completion: @escaping (DecideResult?) -> Void) {
 
         let responseParser: (Data) -> DecideResult? = { data in
@@ -70,7 +73,8 @@ class DecideRequest: Network {
 
         let queryItems = DecideQueryItems(projectId: projectId,
                                           token: token,
-                                          distinctId: distinctId)
+                                          distinctId: distinctId,
+                                          bindingsVersion: eventBindingsVersion)
         let resource = Network.buildResource(path: decidePath,
                                              method: .get,
                                              queryItems: queryItems.toArray(),
