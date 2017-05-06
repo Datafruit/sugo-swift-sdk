@@ -182,8 +182,12 @@ class ObjectFilter: CustomStringConvertible {
             
             if let navigationController = viewController as? UINavigationController {
                 // UINavigationController
-                if let topViewController = navigationController.topViewController {
+                if let visibleViewController = navigationController.visibleViewController {
+                    children.append(visibleViewController)
+                } else if let topViewController = navigationController.topViewController {
                     children.append(topViewController)
+                } else if let childViewController = navigationController.childViewControllers.last {
+                    children.append(childViewController)
                 }
             } else if let tabBarController = viewController as? UITabBarController {
                 // UITabBarController
