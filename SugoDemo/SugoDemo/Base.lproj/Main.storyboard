@@ -678,7 +678,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="切换到可视化埋点模式" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QY9-uT-yWb">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QY9-uT-yWb">
                                 <rect key="frame" x="0.0" y="84" width="375" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="N2P-UR-bK9"/>
@@ -737,6 +737,9 @@
                             <constraint firstItem="QY9-uT-yWb" firstAttribute="centerX" secondItem="jdJ-f2-cNV" secondAttribute="centerX" id="o4b-NF-jfe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="switchLabel" destination="QY9-uT-yWb" id="Amw-If-CNT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6N1-EE-9rF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
