@@ -17,6 +17,11 @@ class Heats {
     func checkHeats(sugoInstance: SugoInstance,
                     completion: @escaping ((_ response: HeatsResponse?) -> Void)) {
         
+        if sugoInstance.decideInstance.webSocketWrapper != nil
+            && sugoInstance.decideInstance.webSocketWrapper!.connected {
+            return
+        }
+        
         var heatResponse = HeatsResponse()
         
         let semaphore = DispatchSemaphore(value: 0)

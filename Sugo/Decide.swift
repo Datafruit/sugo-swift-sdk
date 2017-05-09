@@ -146,6 +146,10 @@ class Decide {
 
     func connectToWebSocket(token: String, sugoInstance: SugoInstance, reconnect: Bool = false) {
         
+        guard !sugoInstance.heatMap.mode else {
+            return
+        }
+        
         let webSocketURL = "\(codelessSugoServerURL)/connect/\(token)"
         guard let url = URL(string: webSocketURL) else {
             Logger.error(message: "bad URL to connect to websocket \(webSocketURL)")
