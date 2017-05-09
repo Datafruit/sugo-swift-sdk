@@ -35,7 +35,7 @@ class DeviceInfoRequest: BaseWebSocketMessage {
                                                           libVersion: AutomaticProperties.libVersion(),
                                                           availableFontFamilies: self.availableFontFamilies(),
                                                           mainBundleIdentifier: Bundle.main.bundleIdentifier,
-                                                          urlSchemesKeyValue: Sugo.mainInstance().urlSchemesKeyValue)
+                                                          urlSchemesKeyValue: Sugo.mainInstance().urlCodelessSecretKey)
                 response = DeviceInfoResponse(infoResponseInput)
             }
             connection.send(message: response)

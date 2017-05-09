@@ -125,13 +125,14 @@ extension WebViewBindings {
     var jsUIWebView: String {
         
         let js = self.jsUIWebViewUtils
-                + self.jsUIWebViewSugoBegin
-                + self.jsUIWebViewVariables
-                + self.jsUIWebViewAPI
-                + self.jsUIWebViewBindings
-                + self.jsUIWebViewReport
-                + self.jsUIWebViewExcute
-                + self.jsUIWebViewSugoEnd
+            + self.jsUIWebViewSugoBegin
+            + self.jsUIWebViewVariables
+            + self.jsUIWebViewAPI
+            + self.jsUIWebViewBindings
+            + self.jsUIWebViewReport
+            + self.jsUIWebViewHeatMap
+            + self.jsUIWebViewExcute
+            + self.jsUIWebViewSugoEnd
         Logger.debug(message: "UIWebView JavaScript:\n\(js)")
         return js
     }
@@ -192,7 +193,9 @@ extension WebViewBindings {
         let pageInfos = "sugo.page_infos = \(infosString);\n"
         let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
         let canTrackWebPage = "sugo.can_track_web_page = \(SugoPermission.canTrackWebPage);\n"
-        let variables = self.jsSource(of: "WebViewVariables")
+        let canShowHeatMap = "sugo.can_show_heat_map = \(self.isHeatMapModeOn ? "true" : "false");\n"
+        let heats = "sugo.h5_heats = \(self.stringHeats);\n"
+        let vars = self.jsSource(of: "WebViewVariables")
         
         return vcPath
             + homePath
@@ -201,7 +204,9 @@ extension WebViewBindings {
             + pageInfos
             + bindings
             + canTrackWebPage
-            + variables
+            + canShowHeatMap
+            + heats
+            + vars
     }
     
     var jsUIWebViewAPI: String {
@@ -216,6 +221,10 @@ extension WebViewBindings {
     
     var jsUIWebViewReport: String {
         return self.jsSource(of: "WebViewReport.UI")
+    }
+    
+    var jsUIWebViewHeatMap: String {
+        return self.jsSource(of: "WebViewHeatmap")
     }
     
     var jsUIWebViewExcute: String {

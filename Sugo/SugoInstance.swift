@@ -44,8 +44,11 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     /// distinctId string that uniquely identifies the current user.
     open var distinctId = ""
     
-    /// urlSchemes url that gives key to device_info_response
-    open var urlSchemesKeyValue: String?
+    /// secret key that gives key to device_info_response
+    open var urlCodelessSecretKey: String?
+    
+    /// secret key that gives key to heat_map
+    open var urlHeatMapSecretKey: String?
 
     /// Controls whether to show spinning network activity indicator when flushing
     /// data to the Sugo servers. Defaults to true.
@@ -170,6 +173,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     let cacheInstance = Cache()
     let trackInstance: Track
     let decideInstance = Decide()
+    let heatsInstance = Heats()
+    let heatMap = HeatMap(data: Data())
     let reachability = Reachability()!
 
     init(projectID: String?,
@@ -314,16 +319,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     @objc private func applicationWillTerminate(_ notification: Notification) {
         
         let values = SugoDimensions.values
-//        self.trackInstance.track(eventID: nil,
-//                                 eventName: values["BackgroundStay"]!,
-//                                 properties: nil,
-//                                 date: Date(),
-//                                 sugo: self)
-//        self.trackInstance.track(eventID: nil,
-//                                 eventName: values["BackgroundExit"]!,
-//                                 properties: nil,
-//                                 date: Date(),
-//                                 sugo: self)
         self.trackInstance.track(eventID: nil,
                                  eventName: values["AppStay"]!,
                                  properties: nil,
@@ -949,13 +944,42 @@ extension SugoInstance {
     
     open func handle(url: URL) -> Bool {
         
-        if let urlKeyValue = url.query?.components(separatedBy: "=").last {
-            self.urlSchemesKeyValue = urlKeyValue
-            if self.enableVisualEditorForCodeless {
-                connectToWebSocket()
-                return true
-            }
+        Logger.debug(message: "url: \(url.absoluteString)")
+        guard let query = url.query else {
+            return false
         }
+        
+        var querys = [String: String]()
+        
+        let items = query.components(separatedBy: "&")
+        for item in items {
+            let q = item.components(separatedBy: "=")
+            if q.count != 2 {
+                continue
+            }
+            querys += [q.first!: q.last!]
+        }
+        
+        if let type = querys["type"],
+            let secretKey = querys["sKey"],
+            type == "heatmap" {
+            self.urlHeatMapSecretKey = secretKey
+            self.heatsInstance.checkHeats(sugoInstance: self, completion: {
+                (heatResponse: HeatsResponse?) in
+                if let heatResponse = heatResponse {
+                    self.heatMap.data = heatResponse.heats
+                    self.heatMap.switchMode(mode: true)
+                    WebViewBindings.global.switchHeatMap(mode: self.heatMap.mode,
+                                                         with: self.heatMap.data)
+                }
+            })
+            return true
+        } else if let secretKey = querys["sKey"] {
+            self.urlCodelessSecretKey = secretKey
+            connectToWebSocket()
+            return true
+        }
+        
         return false
     }
     
@@ -965,27 +989,70 @@ extension SugoInstance {
         guard let query = url.query else {
             return
         }
-        for queryItem in query.components(separatedBy: "&") {
-            let item = queryItem.components(separatedBy: "=")
-            if item.first! == "sKey" {
-                self.urlSchemesKeyValue = item.last!
-                break
+        
+        var querys = [String: String]()
+        
+        let items = query.components(separatedBy: "&")
+        for item in items {
+            let q = item.components(separatedBy: "=")
+            if q.count != 2 {
+                continue
             }
+            querys += [q.first!: q.last!]
         }
         
-        Logger.debug(message: "url s k v: \(self.urlSchemesKeyValue.debugDescription)")
-        guard self.urlSchemesKeyValue != nil && !self.urlSchemesKeyValue!.isEmpty else {
+        guard querys.count >= 2 else {
             return
         }
         
-        for queryItem in query.components(separatedBy: "&") {
-            let item = queryItem.components(separatedBy: "=")
-            if item.first! == "token" && item.last! == self.apiToken {
-                self.connectToWebSocket()
-                break
-            }
+        if let secretKey = querys["sKey"] {
+            self.urlCodelessSecretKey = secretKey
+        }
+        
+        if let token = querys["token"], token == self.apiToken {
+            connectToWebSocket()
         }
     }
+    
+    open func requestForHeatMap(via url: URL) {
+        
+        Logger.debug(message: "url: \(url.absoluteString)")
+        guard let query = url.query else {
+            return
+        }
+        
+        var querys = [String: String]()
+        
+        let items = query.components(separatedBy: "&")
+        for item in items {
+            let q = item.components(separatedBy: "=")
+            if q.count != 2 {
+                continue
+            }
+            querys += [q.first!: q.last!]
+        }
+        
+        guard querys.count >= 2 else {
+            return
+        }
+        
+        if let secretKey = querys["sKey"] {
+            self.urlHeatMapSecretKey = secretKey
+        }
+        
+        if let token = querys["token"], token == self.apiToken {
+            self.heatsInstance.checkHeats(sugoInstance: self, completion: {
+                (heatResponse: HeatsResponse?) in
+                if let heatResponse = heatResponse {
+                    self.heatMap.data = heatResponse.heats
+                    self.heatMap.switchMode(mode: true)
+                    WebViewBindings.global.switchHeatMap(mode: self.heatMap.mode,
+                                                         with: self.heatMap.data)
+                }
+            })
+        }
+    }
+    
 }
 
 

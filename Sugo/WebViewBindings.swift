@@ -24,10 +24,12 @@ class WebViewBindings: NSObject {
     var uiVCPath: String
     var wkVCPath: String
     dynamic var stringBindings: String
+    var stringHeats: String
     
     lazy var viewSwizzleRunning = false
     dynamic var isWebViewNeedReload = false
     var isWebViewNeedInject = true
+    dynamic var isHeatMapModeOn = false
     
     var uiWebView: UIWebView?
     lazy var uiWebViewSwizzleRunning = false
@@ -54,6 +56,7 @@ class WebViewBindings: NSObject {
         self.uiVCPath = String()
         self.wkVCPath = String()
         self.stringBindings = String()
+        self.stringHeats = "{}"
         super.init()
         self.addObserver(self,
                          forKeyPath: "stringBindings",
@@ -61,6 +64,10 @@ class WebViewBindings: NSObject {
                          context: nil)
         self.addObserver(self,
                          forKeyPath: #keyPath(WebViewBindings.isWebViewNeedReload),
+                         options: NSKeyValueObservingOptions.new,
+                         context: nil)
+        self.addObserver(self,
+                         forKeyPath: #keyPath(WebViewBindings.isHeatMapModeOn),
                          options: NSKeyValueObservingOptions.new,
                          context: nil)
     }
@@ -107,6 +114,15 @@ class WebViewBindings: NSObject {
             Logger.debug(message: "Failed to serialize JSONObject: \(self.bindings)")
         }
     }
+    
+    func switchHeatMap(mode: Bool, with data: Data) {
+        
+        if let string = String(data: data, encoding: String.Encoding.utf8) {
+            self.stringHeats = string
+            self.isHeatMapModeOn = mode
+        }
+    }
+    
 }
 
 

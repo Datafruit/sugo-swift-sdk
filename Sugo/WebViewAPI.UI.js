@@ -16,7 +16,7 @@
     sugo.timeEvent = function(event_name) {
         SugoWebViewJSExport.timeOfEvent(event_name);
     };
-    
+
     sugo.trackStayEvent = function() {
         sugo.enter_time = new Date().getTime();
         if (!window.sugo) {
@@ -33,3 +33,4 @@
         track: sugo.track,
         time_event: sugo.timeEvent
     };
+    

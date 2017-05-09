@@ -33,6 +33,7 @@ class Decide {
                      sugoInstance: SugoInstance,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
 
+        var resultData = Data()
         var responseObject = [String: Any]()
         
         let userDefaults = UserDefaults.standard
@@ -72,12 +73,10 @@ class Decide {
                 }
                 
                 do {
-                    let resultData = try JSONSerialization.data(withJSONObject: resultObject,
-                                                                options: JSONSerialization.WritingOptions.prettyPrinted)
+                    resultData = try JSONSerialization.data(withJSONObject: resultObject,
+                                                            options: JSONSerialization.WritingOptions.prettyPrinted)
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                     Logger.debug(message: "Decide result:\n\(resultString.debugDescription)")
-                    userDefaults.set(resultData, forKey: "SugoEventBindings")
-                    userDefaults.synchronize()
                 } catch {
                     Logger.debug(message: "Decide serialize result error")
                 }
@@ -95,6 +94,8 @@ class Decide {
         
         let responseVersion = responseObject["event_bindings_version"] as? Int
         if responseVersion != cacheVersion {
+            userDefaults.set(resultData, forKey: "SugoEventBindings")
+            userDefaults.synchronize()
             handleDecide(object: responseObject)
         } else {
             handleDecide(object: cacheObject)
@@ -145,6 +146,10 @@ class Decide {
     }
 
     func connectToWebSocket(token: String, sugoInstance: SugoInstance, reconnect: Bool = false) {
+        
+        guard !sugoInstance.heatMap.mode else {
+            return
+        }
         
         let webSocketURL = "\(codelessSugoServerURL)/connect/\(token)"
         guard let url = URL(string: webSocketURL) else {

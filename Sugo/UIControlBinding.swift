@@ -123,6 +123,9 @@ class UIControlBinding: CodelessBinding {
                 if let root = UIApplication.shared.keyWindow?.rootViewController {
                     if let view = view as? UIControl, self.appliedTo.contains(view) {
                         if !self.path.isSelected(leaf: view, from: root, isFuzzy: true) {
+                            if Sugo.mainInstance().heatMap.mode {
+                                Sugo.mainInstance().heatMap.wipeObjectOfPath(path: self.path.string)
+                            }
                             self.stopOn(view: view)
                             self.appliedTo.remove(view)
                         }
@@ -145,6 +148,9 @@ class UIControlBinding: CodelessBinding {
                             }
                             control.addTarget(self, action: #selector(self.execute(sender:event:)), for: self.controlEvent)
                             self.appliedTo.add(control)
+                        }
+                        if Sugo.mainInstance().heatMap.mode {
+                            Sugo.mainInstance().heatMap.renderObjectOfPath(path: self.path.string)
                         }
                     }
                 }
