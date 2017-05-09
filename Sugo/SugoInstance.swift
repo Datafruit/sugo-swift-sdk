@@ -1001,7 +1001,7 @@ extension SugoInstance {
             querys += [q.first!: q.last!]
         }
         
-        guard querys.count > 2 else {
+        guard querys.count >= 2 else {
             return
         }
         
@@ -1032,7 +1032,7 @@ extension SugoInstance {
             querys += [q.first!: q.last!]
         }
         
-        guard querys.count > 2 else {
+        guard querys.count >= 2 else {
             return
         }
         

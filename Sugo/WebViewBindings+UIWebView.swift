@@ -193,7 +193,7 @@ extension WebViewBindings {
         let pageInfos = "sugo.page_infos = \(infosString);\n"
         let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
         let canTrackWebPage = "sugo.can_track_web_page = \(SugoPermission.canTrackWebPage);\n"
-        let canShowHeatMap = "sugo.can_show_heat_map = %\(self.isHeatMapModeOn ? "true" : "false");\n"
+        let canShowHeatMap = "sugo.can_show_heat_map = \(self.isHeatMapModeOn ? "true" : "false");\n"
         let heats = "sugo.h5_heats = \(self.stringHeats);\n"
         let vars = self.jsSource(of: "WebViewVariables")
         

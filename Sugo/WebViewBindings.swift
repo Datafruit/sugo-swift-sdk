@@ -56,7 +56,7 @@ class WebViewBindings: NSObject {
         self.uiVCPath = String()
         self.wkVCPath = String()
         self.stringBindings = String()
-        self.stringHeats = String()
+        self.stringHeats = "{}"
         super.init()
         self.addObserver(self,
                          forKeyPath: "stringBindings",
