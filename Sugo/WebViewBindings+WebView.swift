@@ -144,7 +144,13 @@ extension WebViewBindings {
                            with: nil,
                            waitUntilDone: false)
             }
+            self.isWebViewNeedReload = false
         }
+        
+        if keyPath == "isHeatMapModeOn" {
+            self.isWebViewNeedReload = true
+        }
+        
     }
 }
 

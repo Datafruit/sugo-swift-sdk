@@ -123,6 +123,7 @@ extension WebViewBindings {
             + self.jsWKWebViewAPI
             + self.jsWKWebViewBindings
             + self.jsWKWebViewReport
+            + self.jsWKWebViewHeatMap
             + self.jsWKWebViewExcute
             + self.jsWKWebViewSugoEnd
         Logger.debug(message: "WKWebView JavaScript:\n\(js)")
@@ -185,7 +186,9 @@ extension WebViewBindings {
         let pageInfos = "sugo.page_infos = \(infosString);\n"
         let bindings = "sugo.h5_event_bindings = \(self.stringBindings);\n"
         let canTrackWebPage = "sugo.can_track_web_page = \(SugoPermission.canTrackWebPage);\n"
-        let variables = self.jsSource(of: "WebViewVariables")
+        let canShowHeatMap = "sugo.can_show_heat_map = %\(self.isHeatMapModeOn ? "true" : "false");\n"
+        let heats = "sugo.h5_heats = \(self.stringHeats);\n"
+        let vars = self.jsSource(of: "WebViewVariables")
 
         return vcPath
             + homePath
@@ -194,7 +197,9 @@ extension WebViewBindings {
             + pageInfos
             + bindings
             + canTrackWebPage
-            + variables
+            + canShowHeatMap
+            + heats
+            + vars
     }
     
     var jsWKWebViewAPI: String {
@@ -209,6 +214,10 @@ extension WebViewBindings {
     
     var jsWKWebViewReport: String {
         return self.jsSource(of: "WebViewReport.WK")
+    }
+    
+    var jsWKWebViewHeatMap: String {
+        return self.jsSource(of: "WebViewHeatmap")
     }
     
     var jsWKWebViewExcute: String {

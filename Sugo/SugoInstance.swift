@@ -969,7 +969,8 @@ extension SugoInstance {
                 if let heatResponse = heatResponse {
                     self.heatMap.data = heatResponse.heats
                     self.heatMap.switchMode(mode: true)
-                    // TODO: web view
+                    WebViewBindings.global.switchHeatMap(mode: self.heatMap.mode,
+                                                         with: self.heatMap.data)
                 }
             })
             return true
@@ -1045,7 +1046,8 @@ extension SugoInstance {
                 if let heatResponse = heatResponse {
                     self.heatMap.data = heatResponse.heats
                     self.heatMap.switchMode(mode: true)
-                    // TODO: web view
+                    WebViewBindings.global.switchHeatMap(mode: self.heatMap.mode,
+                                                         with: self.heatMap.data)
                 }
             })
         }
