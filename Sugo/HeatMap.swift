@@ -35,7 +35,7 @@ class HeatMap: NSObject {
     func renderObjectOfPath(path: String) {
         
         let heats = parse()
-        guard heats[path] != nil || !self.hmLayers.keys.contains(path) else {
+        if heats[path] == nil || self.hmLayers.keys.contains(path) {
             return
         }
         
@@ -143,7 +143,7 @@ extension HeatMap {
         var page = ""
         
         if path.components(separatedBy: "/").count > 2 {
-            page = page.components(separatedBy: "/")[1]
+            page = path.components(separatedBy: "/")[1]
         }
         
         return page
