@@ -20,9 +20,9 @@ class SwitchModeViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.type = handleURL()
-        if self.type == "heatmap" {
+        if self.type == "heat" {
             self.switchLabel.text = "切换至热图模式"
-        } else if self.type == "codeless" {
+        } else if self.type == "track" {
             self.switchLabel.text = "切换至可视化埋点模式"
         } else {
             self.switchLabel.text = "信息错误，请重新扫码"
@@ -41,10 +41,10 @@ class SwitchModeViewController: UIViewController {
             return
         }
         
-        if self.type == "heatmap" {
+        if self.type == "heat" {
             Sugo.mainInstance().requestForHeatMap(via: url)
             self.navigationController?.popToRootViewController(animated: true)
-        } else if self.type == "codeless" {
+        } else if self.type == "track" {
             Sugo.mainInstance().connectToCodeless(via: url)
             self.navigationController?.popToRootViewController(animated: true)
         } else {
@@ -77,12 +77,9 @@ class SwitchModeViewController: UIViewController {
             querys[q.first!] = q.last!
         }
         
-        if let type = querys["type"],
-            let _ = querys["sKey"],
-            type == "heatmap" {
-            return "heatmap"
-        } else if querys["sKey"] != nil {
-            return "codeless"
+        if let type = url.path.components(separatedBy: "/").last,
+            querys["sKey"] != nil {
+            return type
         }
         return ""
     }
