@@ -124,7 +124,9 @@ extension HeatMap {
             for page in pages.keys {
                 var events: Double = 0.0
                 for path in pages[page]! {
-                    events = events + hs[path]!
+                    if events < hs[path]! {
+                        events = hs[path]!
+                    }
                 }
                 for path in pages[page]! {
                     if let heat = hs[path] {

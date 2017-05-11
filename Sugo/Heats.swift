@@ -18,7 +18,8 @@ class Heats {
                     completion: @escaping ((_ response: HeatsResponse?) -> Void)) {
         
         if sugoInstance.decideInstance.webSocketWrapper != nil
-            && sugoInstance.decideInstance.webSocketWrapper!.connected {
+            && sugoInstance.decideInstance.webSocketWrapper!.connected
+            && sugoInstance.heatMap.mode {
             return
         }
         
