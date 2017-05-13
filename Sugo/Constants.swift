@@ -35,8 +35,8 @@ struct SugoPermission {
      default to false.
      It means SDK could not track page event.
      */
-    static let canTrackNativePage   = false
-    static let canTrackWebPage      = false
+    static let canTrackNativePage   = true
+    static let canTrackWebPage      = true
 }
 
 struct SugoConfiguration {
