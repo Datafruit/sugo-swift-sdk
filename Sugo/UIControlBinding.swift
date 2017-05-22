@@ -120,7 +120,7 @@ class UIControlBinding: CodelessBinding {
         if !self.running {
             let executeBlock = {
                 (view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
-                if let root = UIApplication.shared.keyWindow?.rootViewController {
+                if let root = UIApplication.shared.keyWindow {
                     if let view = view as? UIControl, self.appliedTo.contains(view) {
                         if !self.path.isSelected(leaf: view, from: root, isFuzzy: true) {
                             if Sugo.mainInstance().heatMap.mode {
@@ -150,7 +150,7 @@ class UIControlBinding: CodelessBinding {
                             self.appliedTo.add(control)
                         }
                         if Sugo.mainInstance().heatMap.mode {
-                            Sugo.mainInstance().heatMap.renderObjectOfPath(path: self.path.string)
+                            Sugo.mainInstance().heatMap.renderObjectOfPath(path: self.path.string, root: root)
                         }
                     }
                 }
@@ -200,7 +200,7 @@ class UIControlBinding: CodelessBinding {
     }
 
     func verifyControlMatchesPath(_ control: AnyObject) -> Bool {
-        if let root = UIApplication.shared.keyWindow?.rootViewController {
+        if let root = UIApplication.shared.keyWindow {
             return path.isSelected(leaf: control, from: root)
         }
         return false

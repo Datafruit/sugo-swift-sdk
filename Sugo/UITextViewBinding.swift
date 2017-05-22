@@ -62,7 +62,7 @@ class UITextViewBinding: CodelessBinding {
                     return
                 }
 
-                if let root = UIApplication.shared.keyWindow?.rootViewController {
+                if let root = UIApplication.shared.keyWindow {
                     // select targets based off path
                     if self.path.isSelected(leaf: textView, from: root) {
                         var p = Properties()

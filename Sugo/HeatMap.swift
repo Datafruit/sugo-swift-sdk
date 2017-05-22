@@ -32,25 +32,23 @@ class HeatMap: NSObject {
         self.mode = mode
     }
     
-    func renderObjectOfPath(path: String) {
+    func renderObjectOfPath(path: String, root: AnyObject) {
         
         let heats = parse()
         if heats[path] == nil || self.hmLayers.keys.contains(path) {
             return
         }
         
-        if let root = UIApplication.shared.keyWindow?.rootViewController {
-            let selector = ObjectSelector(string: path)
-            let objects = selector.selectFrom(root: root)
-            for object in objects {
-                if let control = object as? UIControl,
-                    let rate = heats[path] {
-                    let hmLayer = HeatMapLayer(frame: control.layer.bounds,
-                                               heat: colorOfRate(rate: rate))
-                    hmLayer.setNeedsDisplay()
-                    control.layer.addSublayer(hmLayer)
-                    self.hmLayers += [path: hmLayer]
-                }
+        let selector = ObjectSelector(string: path)
+        let objects = selector.selectFrom(root: root)
+        for object in objects {
+            if let control = object as? UIControl,
+                let rate = heats[path] {
+                let hmLayer = HeatMapLayer(frame: control.layer.bounds,
+                                           heat: colorOfRate(rate: rate))
+                hmLayer.setNeedsDisplay()
+                control.layer.addSublayer(hmLayer)
+                self.hmLayers += [path: hmLayer]
             }
         }
     }
