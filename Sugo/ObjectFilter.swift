@@ -139,22 +139,24 @@ class ObjectFilter: CustomStringConvertible {
             }
         } else if let viewController = object as? UIViewController {
             
-            if viewController.isKind(of: UINavigationController.classForCoder()) {
-                if viewController == UIViewController.sugoCurrentUINavigationController() {
-                    result.append(UIViewController.sugoCurrentUIViewController()!)
-                }
-            } else if viewController.isKind(of: UITabBarController.classForCoder()) {
-                if viewController == UIViewController.sugoCurrentUITabBarController() {
-                    result.append(UIViewController.sugoCurrentUIViewController()!)
-                }
-            } else {
-                if let parentViewController = viewController.parent {
-                    result.append(parentViewController)
-                }
-                
-                if let presentingViewController = viewController.presentingViewController {
-                    result.append(presentingViewController)
-                }
+            if viewController is UINavigationController || viewController is UITabBarController {
+                result.append(UIViewController.sugoCurrentUIViewController()!)
+            }
+            
+            if let nvc = viewController.navigationController {
+                result.append(nvc)
+            }
+            
+            if let tbc = viewController.tabBarController {
+                result.append(tbc)
+            }
+            
+            if let parentViewController = viewController.parent {
+                result.append(parentViewController)
+            }
+            
+            if let presentingViewController = viewController.presentingViewController {
+                result.append(presentingViewController)
             }
 
             if let keyWindow = UIApplication.shared.keyWindow, keyWindow.rootViewController == viewController {

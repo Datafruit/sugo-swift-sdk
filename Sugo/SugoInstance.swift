@@ -258,9 +258,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                                        selector: #selector(applicationWillEnterForeground(_:)),
                                        name: .UIApplicationWillEnterForeground,
                                        object: nil)
-        #if os(iOS)
-        initializeGestureRecognizer()
-        #endif
+//        #if os(iOS)
+//        initializeGestureRecognizer()
+//        #endif
     }
 
     deinit {

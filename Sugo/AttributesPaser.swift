@@ -16,7 +16,7 @@ class AttributesPaser {
         var aObjects = [String: [AnyObject]]()
         for (key, path) in attributesPaths {
             let p = ObjectSelector(string: path)
-            if let root = UIApplication.shared.keyWindow?.rootViewController {
+            if let root = UIApplication.shared.keyWindow {
                 var objects: [AnyObject]
                 objects = p.selectFrom(root: root)
                 aObjects += [key: objects]
