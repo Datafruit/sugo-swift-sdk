@@ -33,7 +33,8 @@ extension WebViewBindings {
     
     func stopUIWebViewBindings(webView: UIWebView) {
         if self.uiWebViewSwizzleRunning {
-            if let delegate = webView.delegate {
+            if self.uiWebView != nil,
+                let delegate = webView.delegate {
                 Swizzler.unswizzleSelector(#selector(delegate.webViewDidStartLoad(_:)),
                                            aClass: type(of: delegate),
                                            name: self.uiWebViewDidStartLoadBlockName)
