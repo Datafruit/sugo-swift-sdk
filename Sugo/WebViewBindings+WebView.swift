@@ -8,7 +8,6 @@
 
 import UIKit
 import WebKit
-import JavaScriptCore
 
 extension WebViewBindings {
     
@@ -144,7 +143,6 @@ extension WebViewBindings {
                            with: nil,
                            waitUntilDone: false)
             }
-            self.isWebViewNeedReload = false
         }
         
         if keyPath == "isHeatMapModeOn" {

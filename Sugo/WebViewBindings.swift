@@ -8,7 +8,6 @@
 
 import UIKit
 import WebKit
-import JavaScriptCore
 
 enum WebViewBindingsMode: String {
     case decide     = "decide"
@@ -121,6 +120,10 @@ class WebViewBindings: NSObject {
             self.stringHeats = string
             self.isHeatMapModeOn = mode
         }
+    }
+    
+    func npi(with webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        return self.webView(webView, shouldStartLoadWith: request, navigationType:navigationType)
     }
     
 }

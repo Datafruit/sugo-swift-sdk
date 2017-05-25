@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1405DBAB1ED5B0BD000603CA /* WebViewExcute.Sugo.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 1405DBA91ED5B0BD000603CA /* WebViewExcute.Sugo.UI.js */; };
+		1405DBAC1ED5B0BD000603CA /* WebViewExcute.Sugo.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 1405DBAA1ED5B0BD000603CA /* WebViewExcute.Sugo.WK.js */; };
 		141524231E8F41B80072C0DC /* UITextViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141524221E8F41B80072C0DC /* UITextViewBinding.swift */; };
 		141DFD2D1E449D0900714BA7 /* SugoPageInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */; };
 		14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14364FE21DFA622600F7BE89 /* TrackMessage.swift */; };
@@ -21,8 +23,6 @@
 		14785D6C1E5EC5A10053B3C8 /* WebViewBindings.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D5F1E5EC5A10053B3C8 /* WebViewBindings.UI.js */; };
 		14785D6D1E5EC5A10053B3C8 /* WebViewBindings.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D601E5EC5A10053B3C8 /* WebViewBindings.WK.js */; };
 		14785D6E1E5EC5A10053B3C8 /* WebViewExcute.Report.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D611E5EC5A10053B3C8 /* WebViewExcute.Report.js */; };
-		14785D6F1E5EC5A10053B3C8 /* WebViewExcute.Stay.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D621E5EC5A10053B3C8 /* WebViewExcute.Stay.js */; };
-		14785D701E5EC5A10053B3C8 /* WebViewExcute.Sugo.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D631E5EC5A10053B3C8 /* WebViewExcute.Sugo.js */; };
 		14785D711E5EC5A10053B3C8 /* WebViewReport.UI.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D641E5EC5A10053B3C8 /* WebViewReport.UI.js */; };
 		14785D721E5EC5A10053B3C8 /* WebViewReport.WK.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D651E5EC5A10053B3C8 /* WebViewReport.WK.js */; };
 		14785D731E5EC5A10053B3C8 /* WebViewVariables.js in Resources */ = {isa = PBXBuildFile; fileRef = 14785D661E5EC5A10053B3C8 /* WebViewVariables.js */; };
@@ -58,7 +58,6 @@
 		14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */; };
 		14EADD1D1DF65ACB00E6B711 /* WebViewBindings+UIWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */; };
 		14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */; };
-		14EADD1F1DF65ACB00E6B711 /* SugoWebViewJSExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */; };
 		14EADD201DF65ACB00E6B711 /* ApplicationStateSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE41DF65ACA00E6B711 /* ApplicationStateSerializer.swift */; };
 		14EADD211DF65ACB00E6B711 /* AutomaticProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE51DF65ACA00E6B711 /* AutomaticProperties.swift */; };
 		14EADD221DF65ACB00E6B711 /* BaseWebSocketMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADCE61DF65ACA00E6B711 /* BaseWebSocketMessage.swift */; };
@@ -109,6 +108,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1405DBA91ED5B0BD000603CA /* WebViewExcute.Sugo.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewExcute.Sugo.UI.js; path = Sugo/WebViewExcute.Sugo.UI.js; sourceTree = SOURCE_ROOT; };
+		1405DBAA1ED5B0BD000603CA /* WebViewExcute.Sugo.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WebViewExcute.Sugo.WK.js; path = Sugo/WebViewExcute.Sugo.WK.js; sourceTree = SOURCE_ROOT; };
 		141524221E8F41B80072C0DC /* UITextViewBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewBinding.swift; sourceTree = "<group>"; };
 		141DFD2C1E449D0900714BA7 /* SugoPageInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SugoPageInfos.swift; path = Sugo/SugoPageInfos.swift; sourceTree = SOURCE_ROOT; };
 		14364FE21DFA622600F7BE89 /* TrackMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackMessage.swift; path = Sugo/TrackMessage.swift; sourceTree = SOURCE_ROOT; };
@@ -123,8 +124,6 @@
 		14785D5F1E5EC5A10053B3C8 /* WebViewBindings.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.UI.js; sourceTree = "<group>"; };
 		14785D601E5EC5A10053B3C8 /* WebViewBindings.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewBindings.WK.js; sourceTree = "<group>"; };
 		14785D611E5EC5A10053B3C8 /* WebViewExcute.Report.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewExcute.Report.js; sourceTree = "<group>"; };
-		14785D621E5EC5A10053B3C8 /* WebViewExcute.Stay.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewExcute.Stay.js; sourceTree = "<group>"; };
-		14785D631E5EC5A10053B3C8 /* WebViewExcute.Sugo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewExcute.Sugo.js; sourceTree = "<group>"; };
 		14785D641E5EC5A10053B3C8 /* WebViewReport.UI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.UI.js; sourceTree = "<group>"; };
 		14785D651E5EC5A10053B3C8 /* WebViewReport.WK.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewReport.WK.js; sourceTree = "<group>"; };
 		14785D661E5EC5A10053B3C8 /* WebViewVariables.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WebViewVariables.js; sourceTree = "<group>"; };
@@ -164,7 +163,6 @@
 		14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WebView.swift"; sourceTree = "<group>"; };
 		14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+UIWebView.swift"; sourceTree = "<group>"; };
 		14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebViewBindings+WKWebView.swift"; sourceTree = "<group>"; };
-		14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SugoWebViewJSExport.swift; sourceTree = "<group>"; };
 		14EADCE41DF65ACA00E6B711 /* ApplicationStateSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationStateSerializer.swift; sourceTree = "<group>"; };
 		14EADCE51DF65ACA00E6B711 /* AutomaticProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomaticProperties.swift; sourceTree = "<group>"; };
 		14EADCE61DF65ACA00E6B711 /* BaseWebSocketMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseWebSocketMessage.swift; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 				14EADCE01DF65ACA00E6B711 /* WebViewBindings+WebView.swift */,
 				14EADCE11DF65ACA00E6B711 /* WebViewBindings+UIWebView.swift */,
 				14EADCE21DF65ACA00E6B711 /* WebViewBindings+WKWebView.swift */,
-				14EADCE31DF65ACA00E6B711 /* SugoWebViewJSExport.swift */,
 			);
 			name = WebViewBindings;
 			sourceTree = "<group>";
@@ -466,9 +463,9 @@
 		14785D7E1E5EC62D0053B3C8 /* WebViewExcute */ = {
 			isa = PBXGroup;
 			children = (
-				14785D631E5EC5A10053B3C8 /* WebViewExcute.Sugo.js */,
+				1405DBA91ED5B0BD000603CA /* WebViewExcute.Sugo.UI.js */,
+				1405DBAA1ED5B0BD000603CA /* WebViewExcute.Sugo.WK.js */,
 				14785D611E5EC5A10053B3C8 /* WebViewExcute.Report.js */,
-				14785D621E5EC5A10053B3C8 /* WebViewExcute.Stay.js */,
 			);
 			name = WebViewExcute;
 			sourceTree = "<group>";
@@ -619,15 +616,15 @@
 				14785D6B1E5EC5A10053B3C8 /* WebViewAPI.WK.js in Resources */,
 				14785D681E5EC5A10053B3C8 /* SugoEnd.js in Resources */,
 				148C3FDF1EC15DD8006ED1F3 /* WebViewHeatmap.js in Resources */,
+				1405DBAC1ED5B0BD000603CA /* WebViewExcute.Sugo.WK.js in Resources */,
+				1405DBAB1ED5B0BD000603CA /* WebViewExcute.Sugo.UI.js in Resources */,
 				14785D6C1E5EC5A10053B3C8 /* WebViewBindings.UI.js in Resources */,
 				14785D7A1E5EC5C90053B3C8 /* SugoResourcesPathReplacements.plist in Resources */,
 				14785D781E5EC5C90053B3C8 /* SugoCustomDimensions.plist in Resources */,
 				14785D6E1E5EC5A10053B3C8 /* WebViewExcute.Report.js in Resources */,
-				14785D6F1E5EC5A10053B3C8 /* WebViewExcute.Stay.js in Resources */,
 				14785D7B1E5EC5C90053B3C8 /* SugoURLs.plist in Resources */,
 				14785D671E5EC5A10053B3C8 /* SugoBegin.js in Resources */,
 				14785D791E5EC5C90053B3C8 /* SugoPageEventsViewControllerFilterList.plist in Resources */,
-				14785D701E5EC5A10053B3C8 /* WebViewExcute.Sugo.js in Resources */,
 				14785D731E5EC5A10053B3C8 /* WebViewVariables.js in Resources */,
 				14785D711E5EC5A10053B3C8 /* WebViewReport.UI.js in Resources */,
 				14785D691E5EC5A10053B3C8 /* Utils.js in Resources */,
@@ -649,7 +646,6 @@
 				14E1971C1EC0787500E26E9C /* HeatsResponse.swift in Sources */,
 				14EADD221DF65ACB00E6B711 /* BaseWebSocketMessage.swift in Sources */,
 				147C00ED1DF6698C001FF110 /* Sugo.swift in Sources */,
-				14EADD1F1DF65ACB00E6B711 /* SugoWebViewJSExport.swift in Sources */,
 				14EADD461DF65ACB00E6B711 /* SnapshotMessage.swift in Sources */,
 				14EADD441DF65ACB00E6B711 /* PrintLogging.swift in Sources */,
 				14EADD181DF65ACB00E6B711 /* WebViewInfoStorage.swift in Sources */,

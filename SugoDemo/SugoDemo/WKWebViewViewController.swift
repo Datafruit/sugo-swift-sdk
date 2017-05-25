@@ -21,7 +21,7 @@ class WKWebViewViewController: UIViewController, WKNavigationDelegate {
         self.webView = WKWebView(frame: self.view.bounds,
                                  configuration: configuration)
         self.webView.navigationDelegate = self
-        let url = URL(string: "https://www.jd.com/")
+        let url = URL(string: "https://jd.com/")
         let request = URLRequest(url: url!)
         self.webView.load(request)
         self.view.addSubview(self.webView)

@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import JavaScriptCore
 
 extension WebViewBindings {
     
@@ -54,9 +53,6 @@ extension WebViewBindings {
     }
     
     func uiWebViewDidStartLoad(view: AnyObject?, command: Selector, webView: AnyObject?, param2: AnyObject?) {
-        let jsContext = (webView as! UIWebView).value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-        jsContext.setObject(SugoWebViewJSExport.self,
-                            forKeyedSubscript: "SugoWebViewJSExport" as (NSCopying & NSObjectProtocol)!)
         if self.uiWebViewJavaScriptInjected {
             self.uiWebViewJavaScriptInjected = false
             Logger.debug(message: "UIWebView Uninjected")
@@ -76,14 +72,78 @@ extension WebViewBindings {
             return
         }
         if !self.uiWebViewJavaScriptInjected {
-            let jsContext = wv.value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
-            jsContext.setObject(SugoWebViewJSExport.self,
-                                forKeyedSubscript: "SugoWebViewJSExport" as (NSCopying & NSObjectProtocol)!)
             wv.stringByEvaluatingJavaScript(from: self.jsUIWebView)
             self.uiWebViewJavaScriptInjected = true
             Logger.debug(message: "UIWebView Injected")
         }
     }
+    
+    private func track(eventID: String? = nil, eventName: String?, properties: String? = nil) {
+        if let properties = properties,
+            let p = JSONHandler.parseJSONObjectString(properties: properties) {
+            Sugo.mainInstance().track(eventID: eventID,
+                                      eventName: eventName,
+                                      properties: p)
+        } else {
+            Sugo.mainInstance().track(eventID: eventID,
+                                      eventName: eventName)
+        }
+    }
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        var shouldStartLoad = true
+        if let url = request.url {
+            Logger.debug(message: "request: \(url.absoluteString)")
+            if url.scheme == "sugo.npi" {
+                if let npi = url.host,
+                    let uuid = url.query?.components(separatedBy: "=").last,
+                    let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.dataOf('\(uuid)');"),
+                    let eventData = eventString.data(using: String.Encoding.utf8),
+                    let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                    let storage = WebViewInfoStorage.global
+                    if npi == "track",
+                        let eventID = event!["eventID"] as? String,
+                        let eventName = event!["eventName"] as? String,
+                        let properties = event!["properties"] as? String {
+                        storage.eventID = eventID
+                        storage.eventName = eventName
+                        storage.properties = properties
+                        track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
+                    } else if npi == "time",
+                        let eventName = event!["eventName"] as? String {
+                        Sugo.mainInstance().time(event: eventName)
+                    } else if npi == "report",
+                        let path = event!["path"] as? String,
+                        let width = event!["clientWidth"] as? Int,
+                        let height = event!["clientHeight"] as? Int,
+                        let nodes = event!["nodes"] as? String {
+                        storage.path = path
+                        storage.width = "\(width)"
+                        storage.height = "\(height)"
+                        storage.nodes = nodes
+                    }
+                }
+                shouldStartLoad = false
+            }
+        }
+        if shouldStartLoad,
+            let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.trackStayEvent();"),
+            let eventData = eventString.data(using: String.Encoding.utf8),
+            let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
+            let eventID = event!["eventID"] as? String,
+            let eventName = event!["eventName"] as? String,
+            let properties = event!["properties"] as? String {
+            let storage = WebViewInfoStorage.global
+            storage.eventID = eventID
+            storage.eventName = eventName
+            storage.properties = properties
+            track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
+        }
+        
+        return shouldStartLoad
+    }
+    
 }
 
 extension UIWebView {
@@ -228,7 +288,7 @@ extension WebViewBindings {
     }
     
     var jsUIWebViewExcute: String {
-        return self.jsSource(of: "WebViewExcute.Sugo")
+        return self.jsSource(of: "WebViewExcute.Sugo.UI")
     }
     
     var jsUIWebViewSugoEnd: String {
