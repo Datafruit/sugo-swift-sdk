@@ -8,7 +8,6 @@
 
 import Foundation
 import WebKit
-import JavaScriptCore
 
 extension WebViewBindings: WKScriptMessageHandler {
     
@@ -221,7 +220,7 @@ extension WebViewBindings {
     }
     
     var jsWKWebViewExcute: String {
-        return self.jsSource(of: "WebViewExcute.Sugo")
+        return self.jsSource(of: "WebViewExcute.Sugo.WK")
     }
     
     var jsWKWebViewSugoEnd: String {

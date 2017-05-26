@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Sugo
 
 class UIWebViewViewController: UIViewController, UIWebViewDelegate {
 
@@ -17,7 +18,7 @@ class UIWebViewViewController: UIViewController, UIWebViewDelegate {
 
         // Do any additional setup after loading the view.
         self.webView.delegate = self
-        let url = URL(string: "https://www.jd.com/")
+        let url = URL(string: "https://jd.com/")
         let request = URLRequest(url: url!)
         self.webView.loadRequest(request)
     }
@@ -25,6 +26,11 @@ class UIWebViewViewController: UIViewController, UIWebViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        print("\(#function)")
+        return Sugo.mainInstance().webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
