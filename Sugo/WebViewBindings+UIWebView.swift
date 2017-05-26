@@ -91,6 +91,21 @@ extension WebViewBindings {
         }
     }
     
+    func trackStayEvent(of webView: UIWebView) {
+        if let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.trackStayEvent();"),
+            let eventData = eventString.data(using: String.Encoding.utf8),
+            let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
+            let eventID = event!["eventID"] as? String,
+            let eventName = event!["eventName"] as? String,
+            let properties = event!["properties"] as? String {
+            let storage = WebViewInfoStorage.global
+            storage.eventID = eventID
+            storage.eventName = eventName
+            storage.properties = properties
+            track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
+        }
+    }
+    
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         
         var shouldStartLoad = true
@@ -128,18 +143,8 @@ extension WebViewBindings {
                 shouldStartLoad = false
             }
         }
-        if shouldStartLoad,
-            let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.trackStayEvent();"),
-            let eventData = eventString.data(using: String.Encoding.utf8),
-            let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
-            let eventID = event!["eventID"] as? String,
-            let eventName = event!["eventName"] as? String,
-            let properties = event!["properties"] as? String {
-            let storage = WebViewInfoStorage.global
-            storage.eventID = eventID
-            storage.eventName = eventName
-            storage.properties = properties
-            track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
+        if shouldStartLoad {
+            trackStayEvent(of: webView)
         }
         
         return shouldStartLoad
