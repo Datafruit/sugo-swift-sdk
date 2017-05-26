@@ -163,7 +163,8 @@ extension UIView {
         } else if let button = self as? UIButton {
             text = button.title(for: .normal)
         } else if self.responds(to: titleSelector) {
-            if let titleImp = self.perform(titleSelector).takeUnretainedValue() as? String {
+            if let property = self.perform(titleSelector),
+                let titleImp = property.takeUnretainedValue() as? String {
                 text = titleImp
             }
         }
