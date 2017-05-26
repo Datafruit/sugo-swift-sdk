@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import WebKit
-import JavaScriptCore
 
 class ObjectSerializer: NSObject {
     let configuration: ObjectSerializerConfig

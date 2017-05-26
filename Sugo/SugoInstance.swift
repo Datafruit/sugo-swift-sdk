@@ -767,6 +767,11 @@ extension SugoInstance {
         }
     }
 
+    open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        return WebViewBindings.global.npi(with:webView, shouldStartLoadWith: request, navigationType: navigationType)
+    }
+    
     /**
      Returns the currently set super properties.
 
@@ -906,7 +911,6 @@ extension SugoInstance {
                 }
             }
             self.track(eventName: values["PageStay"]!, properties: p)
-            self.track(eventName: values["PageExit"]!, properties: p)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),
