@@ -70,8 +70,8 @@ class ObjectSerializer: NSObject {
                                 "properties": propertyValues,
                                 "delegate": ["class": delegate != nil ? NSStringFromClass(type(of: delegate!)) : "",
                                              "selectors": delegateMethods]                       ]
-        if object is UIWebView {
-            serializedObject["htmlPage"] = getUIWebViewHTMLInfo(from: object as! UIWebView)
+        if let webView = object as? UIWebView, webView.window != nil {
+            serializedObject["htmlPage"] = getUIWebViewHTMLInfo(from: webView)
         } else  if object is WKWebView {
             serializedObject["htmlPage"] = getWKWebViewHTMLInfo(from: object as! WKWebView)
         }
@@ -192,12 +192,27 @@ extension ObjectSerializer {
     func getUIWebViewHTMLInfo(from webView: UIWebView) -> [String: Any] {
         
         let wvBindings = WebViewBindings.global
-        webView.stringByEvaluatingJavaScript(from: wvBindings.jsSource(of: "WebViewExcute.Report"))
+        let storage = WebViewInfoStorage.global
+        if var eventString = webView.stringByEvaluatingJavaScript(from: wvBindings.jsSource(of: "WebViewExcute.Report")),
+            var eventData = eventString.data(using: String.Encoding.utf8),
+            var event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
+            let path = event!["path"] as? String,
+            let width = event!["clientWidth"] as? Int,
+            let height = event!["clientHeight"] as? Int,
+            let nodes = event!["nodes"] as? String {
+            storage.path = path
+            storage.width = "\(width)"
+            storage.height = "\(height)"
+            storage.nodes = nodes
+            eventString.removeAll()
+            eventData.removeAll()
+            event?.removeAll()
+        }
         
-        return ["url": WebViewInfoStorage.global.path,
-                "clientWidth": WebViewInfoStorage.global.width,
-                "clientHeight": WebViewInfoStorage.global.height,
-                "nodes": WebViewInfoStorage.global.nodes
+        return ["url": storage.path,
+                "clientWidth": storage.width,
+                "clientHeight": storage.height,
+                "nodes": storage.nodes
         ]
     }
 
