@@ -129,21 +129,12 @@ extension WebViewBindings {
                     } else if npi == "time",
                         let eventName = event!["eventName"] as? String {
                         Sugo.mainInstance().time(event: eventName)
-                    } else if npi == "report",
-                        let path = event!["path"] as? String,
-                        let width = event!["clientWidth"] as? Int,
-                        let height = event!["clientHeight"] as? Int,
-                        let nodes = event!["nodes"] as? String {
-                        storage.path = path
-                        storage.width = "\(width)"
-                        storage.height = "\(height)"
-                        storage.nodes = nodes
                     }
                 }
                 shouldStartLoad = false
             }
         }
-        if shouldStartLoad {
+        if shouldStartLoad && webView.window != nil {
             trackStayEvent(of: webView)
         }
         

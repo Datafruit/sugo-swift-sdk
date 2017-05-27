@@ -68,11 +68,9 @@ extension WebViewBindings {
             return
         }
         if self.uiWebView != nil && self.uiWebView != webView {
-            trackStayEvent(of: self.uiWebView!)
             self.uiVCPath.removeAll()
             self.stopUIWebViewBindings(webView: self.uiWebView!)
         } else if self.uiWebView != nil {
-            trackStayEvent(of: self.uiWebView!)
             self.uiVCPath.removeAll()
             self.stopUIWebViewBindings(webView: self.uiWebView!)
             return
