@@ -43,7 +43,7 @@ extension WebViewBindings {
                                            name: self.uiWebViewDidFinishLoadBlockName)
                 self.uiWebViewJavaScriptInjected = false
                 self.uiWebViewSwizzleRunning = false
-                self.uiWebView = nil
+                self.uiVCPath.removeAll()
             }
         }
     }
