@@ -66,21 +66,33 @@ extension WebViewBindings {
     func uiDidMoveToWindow(view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) {
         guard let webView = view as? UIWebView else {
             return
+        }        
+        if self.uiWebView == nil || webView.window != nil {
+            if self.uiWebView != nil && self.uiWebView == webView {
+                return
+            }
+            if self.uiWebView != nil
+                && self.uiWebView != webView
+                && self.uiWebViewSwizzleRunning {
+                self.trackStayEvent(of: self.uiWebView!)
+                self.stopUIWebViewBindings(webView: self.uiWebView!)
+            }
+            if let vc = UIViewController.sugoCurrentUIViewController() {
+                self.uiVCPath = NSStringFromClass(vc.classForCoder)
+                Logger.debug(message: "view controller name: \(self.uiVCPath)")
+            }
+            self.uiWebView = webView
+            self.startUIWebViewBindings(webView: &(self.uiWebView!))
+        } else {
+            if self.uiWebView != webView {
+                return
+            }
+            if self.uiWebView != nil && self.uiWebViewSwizzleRunning {
+                self.trackStayEvent(of: self.uiWebView!)
+                self.stopUIWebViewBindings(webView: self.uiWebView!)
+            }
         }
-        if self.uiWebView != nil && self.uiWebView != webView {
-            self.uiVCPath.removeAll()
-            self.stopUIWebViewBindings(webView: self.uiWebView!)
-        } else if self.uiWebView != nil {
-            self.uiVCPath.removeAll()
-            self.stopUIWebViewBindings(webView: self.uiWebView!)
-            return
-        }
-        if let vc = UIViewController.sugoCurrentUIViewController() {
-            self.uiVCPath = NSStringFromClass(vc.classForCoder)
-            Logger.debug(message: "view controller name: \(self.uiVCPath)")
-        }
-        self.uiWebView = webView
-        self.startUIWebViewBindings(webView: &(self.uiWebView!))
+        
     }
 
     // Mark: - WKWebView
