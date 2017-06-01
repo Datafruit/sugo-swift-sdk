@@ -89,7 +89,7 @@ extension UIView {
     }
 
     func mp_imageFingerprint() -> String? {
-        var result: String? = nil
+        var result: String? = String()
         var originalImage: UIImage? = nil
         let imageSelector = NSSelectorFromString("image")
 
@@ -156,7 +156,7 @@ extension UIView {
     }
 
     func mp_text() -> String? {
-        var text: String? = nil
+        var text: String? = String()
         let titleSelector = NSSelectorFromString("title")
         if let label = self as? UILabel {
             text = label.text
