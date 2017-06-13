@@ -876,8 +876,9 @@ extension SugoInstance {
             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
             for info in SugoPageInfos.global.infos {
                 if let infoPage = info["page"] as? String,
-                    infoPage == NSStringFromClass(vc.classForCoder) {
-                    p[keys["PageName"]!] = infoPage
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String {
+                    p[keys["PageName"]!] = infoPageName
                     break
                 }
             }
@@ -905,8 +906,9 @@ extension SugoInstance {
             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
             for info in SugoPageInfos.global.infos {
                 if let infoPage = info["page"] as? String,
-                    infoPage == NSStringFromClass(vc.classForCoder) {
-                    p[keys["PageName"]!] = infoPage
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String  {
+                    p[keys["PageName"]!] = infoPageName
                     break
                 }
             }
