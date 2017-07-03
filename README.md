@@ -171,10 +171,20 @@ Sugo.mainInstance().connectToCodeless(via: url)    // url参数为扫描二维�
 
 #### 2.4.2 UIWebView
 
-所有`UIWebView`类及其子类下的网页元素，需要指定其`delegate`属性，且在`delegate`指定类中实现以下指定的方法，方可被埋点绑定事件。
+所有`UIWebView`类及其子类下的网页元素，需要指定其`delegate`属性，且在`delegate`指定类中实现以下指定的方法：
 
+* `optional func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool`
 * `optional public func webViewDidStartLoad(_ webView: UIWebView)`
 * `optional public func webViewDidFinishLoad(_ webView: UIWebView)`
+
+其中，`optional func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool`内需指定返回值（若有类似功能的实现，请确保SDK的返回值优先级最低，在此方法最后调用即可），例子如下：
+
+```
+	func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+
+        return Sugo.mainInstance().webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
+	}
+```
 
 #### 2.4.3 WKWebView
 
