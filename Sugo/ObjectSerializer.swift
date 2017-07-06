@@ -196,10 +196,12 @@ extension ObjectSerializer {
         if var eventString = webView.stringByEvaluatingJavaScript(from: wvBindings.jsSource(of: "WebViewExcute.Report")),
             var eventData = eventString.data(using: String.Encoding.utf8),
             var event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
+            let title = event!["title"] as? String,
             let path = event!["path"] as? String,
             let width = event!["clientWidth"] as? Int,
             let height = event!["clientHeight"] as? Int,
             let nodes = event!["nodes"] as? String {
+            storage.title = title
             storage.path = path
             storage.width = "\(width)"
             storage.height = "\(height)"
@@ -209,10 +211,12 @@ extension ObjectSerializer {
             event?.removeAll()
         }
         
-        return ["url": storage.path,
-                "clientWidth": storage.width,
-                "clientHeight": storage.height,
-                "nodes": storage.nodes
+        return [
+            "title": storage.title,
+            "url": storage.path,
+            "clientWidth": storage.width,
+            "clientHeight": storage.height,
+            "nodes": storage.nodes
         ]
     }
 
@@ -221,10 +225,12 @@ extension ObjectSerializer {
         let wvBindings = WebViewBindings.global
         webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewExcute.Report"), completionHandler: nil)
         
-        return ["url": WebViewInfoStorage.global.path,
-                "clientWidth": WebViewInfoStorage.global.width,
-                "clientHeight": WebViewInfoStorage.global.height,
-                "nodes": WebViewInfoStorage.global.nodes
+        return [
+            "title": WebViewInfoStorage.global.title,
+            "url": WebViewInfoStorage.global.path,
+            "clientWidth": WebViewInfoStorage.global.width,
+            "clientHeight": WebViewInfoStorage.global.height,
+            "nodes": WebViewInfoStorage.global.nodes
         ]
     }
     

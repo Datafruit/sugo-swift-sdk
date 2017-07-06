@@ -83,6 +83,9 @@ extension WebViewBindings: WKScriptMessageHandler {
                 
             case "SugoWKWebViewReporter":
                 if let body = message.body as? [String: Any] {
+                    if let title = body["title"] as? String {
+                        WebViewInfoStorage.global.title = title
+                    }
                     if let path = body["path"] as? String {
                         WebViewInfoStorage.global.path = path
                     }

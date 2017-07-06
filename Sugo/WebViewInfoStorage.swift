@@ -13,6 +13,7 @@ class WebViewInfoStorage: NSObject {
     var eventID: String
     var eventName: String
     var properties: String
+    var title: String
     var path: String
     var width: String
     var height: String
@@ -27,6 +28,7 @@ class WebViewInfoStorage: NSObject {
         self.eventID = String()
         self.eventName = String()
         self.properties = String()
+        self.title = String()
         self.path = String()
         self.width = String()
         self.height = String()
