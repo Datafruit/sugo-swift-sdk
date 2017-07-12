@@ -77,6 +77,9 @@ class UITextViewBinding: CodelessBinding {
                                 if let infoPage = info["page"] as? String,
                                     infoPage == NSStringFromClass(vc.classForCoder) {
                                     p[keys["PageName"]!] = infoPage
+                                    if let category = info["category"] as? String {
+                                        p[keys["Category"]!] = category;
+                                    }
                                     break
                                 }
                             }

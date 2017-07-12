@@ -4,6 +4,8 @@
 <dict>
 	<key>Keys</key>
 	<dict>
+		<key>Category</key>
+		<string>category</string>
 		<key>EventName</key>
 		<string>event_name</string>
 		<key>EventID</key>
