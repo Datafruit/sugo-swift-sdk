@@ -14,8 +14,8 @@ private var key: Void?
 extension UIView {
 
     func mp_encryptHelper(input: String?) -> NSString {
-        let encryptedStuff = NSMutableString(capacity: 64)
-        guard let input = input else {
+        let encryptedStuff = NSMutableString(capacity: 64);
+        guard let input = input, !input.isEmpty else {
             return encryptedStuff
         }
         let SALT = "1l0v3c4a8s4n018cl3d93kxled3kcle3j19384jdo2dk3"
