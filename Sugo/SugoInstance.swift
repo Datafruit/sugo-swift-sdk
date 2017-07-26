@@ -879,6 +879,9 @@ extension SugoInstance {
                     infoPage == NSStringFromClass(vc.classForCoder),
                     let infoPageName = info["page_name"] as? String {
                     p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
                     break
                 }
             }
@@ -909,6 +912,9 @@ extension SugoInstance {
                     infoPage == NSStringFromClass(vc.classForCoder),
                     let infoPageName = info["page_name"] as? String  {
                     p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
                     break
                 }
             }

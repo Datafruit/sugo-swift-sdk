@@ -28,6 +28,13 @@ class UIWebViewViewController: UIViewController, UIWebViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if self.isMovingFromParentViewController {
+            self.webView.delegate = nil;
+        }
+    }
+    
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         print("\(#function)")
         return Sugo.mainInstance().webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
