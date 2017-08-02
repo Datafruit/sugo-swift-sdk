@@ -24,6 +24,7 @@ class AutomaticProperties {
         let size = UIScreen.main.bounds.size
         let infoDict = Bundle.main.infoDictionary
         if let infoDict = infoDict {
+            p[keys["AppBundleName"]!] = infoDict["CFBundleName"]
             p[keys["AppBundleVersion"]!] = infoDict["CFBundleVersion"]
             p[keys["AppBundleShortVersionString"]!] = infoDict["CFBundleShortVersionString"]
         }
