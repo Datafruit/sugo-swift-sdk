@@ -77,7 +77,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 self.scanView = UIView(frame: CGRect(x: 0, y: 0, width: scanSize.width, height: scanSize.height))
                 self.view.addSubview(self.scanView!)
                 self.scanView?.center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
-                self.scanView?.layer.borderColor = UIColor(colorLiteralRed: 117 / 255, green: 102 / 255, blue: 1, alpha: 1).cgColor
+                self.scanView?.layer.borderColor = UIColor(red: 117 / 255, green: 102 / 255, blue: 1, alpha: 1).cgColor
                 self.scanView?.layer.borderWidth = 1
                 
             } catch {
