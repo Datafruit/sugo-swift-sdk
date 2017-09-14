@@ -22,13 +22,13 @@ class WebViewBindings: NSObject {
     var bindings: [[String: Any]]
     var uiVCPath: String
     var wkVCPath: String
-    dynamic var stringBindings: String
+    @objc dynamic var stringBindings: String
     var stringHeats: String
     
     lazy var viewSwizzleRunning = false
-    dynamic var isWebViewNeedReload = false
+    @objc dynamic var isWebViewNeedReload = false
     var isWebViewNeedInject = true
-    dynamic var isHeatMapModeOn = false
+    @objc dynamic var isHeatMapModeOn = false
     
     var uiWebView: UIWebView?
     lazy var uiWebViewSwizzleRunning = false

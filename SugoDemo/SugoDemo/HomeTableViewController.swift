@@ -40,7 +40,7 @@ class HomeTableViewController: UITableViewController {
     
     func checkCameraPermissionForScan() {
         
-        let permission = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let permission = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         switch permission {
         case .authorized:
             if let sb = self.storyboard {
@@ -52,7 +52,7 @@ class HomeTableViewController: UITableViewController {
         case .restricted:
             self.present(createCameraAlertController(), animated: true, completion: nil)
         case .notDetermined:
-                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: {
+                AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: {
                     [unowned self] (granted: Bool) in
                     if granted {
                         DispatchQueue.main.sync {
@@ -77,7 +77,7 @@ class HomeTableViewController: UITableViewController {
         return alertController
     }
     
-    func deprecate() {
+    @objc func deprecate() {
         if HomeTableViewController.deprecatedTimes > 5 {
             self.deprecatedTimer?.invalidate()
             self.deprecatedTimer = nil;

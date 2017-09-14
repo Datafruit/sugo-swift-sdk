@@ -13,7 +13,7 @@ private var key: Void?
 
 extension UIView {
 
-    func mp_encryptHelper(input: String?) -> NSString {
+    @objc func mp_encryptHelper(input: String?) -> NSString {
         let encryptedStuff = NSMutableString(capacity: 64);
         guard let input = input, !input.isEmpty else {
             return encryptedStuff
@@ -28,33 +28,33 @@ extension UIView {
         return encryptedStuff
     }
 
-    func mp_fingerprintVersion() -> NSNumber {
+    @objc func mp_fingerprintVersion() -> NSNumber {
         return NSNumber(value: 1)
     }
 
-    func mp_varA() -> NSString? {
+    @objc func mp_varA() -> NSString? {
         return mp_encryptHelper(input: mp_viewId())
     }
 
-    func mp_varB() -> NSString? {
+    @objc func mp_varB() -> NSString? {
         return mp_encryptHelper(input: mp_controllerVariable())
     }
 
-    func mp_varC() -> NSString? {
+    @objc func mp_varC() -> NSString? {
         return mp_encryptHelper(input: mp_imageFingerprint())
     }
 
-    func mp_varSetD() -> NSArray {
+    @objc func mp_varSetD() -> NSArray {
         return mp_targetActions().map {
             mp_encryptHelper(input: $0)
         } as NSArray
     }
 
-    func mp_varE() -> NSString? {
+    @objc func mp_varE() -> NSString? {
         return mp_encryptHelper(input: mp_text())
     }
 
-    var sugoViewId: String? {
+    @objc var sugoViewId: String? {
         get {
             return objc_getAssociatedObject(self, &key) as? String
         }
@@ -63,11 +63,11 @@ extension UIView {
         }
     }
     
-    func mp_viewId() -> String? {
+    @objc func mp_viewId() -> String? {
         return sugoViewId
     }
 
-    func mp_controllerVariable() -> String? {
+    @objc func mp_controllerVariable() -> String? {
         if self is UIControl {
             var responder = self.next
             while responder != nil && !(responder is UIViewController) {
@@ -88,7 +88,7 @@ extension UIView {
         return nil
     }
 
-    func mp_imageFingerprint() -> String? {
+    @objc func mp_imageFingerprint() -> String? {
         var result: String? = String()
         var originalImage: UIImage? = nil
         let imageSelector = NSSelectorFromString("image")
@@ -119,8 +119,10 @@ extension UIView {
             for i in 0..<32 {
                 let j = 2*i
                 let k = 2*i + 1
-                let part1 = ((data32[j] & 0x80000000) >> 24) | ((data32[j] & 0x800000) >> 17) | ((data32[j] & 0x8000) >> 10)
-                let part2 = ((data32[j] & 0x80) >> 3) | ((data32[k] & 0x80000000) >> 28) | ((data32[k] & 0x800000) >> 21)
+                var part1 = ((data32[j] & 0x80000000) >> 24) | ((data32[j] & 0x800000) >> 17)
+                part1 = part1 | ((data32[j] & 0x8000) >> 10)
+                var part2 = ((data32[j] & 0x80) >> 3) | ((data32[k] & 0x80000000) >> 28)
+                part2 = part2 | ((data32[k] & 0x800000) >> 21)
                 let part3 = ((data32[k] & 0x8000) >> 14) | ((data32[k] & 0x80) >> 7)
                 data4[i] = UInt8(part1 | part2 | part3)
             }
@@ -130,7 +132,7 @@ extension UIView {
         return result
     }
 
-    func mp_targetActions() -> [String] {
+    @objc func mp_targetActions() -> [String] {
         var targetActions = [String]()
         if let control = self as? UIControl {
             for target in control.allTargets {
@@ -155,7 +157,7 @@ extension UIView {
         return targetActions
     }
 
-    func mp_text() -> String? {
+    @objc func mp_text() -> String? {
         var text: String? = String()
         let titleSelector = NSSelectorFromString("title")
         if let label = self as? UILabel {

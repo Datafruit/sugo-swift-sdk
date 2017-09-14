@@ -26,7 +26,7 @@ import UIKit
         do {
             let data = try attributedString.data(from: NSRange(location: 0,
                                                                length: attributedString.length),
-                                                 documentAttributes: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType])
+                                                 documentAttributes: [NSAttributedString.DocumentAttributeKey.documentType: NSAttributedString.DocumentType.html])
             if String(data: data, encoding: String.Encoding.utf8) != nil {
                 return ["mime_type": "text/html"]
             }

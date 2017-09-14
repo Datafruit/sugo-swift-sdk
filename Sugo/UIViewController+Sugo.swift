@@ -44,7 +44,7 @@ extension UIViewController {
 
 extension UIViewController {
     
-    func sugoViewDidAppear(_ animated: Bool) {
+    @objc func sugoViewDidAppear(_ animated: Bool) {
         let originalSelector = #selector(UIViewController.viewDidAppear(_:))
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
@@ -57,7 +57,7 @@ extension UIViewController {
             }
         }
     }
-    func sugoViewDidDisappearBlock(_ animated: Bool) {
+    @objc func sugoViewDidDisappearBlock(_ animated: Bool) {
         let originalSelector = #selector(UIViewController.viewDidDisappear(_:))
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {

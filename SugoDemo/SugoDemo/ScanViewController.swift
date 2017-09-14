@@ -54,7 +54,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                               y: scanRect.origin.x / windowSize.width,
                               width: scanRect.size.height / windowSize.height,
                               height: scanRect.size.width / windowSize.width)
-            self.device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+            self.device = AVCaptureDevice.default(for: AVMediaType.video)
             guard self.device != nil else {
                 return
             }
@@ -63,21 +63,21 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 self.output = AVCaptureMetadataOutput()
                 self.output?.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
                 self.session = AVCaptureSession()
-                self.session?.sessionPreset = UIScreen.main.bounds.size.height < 500 ? AVCaptureSessionPreset640x480 : AVCaptureSessionPresetHigh
-                self.session?.addInput(self.input)
-                self.session?.addOutput(self.output)
-                self.output?.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
+                self.session?.sessionPreset = UIScreen.main.bounds.size.height < 500 ? AVCaptureSession.Preset.vga640x480 : AVCaptureSession.Preset.high
+                self.session?.addInput(self.input!)
+                self.session?.addOutput(self.output!)
+                self.output?.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
                 self.output?.rectOfInterest = scanRect
                 
-                self.preview = AVCaptureVideoPreviewLayer(session: self.session)
-                self.preview?.videoGravity = AVLayerVideoGravityResizeAspectFill
+                self.preview = AVCaptureVideoPreviewLayer(session: self.session!)
+                self.preview?.videoGravity = AVLayerVideoGravity.resizeAspectFill
                 self.preview?.frame = UIScreen.main.bounds
                 self.view.layer.insertSublayer(self.preview!, at: 0)
                 
                 self.scanView = UIView(frame: CGRect(x: 0, y: 0, width: scanSize.width, height: scanSize.height))
                 self.view.addSubview(self.scanView!)
                 self.scanView?.center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
-                self.scanView?.layer.borderColor = UIColor(colorLiteralRed: 117 / 255, green: 102 / 255, blue: 1, alpha: 1).cgColor
+                self.scanView?.layer.borderColor = UIColor(red: 117 / 255, green: 102 / 255, blue: 1, alpha: 1).cgColor
                 self.scanView?.layer.borderWidth = 1
                 
             } catch {
@@ -90,7 +90,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     func hasCameraPermission() -> Bool {
         
         var hasPermission = false
-        let permission = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let permission = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         switch permission {
         case .authorized:
             hasPermission = true
@@ -104,7 +104,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         return hasPermission
     }
     
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
         guard !metadataObjects.isEmpty else {
             return

@@ -12,7 +12,6 @@
 		147C01041DF67587001FF110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01021DF67587001FF110 /* Main.storyboard */; };
 		147C01061DF67587001FF110 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147C01051DF67587001FF110 /* Assets.xcassets */; };
 		147C01091DF67587001FF110 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147C01071DF67587001FF110 /* LaunchScreen.storyboard */; };
-		147C01141DF67587001FF110 /* SugoDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01131DF67587001FF110 /* SugoDemoTests.swift */; };
 		147C01291DF6913D001FF110 /* TrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C01281DF6913D001FF110 /* TrackingViewController.swift */; };
 		147C012B1DF69169001FF110 /* UtilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012A1DF69169001FF110 /* UtilityViewController.swift */; };
 		147C012D1DF6918C001FF110 /* CodelessCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */; };
@@ -32,29 +31,6 @@
 		147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		147C01101DF67587001FF110 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 147C00F31DF67587001FF110 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 147C00FA1DF67587001FF110;
-			remoteInfo = SugoDemo;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		148A147E1E8C9D2C00798A4E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewViewController.swift; sourceTree = "<group>"; };
 		147C00FB1DF67587001FF110 /* SugoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SugoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,9 +39,6 @@
 		147C01051DF67587001FF110 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		147C01081DF67587001FF110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		147C010A1DF67587001FF110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		147C010F1DF67587001FF110 /* SugoDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SugoDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		147C01131DF67587001FF110 /* SugoDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SugoDemoTests.swift; sourceTree = "<group>"; };
-		147C01151DF67587001FF110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		147C01281DF6913D001FF110 /* TrackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingViewController.swift; sourceTree = "<group>"; };
 		147C012A1DF69169001FF110 /* UtilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityViewController.swift; sourceTree = "<group>"; };
 		147C012C1DF6918C001FF110 /* CodelessCommonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodelessCommonViewController.swift; sourceTree = "<group>"; };
@@ -83,17 +56,11 @@
 		147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTableViewController.swift; sourceTree = "<group>"; };
 		147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewViewController.swift; sourceTree = "<group>"; };
 		147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewViewController.swift; sourceTree = "<group>"; };
+		A7091B101F6A1BDB0057C6FA /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		147C00F81DF67587001FF110 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		147C010C1DF67587001FF110 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -106,8 +73,8 @@
 		147C00F21DF67587001FF110 = {
 			isa = PBXGroup;
 			children = (
+				A7091B101F6A1BDB0057C6FA /* Sugo.framework */,
 				147C00FD1DF67587001FF110 /* SugoDemo */,
-				147C01121DF67587001FF110 /* SugoDemoTests */,
 				147C00FC1DF67587001FF110 /* Products */,
 				147C011F1DF68EB3001FF110 /* Frameworks */,
 			);
@@ -117,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				147C00FB1DF67587001FF110 /* SugoDemo.app */,
-				147C010F1DF67587001FF110 /* SugoDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,15 +101,6 @@
 				147C010A1DF67587001FF110 /* Info.plist */,
 			);
 			path = SugoDemo;
-			sourceTree = "<group>";
-		};
-		147C01121DF67587001FF110 /* SugoDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				147C01131DF67587001FF110 /* SugoDemoTests.swift */,
-				147C01151DF67587001FF110 /* Info.plist */,
-			);
-			path = SugoDemoTests;
 			sourceTree = "<group>";
 		};
 		147C011F1DF68EB3001FF110 /* Frameworks */ = {
@@ -218,7 +175,6 @@
 				147C00F71DF67587001FF110 /* Sources */,
 				147C00F81DF67587001FF110 /* Frameworks */,
 				147C00F91DF67587001FF110 /* Resources */,
-				148A147E1E8C9D2C00798A4E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -228,24 +184,6 @@
 			productName = SugoDemo;
 			productReference = 147C00FB1DF67587001FF110 /* SugoDemo.app */;
 			productType = "com.apple.product-type.application";
-		};
-		147C010E1DF67587001FF110 /* SugoDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 147C011B1DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemoTests" */;
-			buildPhases = (
-				147C010B1DF67587001FF110 /* Sources */,
-				147C010C1DF67587001FF110 /* Frameworks */,
-				147C010D1DF67587001FF110 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				147C01111DF67587001FF110 /* PBXTargetDependency */,
-			);
-			name = SugoDemoTests;
-			productName = SugoDemoTests;
-			productReference = 147C010F1DF67587001FF110 /* SugoDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -259,12 +197,8 @@
 				TargetAttributes = {
 					147C00FA1DF67587001FF110 = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
-					};
-					147C010E1DF67587001FF110 = {
-						CreatedOnToolsVersion = 8.1;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 147C00FA1DF67587001FF110;
 					};
 				};
 			};
@@ -282,7 +216,6 @@
 			projectRoot = "";
 			targets = (
 				147C00FA1DF67587001FF110 /* SugoDemo */,
-				147C010E1DF67587001FF110 /* SugoDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -296,13 +229,6 @@
 				147C47061E8D15E100C1DF08 /* Deprecated.storyboard in Resources */,
 				147C01061DF67587001FF110 /* Assets.xcassets in Resources */,
 				147C01041DF67587001FF110 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		147C010D1DF67587001FF110 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,23 +260,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		147C010B1DF67587001FF110 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				147C01141DF67587001FF110 /* SugoDemoTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		147C01111DF67587001FF110 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 147C00FA1DF67587001FF110 /* SugoDemo */;
-			targetProxy = 147C01101DF67587001FF110 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		147C01021DF67587001FF110 /* Main.storyboard */ = {
@@ -477,7 +387,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -491,35 +402,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
-		147C011C1DF67587001FF110 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SugoDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SugoDemo.app/SugoDemo";
-			};
-			name = Debug;
-		};
-		147C011D1DF67587001FF110 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SugoDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SugoDemo.app/SugoDemo";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -540,15 +424,6 @@
 			buildConfigurations = (
 				147C01191DF67587001FF110 /* Debug */,
 				147C011A1DF67587001FF110 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		147C011B1DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				147C011C1DF67587001FF110 /* Debug */,
-				147C011D1DF67587001FF110 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

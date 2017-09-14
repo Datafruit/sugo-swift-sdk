@@ -83,7 +83,7 @@ class SugoEventsSerializer {
         for key in keys {
             dataString = dataString + types[key]! + TypeSeperator + key + KeysSeperator
         }
-        dataString = dataString.substring(to: dataString.index(before: dataString.endIndex))
+        dataString = String(dataString[dataString.startIndex..<dataString.index(before: dataString.endIndex)])
         dataString = dataString + LinesSeperator
         
         // Mark: - For values

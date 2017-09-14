@@ -206,7 +206,7 @@ class UIControlBinding: CodelessBinding {
         return false
     }
 
-    func preVerify(sender: UIControl, event: UIEvent) {
+    @objc func preVerify(sender: UIControl, event: UIEvent) {
         if verifyControlMatchesPath(sender) {
             verified.add(sender)
         } else {
@@ -214,7 +214,7 @@ class UIControlBinding: CodelessBinding {
         }
     }
 
-    func execute(sender: UIControl, event: UIEvent) {
+    @objc func execute(sender: UIControl, event: UIEvent) {
         var shouldTrack = false
         if verifyEvent != UIControlEvents(rawValue: 0) && verifyEvent != controlEvent {
             shouldTrack = verified.contains(sender)

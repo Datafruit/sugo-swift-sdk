@@ -62,11 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     fileprivate func initSugo() {
-        let id: String = "Add_Your_Project_ID_Here"
-        let token: String = "Add_Your_App_Token_Here"
-//        Sugo.BindingsURL = ""
-//        Sugo.CollectionURL = ""
-//        Sugo.CodelessURL = ""
+        let id: String = "com_SJLnjowGe_project_HyErw0VBW"
+        let token: String = "4216f38f4959de6f2342918d0e3eace1"
+        Sugo.BindingsURL = "http://192.168.0.220:8000"
+        Sugo.CollectionURL = "http://192.168.0.220"
+        Sugo.CodelessURL = "ws://192.168.0.220:8887"
         let priorityProperties = [String: Any]()
         Sugo.registerPriorityProperties(priorityProperties: priorityProperties)
         Sugo.initialize(id: id, token: token)
