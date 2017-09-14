@@ -10,9 +10,9 @@ import Foundation
 
 protocol FlushDelegate {
     func flush(completion: (() -> Void)?)
-    #if os(iOS)
-    func updateNetworkActivityIndicator(_ on: Bool)
-    #endif
+//    #if os(iOS)
+//    func updateNetworkActivityIndicator(_ on: Bool)
+//    #endif
 }
 
 class Flush: AppLifecycle {
@@ -94,17 +94,17 @@ class Flush: AppLifecycle {
             let requestData = SugoEventsSerializer.encode(batch: batch)
             if let requestData = requestData {
                 let semaphore = DispatchSemaphore(value: 0)
-                #if os(iOS)
-                    delegate?.updateNetworkActivityIndicator(true)
-                #endif
+//                #if os(iOS)
+//                    delegate?.updateNetworkActivityIndicator(true)
+//                #endif
                 var shadowQueue = queue
                 flushRequest.sendRequest(requestData,
                                          type: type,
                                          useIP: useIPAddressForGeoLocation,
                                          completion: { success in
-                                            #if os(iOS)
-                                                self.delegate?.updateNetworkActivityIndicator(false)
-                                            #endif
+//                                            #if os(iOS)
+//                                                self.delegate?.updateNetworkActivityIndicator(false)
+//                                            #endif
                                             if success {
                                                 shadowQueue.removeSubrange(range)
                                             }

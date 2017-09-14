@@ -10,9 +10,9 @@ import Foundation
 
 protocol CacheDelegate {
     func cache(completion: (() -> Void)?)
-    #if os(iOS)
-    func updateNetworkActivityIndicator(_ on: Bool)
-    #endif
+//    #if os(iOS)
+//    func updateNetworkActivityIndicator(_ on: Bool)
+//    #endif
 }
 
 class Cache {

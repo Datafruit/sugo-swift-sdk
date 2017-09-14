@@ -259,7 +259,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                                        name: .UIApplicationWillEnterForeground,
                                        object: nil)
 //        #if os(iOS)
-        initializeGestureRecognizer()
+//        initializeGestureRecognizer()
 //        #endif
     }
 
