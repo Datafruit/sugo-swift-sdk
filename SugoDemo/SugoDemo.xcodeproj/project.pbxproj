@@ -56,7 +56,6 @@
 		147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTableViewController.swift; sourceTree = "<group>"; };
 		147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewViewController.swift; sourceTree = "<group>"; };
 		147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewViewController.swift; sourceTree = "<group>"; };
-		A7091B101F6A1BDB0057C6FA /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +72,6 @@
 		147C00F21DF67587001FF110 = {
 			isa = PBXGroup;
 			children = (
-				A7091B101F6A1BDB0057C6FA /* Sugo.framework */,
 				147C00FD1DF67587001FF110 /* SugoDemo */,
 				147C00FC1DF67587001FF110 /* Products */,
 				147C011F1DF68EB3001FF110 /* Frameworks */,
