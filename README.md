@@ -27,7 +27,7 @@
 #### 1.1.1 配置`Podfile`
 
 请在项目根目录下的`Podfile`
-（如无，请创建或从我们提供的SugoDemo目录中[获取](https://github.com/Datafruit/sugo-swift-sdk/blob/master/SugoDemo/Podfile)并作出相应修改）文件中添加以下字符串：
+（如无，请创建或从我们提供的SugoDemo目录中[获取](https://github.com/Datafruit/sugo-swift-sdk/blob/master/SugoDemo/Podfile)并作出相应修改）文件中添加以下信息（若Swift版本为`3.1`或`3.2`，请区别使用`Swift_3.1`或`Swift_3.2`分支）：
 
 ```
 pod 'sugo-swift-sdk'
