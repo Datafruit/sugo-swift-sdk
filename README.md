@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/Datafruit/sugo-swift-sdk.svg?branch=master)](https://travis-ci.org/Datafruit/sugo-swift-sdk)
 [![CocoaPods Compatible](http://img.shields.io/cocoapods/v/sugo-swift-sdk.svg)](https://cocoapods.org/pods/sugo-swift-sdk)
 [![Platform](https://img.shields.io/badge/Platform-iOS%208.0+-66CCFF.svg)](https://cocoapods.org/pods/sugo-swift-sdk)
-[![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg)](https://swift.org)
+[![Swift](https://img.shields.io/badge/Swift-3.2-orange.svg)](https://swift.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/Datafruit/sugo-swift-sdk/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/Datafruit/sugo-swift-sdk.svg)](https://github.com/Datafruit/sugo-swift-sdk/issues)
 [![GitHub stars](https://img.shields.io/github/stars/Datafruit/sugo-swift-sdk.svg)](https://github.com/Datafruit/sugo-swift-sdk/stargazers)
@@ -30,7 +30,7 @@
 （如无，请创建或从我们提供的SugoDemo目录中[获取](https://github.com/Datafruit/sugo-swift-sdk/blob/master/SugoDemo/Podfile)并作出相应修改）文件中添加以下字符串：
 
 ```
-pod 'sugo-swift-sdk'
+pod 'sugo-swift-sdk', :git => 'https://github.com/Datafruit/sugo-swift-sdk.git', :branch => 'Swift_3.2'
 ```
 
 #### 1.1.2 执行集成命令
