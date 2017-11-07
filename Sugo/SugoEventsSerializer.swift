@@ -115,7 +115,7 @@ class SugoEventsSerializer {
             for key in keys {
                 dataString = dataString + "\(value[key]!)" + ValuesSeperator
             }
-            dataString.characters.removeLast()
+            dataString.removeLast()
             dataString = dataString + LinesSeperator
         }
         
