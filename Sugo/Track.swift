@@ -30,7 +30,7 @@ class Track {
         let keys = SugoDimensions.keys
         
         var evn = eventName
-        if evn == nil || evn!.characters.isEmpty {
+        if evn == nil || evn!.isEmpty {
             Logger.info(message: "sugo track called with empty event parameter. using 'mp_event'")
             evn = "sugo_event"
         }
@@ -47,6 +47,7 @@ class Track {
             sugo.timedEvents.removeValue(forKey: evn!)
             p[keys["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
+        p[keys["FirstTime"]!] = Int(UserDefaults.standard.double(forKey: "FirstTime"))
         p[keys["DeviceID"]!] = sugo.deviceId
         p[keys["DistinctID"]!] = sugo.distinctId
         p += sugo.superProperties

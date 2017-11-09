@@ -626,7 +626,11 @@ extension SugoInstance {
             serialQueue.async() {
                 let values = SugoDimensions.values
                 self.track(eventName: values["Integration"]!)
+                self.track(eventName: values["FirstAccess"]!)
+                let date = Date()
+                let firstTime = date.timeIntervalSince1970 * 1000
                 UserDefaults.standard.set(true, forKey: defaultsKey)
+                UserDefaults.standard.set(firstTime, forKey: "FirstTime")
                 UserDefaults.standard.synchronize()
             }
         }
