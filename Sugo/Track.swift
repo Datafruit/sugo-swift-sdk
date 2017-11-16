@@ -47,7 +47,6 @@ class Track {
             sugo.timedEvents.removeValue(forKey: evn!)
             p[keys["Duration"]!] = Double(String(format: "%.2f", epochSeconds - eventStartTime))
         }
-        p[keys["FirstTime"]!] = Int(UserDefaults.standard.double(forKey: "FirstTime"))
         p[keys["DeviceID"]!] = sugo.deviceId
         p[keys["DistinctID"]!] = sugo.distinctId
         p += sugo.superProperties
@@ -56,6 +55,7 @@ class Track {
             p += properties
         }
         p += AutomaticProperties.properties
+        p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstVisitTime"))
         
         var trackEvent: InternalProperties
         if let evid = eventID {

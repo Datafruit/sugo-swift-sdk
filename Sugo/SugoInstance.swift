@@ -626,11 +626,11 @@ extension SugoInstance {
             serialQueue.async() {
                 let values = SugoDimensions.values
                 self.track(eventName: values["Integration"]!)
-                self.track(eventName: values["FirstAccess"]!)
+                self.track(eventName: values["FirstVisit"]!)
                 let date = Date()
-                let firstTime = date.timeIntervalSince1970 * 1000
+                let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
                 UserDefaults.standard.set(true, forKey: defaultsKey)
-                UserDefaults.standard.set(firstTime, forKey: "FirstTime")
+                UserDefaults.standard.set(firstVisitTime, forKey: "FirstVisitTime")
                 UserDefaults.standard.synchronize()
             }
         }
@@ -730,6 +730,64 @@ extension SugoInstance {
                                      sugo: self)
             
             Persistence.archiveEvents(self.eventsQueue, token: self.apiToken)
+        }
+    }
+    
+    open func trackFirstLogin(with id: String) {
+        
+        let firstLoginKey = "FirstLoginTime"
+        let keys = SugoDimensions.keys
+        let values = SugoDimensions.values
+        let userDefault = UserDefaults.standard
+        var firstLoginTimes = [String: UInt]()
+        if let times = userDefault.dictionary(forKey: firstLoginKey) as? [String: UInt] {
+            firstLoginTimes = times
+        }
+        for firstLoginTime in firstLoginTimes {
+            if firstLoginTime.key == id {
+                let properties: Properties = [keys[firstLoginKey]!: firstLoginTime.value]
+                trackInstance.registerSuperProperties(properties, superProperties: &self.superProperties)
+                return
+            }
+        }
+        let firstLoginRequest = FirstLoginRequest()
+        let semaphore = DispatchSemaphore(value: 0)
+        firstLoginRequest.sendRequest(id: id) {
+            [unowned self] (firstLoginResult) in
+                                    
+            guard let firstLoginResult = firstLoginResult,
+                let result = firstLoginResult["result"] as? [String: Any],
+                let resultFirstLoginTime = result["firstLoginTime"] as? UInt,
+                let resultIsFirstLogin = result["isFirstLogin"] as? Bool else {
+                semaphore.signal()
+                return
+            }
+            Logger.debug(message: "result: \(result.debugDescription)")
+            
+            let firstLoginTimeValue = resultFirstLoginTime
+            firstLoginTimes[id] = firstLoginTimeValue
+            
+            let properties: Properties = [keys[firstLoginKey]!: firstLoginTimeValue]
+            self.trackInstance.registerSuperProperties(properties, superProperties: &self.superProperties)
+            
+            if resultIsFirstLogin {
+                UserDefaults.standard.set(firstLoginTimes, forKey: firstLoginKey)
+                UserDefaults.standard.synchronize()
+                self.track(eventName: values["FirstLogin"])
+            }
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        
+    }
+    
+    open func untrackFirstLogin() {
+        
+        let firstLoginKey = "FirstLoginTime"
+        let keys = SugoDimensions.keys
+        if currentSuperProperties().keys.contains(keys[firstLoginKey]!) {
+            self.trackInstance.unregisterSuperProperty(keys[firstLoginKey]!,
+                                                       superProperties: &self.superProperties)
         }
     }
 
