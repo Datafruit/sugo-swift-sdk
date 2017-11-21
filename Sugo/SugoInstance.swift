@@ -630,6 +630,7 @@ extension SugoInstance {
                 let date = Date()
                 let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
                 UserDefaults.standard.set(true, forKey: defaultsKey)
+                UserDefaults.standard.set(false, forKey: "isLogin")
                 UserDefaults.standard.set(firstVisitTime, forKey: "FirstVisitTime")
                 UserDefaults.standard.synchronize()
             }
@@ -745,8 +746,8 @@ extension SugoInstance {
         }
         for firstLoginTime in firstLoginTimes {
             if firstLoginTime.key == id {
-                let properties: Properties = [keys[firstLoginKey]!: firstLoginTime.value]
-                trackInstance.registerSuperProperties(properties, superProperties: &self.superProperties)
+                UserDefaults.standard.set(true, forKey: "isLogin")
+                UserDefaults.standard.synchronize()
                 return
             }
         }
@@ -767,8 +768,8 @@ extension SugoInstance {
             let firstLoginTimeValue = resultFirstLoginTime
             firstLoginTimes[id] = firstLoginTimeValue
             
-            let properties: Properties = [keys[firstLoginKey]!: firstLoginTimeValue]
-            self.trackInstance.registerSuperProperties(properties, superProperties: &self.superProperties)
+            UserDefaults.standard.set(true, forKey: "isLogin")
+            UserDefaults.standard.synchronize()
             
             if resultIsFirstLogin {
                 UserDefaults.standard.set(firstLoginTimes, forKey: firstLoginKey)
@@ -788,6 +789,8 @@ extension SugoInstance {
         if currentSuperProperties().keys.contains(keys[firstLoginKey]!) {
             self.trackInstance.unregisterSuperProperty(keys[firstLoginKey]!,
                                                        superProperties: &self.superProperties)
+            UserDefaults.standard.set(false, forKey: "isLogin")
+            UserDefaults.standard.synchronize()
         }
     }
 

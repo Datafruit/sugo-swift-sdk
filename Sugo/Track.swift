@@ -55,7 +55,15 @@ class Track {
             p += properties
         }
         p += AutomaticProperties.properties
-        p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstVisitTime"))
+        if UserDefaults.standard.bool(forKey: "isLogin") {
+            p[keys["FirstLoginTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstLoginTime"))
+        } else {
+            p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstVisitTime"))
+        }
+        
+        if p[keys["EventType"]!] == nil {
+            p[keys["EventType"]!] = evn!
+        }
         
         var trackEvent: InternalProperties
         if let evid = eventID {
