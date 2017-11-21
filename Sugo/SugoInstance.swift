@@ -752,7 +752,7 @@ extension SugoInstance {
         }
         let firstLoginRequest = FirstLoginRequest()
         let semaphore = DispatchSemaphore(value: 0)
-        firstLoginRequest.sendRequest(id: id) {
+        firstLoginRequest.sendRequest(id: id, projectId: projectId) {
             [unowned self] (firstLoginResult) in
                                     
             guard let firstLoginResult = firstLoginResult,
