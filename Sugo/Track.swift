@@ -55,8 +55,10 @@ class Track {
             p += properties
         }
         p += AutomaticProperties.properties
-        if UserDefaults.standard.bool(forKey: "isLogin") {
-            p[keys["FirstLoginTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstLoginTime"))
+        
+        if let loginUserId = UserDefaults.standard.string(forKey: keys["LoginUserId"]!),
+        let firstLoginTimes = UserDefaults.standard.dictionary(forKey: "FirstLoginTime") as? [String: UInt] {
+            p[keys["FirstLoginTime"]!] = firstLoginTimes[loginUserId]
         } else {
             p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstVisitTime"))
         }

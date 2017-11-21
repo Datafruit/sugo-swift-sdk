@@ -746,7 +746,7 @@ extension SugoInstance {
         }
         for firstLoginTime in firstLoginTimes {
             if firstLoginTime.key == id {
-                UserDefaults.standard.set(true, forKey: "isLogin")
+                UserDefaults.standard.set(id, forKey: keys["LoginUserId"]!)
                 UserDefaults.standard.synchronize()
                 return
             }
@@ -768,7 +768,7 @@ extension SugoInstance {
             let firstLoginTimeValue = resultFirstLoginTime
             firstLoginTimes[id] = firstLoginTimeValue
             
-            UserDefaults.standard.set(true, forKey: "isLogin")
+            UserDefaults.standard.set(id, forKey: keys["LoginUserId"]!)
             UserDefaults.standard.synchronize()
             
             if resultIsFirstLogin {
@@ -784,14 +784,9 @@ extension SugoInstance {
     
     open func untrackFirstLogin() {
         
-        let firstLoginKey = "FirstLoginTime"
         let keys = SugoDimensions.keys
-        if currentSuperProperties().keys.contains(keys[firstLoginKey]!) {
-            self.trackInstance.unregisterSuperProperty(keys[firstLoginKey]!,
-                                                       superProperties: &self.superProperties)
-            UserDefaults.standard.set(false, forKey: "isLogin")
-            UserDefaults.standard.synchronize()
-        }
+        UserDefaults.standard.removeObject(forKey: keys["LoginUserId"]!)
+        UserDefaults.standard.synchronize()
     }
 
     /**
