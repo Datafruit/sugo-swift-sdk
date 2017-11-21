@@ -630,7 +630,6 @@ extension SugoInstance {
                 let date = Date()
                 let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
                 UserDefaults.standard.set(true, forKey: defaultsKey)
-                UserDefaults.standard.set(false, forKey: "isLogin")
                 UserDefaults.standard.set(firstVisitTime, forKey: "FirstVisitTime")
                 UserDefaults.standard.synchronize()
             }
