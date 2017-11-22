@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import Sugo
 
 class UIControlViewController: UIViewController {
 
+    @IBOutlet weak var userId: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,5 +34,18 @@ class UIControlViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    @IBAction func signIn(_ sender: UIButton) {
+        
+        if let userId = userId.text {
+            Sugo.mainInstance().trackFirstLogin(with: userId)
+        }
+    }
+    
+    @IBAction func signOut(_ sender: UIButton) {
+        
+        Sugo.mainInstance().untrackFirstLogin()
+    }
+    
+    
 }
