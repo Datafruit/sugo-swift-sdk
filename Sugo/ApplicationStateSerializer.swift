@@ -23,7 +23,7 @@ class ApplicationStateSerializer {
         var image: UIImage? = nil
 
         if let window = getWindow(at: index), !window.frame.equalTo(CGRect.zero) {
-            UIGraphicsBeginImageContextWithOptions(window.bounds.size, true, window.screen.scale)
+            UIGraphicsBeginImageContextWithOptions(window.bounds.size, true, 1)
             if !window.drawHierarchy(in: window.bounds, afterScreenUpdates: false) {
                 Logger.error(message: "Unable to get a screenshot for window at index \(index)")
             }
