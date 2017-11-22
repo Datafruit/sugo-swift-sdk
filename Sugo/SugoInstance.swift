@@ -624,13 +624,14 @@ extension SugoInstance {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
             serialQueue.async() {
+                let keys = SugoDimensions.keys
                 let values = SugoDimensions.values
                 self.track(eventName: values["Integration"]!)
                 self.track(eventName: values["FirstVisit"]!)
                 let date = Date()
                 let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
                 UserDefaults.standard.set(true, forKey: defaultsKey)
-                UserDefaults.standard.set(firstVisitTime, forKey: "FirstVisitTime")
+                UserDefaults.standard.set(firstVisitTime, forKey: keys["FirstVisitTime"]!)
                 UserDefaults.standard.synchronize()
             }
         }
@@ -764,14 +765,13 @@ extension SugoInstance {
             }
             Logger.debug(message: "result: \(result.debugDescription)")
             
-            let firstLoginTimeValue = resultFirstLoginTime
-            firstLoginTimes[id] = firstLoginTimeValue
-            
             UserDefaults.standard.set(id, forKey: keys["LoginUserId"]!)
             UserDefaults.standard.synchronize()
             
             if resultIsFirstLogin {
-                UserDefaults.standard.set(firstLoginTimes, forKey: firstLoginKey)
+                let firstLoginTimeValue = resultFirstLoginTime
+                firstLoginTimes[id] = firstLoginTimeValue
+                UserDefaults.standard.set(firstLoginTimes, forKey: keys[firstLoginKey]!)
                 UserDefaults.standard.synchronize()
                 self.track(eventName: values["FirstLogin"])
             }
