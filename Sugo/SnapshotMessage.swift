@@ -28,6 +28,7 @@ class SnapshotRequest: BaseWebSocketMessage {
     }
 
     override func responseCommand(connection: WebSocketWrapper) -> Operation? {
+        Logger.debug(message: "responseCommand will serialize: \(Date())")
         var serializerConfig = configurarion
         let imageHash = payload["image_hash"] as? String
 
@@ -61,7 +62,7 @@ class SnapshotRequest: BaseWebSocketMessage {
             let response = SnapshotResponse()
             var screenshot: UIImage? = nil
             var serializedObjects: [String: AnyObject]!
-
+            
             DispatchQueue.main.sync {
                 screenshot = serializer.getScreenshotForWindow(at: 0)
             }
@@ -77,6 +78,7 @@ class SnapshotRequest: BaseWebSocketMessage {
             }
 
             response.serializedObjects = serializedObjects
+            Logger.debug(message: "responseCommand did serialize: \(Date())")
             connection.send(message: response)
         }
 

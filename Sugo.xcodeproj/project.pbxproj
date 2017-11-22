@@ -105,6 +105,7 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,6 +209,7 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirstLoginRequest.swift; path = Sugo/FirstLoginRequest.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +320,7 @@
 				14EADD161DF65ACB00E6B711 /* WebSocket.swift */,
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
 				144203F21E4897D80013FFCC /* Reachability.swift */,
+				A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -667,6 +670,7 @@
 				14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */,
 				14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */,
 				14E2B25D1E88C85F004DF09F /* Cache.swift in Sources */,
+				A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */,
 				14EADD1E1DF65ACB00E6B711 /* WebViewBindings+WKWebView.swift in Sources */,
 				14EADD2A1DF65ACB00E6B711 /* CodelessBinding.swift in Sources */,
 				14EADD2C1DF65ACB00E6B711 /* DecideRequest.swift in Sources */,
