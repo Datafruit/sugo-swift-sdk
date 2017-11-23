@@ -97,7 +97,7 @@ class SnapshotResponse: BaseWebSocketMessage {
         }
         set {
             if let snapshot = newValue {
-                if let jpegSnapshotImageData = UIImageJPEGRepresentation(snapshot, 0.5) {
+                if let jpegSnapshotImageData = UIImageJPEGRepresentation(snapshot, 0) {
                     payload["screenshot"] = jpegSnapshotImageData.base64EncodedString(options: [.lineLength64Characters]) as AnyObject
                     self.imageHash = getImageHash(imageData: jpegSnapshotImageData)
                     payload["image_hash"] = self.imageHash as AnyObject

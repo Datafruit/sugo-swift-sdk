@@ -56,12 +56,14 @@ class Track {
         }
         p += AutomaticProperties.properties
         
-        if let loginUserId = UserDefaults.standard.string(forKey: keys["LoginUserId"]!),
-        let firstLoginTimes = UserDefaults.standard.dictionary(forKey: "FirstLoginTime") as? [String: UInt] {
-            p[keys["FirstLoginTime"]!] = firstLoginTimes[loginUserId]
-        } else {
-            p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: "FirstVisitTime"))
+        if let loginUserIdDimension = UserDefaults.standard.string(forKey: keys["LoginUserIdDimension"]!),
+            let loginUserId = UserDefaults.standard.string(forKey: keys["LoginUserId"]!),
+            let firstLoginTimes = UserDefaults.standard.dictionary(forKey: keys["FirstLoginTime"]!) as? [String: UInt],
+            let firstLoginTime = firstLoginTimes[loginUserId] {
+            p[loginUserIdDimension] = loginUserId
+            p[keys["FirstLoginTime"]!] = firstLoginTime
         }
+        p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: keys["FirstVisitTime"]!))
         
         if p[keys["EventType"]!] == nil {
             p[keys["EventType"]!] = evn!
