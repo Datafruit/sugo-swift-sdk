@@ -38,7 +38,7 @@ class UIControlViewController: UIViewController {
     @IBAction func signIn(_ sender: UIButton) {
         
         if let userId = userId.text {
-            Sugo.mainInstance().trackFirstLogin(with: userId)
+            Sugo.mainInstance().trackFirstLogin(with: userId, dimension: "test_user_id")
         }
     }
     

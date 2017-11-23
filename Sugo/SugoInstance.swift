@@ -734,7 +734,7 @@ extension SugoInstance {
         }
     }
     
-    open func trackFirstLogin(with id: String) {
+    open func trackFirstLogin(with id: String, dimension: String) {
         
         let firstLoginKey = "FirstLoginTime"
         let keys = SugoDimensions.keys
@@ -765,6 +765,7 @@ extension SugoInstance {
             }
             Logger.debug(message: "result: \(result.debugDescription)")
             
+            UserDefaults.standard.set(dimension, forKey: keys["LoginUserIdDimension"]!)
             UserDefaults.standard.set(id, forKey: keys["LoginUserId"]!)
             UserDefaults.standard.synchronize()
             
