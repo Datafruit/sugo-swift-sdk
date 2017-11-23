@@ -623,16 +623,16 @@ extension SugoInstance {
     func trackIntegration() {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
+            let date = Date()
+            let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
+            let keys = SugoDimensions.keys
+            UserDefaults.standard.set(true, forKey: defaultsKey)
+            UserDefaults.standard.set(firstVisitTime, forKey: keys["FirstVisitTime"]!)
+            UserDefaults.standard.synchronize()
             serialQueue.async() {
-                let keys = SugoDimensions.keys
                 let values = SugoDimensions.values
                 self.track(eventName: values["Integration"]!)
                 self.track(eventName: values["FirstVisit"]!)
-                let date = Date()
-                let firstVisitTime = UInt(date.timeIntervalSince1970 * 1000)
-                UserDefaults.standard.set(true, forKey: defaultsKey)
-                UserDefaults.standard.set(firstVisitTime, forKey: keys["FirstVisitTime"]!)
-                UserDefaults.standard.synchronize()
             }
         }
     }
