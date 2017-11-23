@@ -75,11 +75,12 @@ extension UIView {
             }
             if let responder = responder {
                 let mirrored_object = Mirror(reflecting: responder)
-
-                for (_, attr) in mirrored_object.children.enumerated() {
-                    if let property_name = attr.label {
-                        if let value = attr.value as? UIView, value == self {
-                            return property_name
+                if mirrored_object.children.count > 0 {
+                    for (_, attr) in mirrored_object.children.enumerated() {
+                        if let property_name = attr.label {
+                            if let value = attr.value as? UIView, value == self {
+                                return property_name
+                            }
                         }
                     }
                 }
@@ -99,7 +100,14 @@ extension UIView {
             NSStringFromClass(type(of: superviewUnwrapped)) == "UITabBarButton" && self.responds(to: imageSelector) {
             originalImage = self.perform(imageSelector).takeRetainedValue() as? UIImage
         }
-
+        
+        if let originalImage = originalImage,
+            let data: Data = UIImagePNGRepresentation(originalImage),
+            let hashData = "\(data.hashValue)".data(using: String.Encoding.utf8) {
+            result = hashData.base64EncodedString()
+        }
+        
+        /* Deprecated
         if let originalImage = originalImage, let cgImage = originalImage.cgImage {
             let space = CGColorSpaceCreateDeviceRGB()
             let data32 = UnsafeMutablePointer<UInt32>.allocate(capacity: 64)
@@ -129,6 +137,7 @@ extension UIView {
             let arr = Array(UnsafeBufferPointer(start: data4, count: 32))
             result = Data(bytes: arr).base64EncodedString()
         }
+         */
         return result
     }
 
