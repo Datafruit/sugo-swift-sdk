@@ -54,7 +54,7 @@ extension UIView {
         return mp_encryptHelper(input: mp_text())
     }
 
-    @objc var sugoViewId: String? {
+    @objc public var sugoViewId: String? {
         get {
             return objc_getAssociatedObject(self, &key) as? String
         }
