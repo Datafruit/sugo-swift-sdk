@@ -17,19 +17,21 @@ class FirstLoginRequest: Network {
         
         let id: URLQueryItem
         let projectId: URLQueryItem
+        let token: URLQueryItem
 
-        init(id: String, projectId: String) {
+        init(id: String, projectId: String, token: String) {
             
             self.id = URLQueryItem(name: "userId", value: id)
             self.projectId = URLQueryItem(name: "projectId", value: projectId)
+            self.token = URLQueryItem(name: "token", value: token)
         }
         
         func toArray() -> [URLQueryItem] {
-            return [id, projectId]
+            return [id, projectId, token]
         }
     }
     
-    func sendRequest(id: String, projectId: String, completion: @escaping (FirstLoginResult?) -> Void) {
+    func sendRequest(id: String, projectId: String, token: String, completion: @escaping (FirstLoginResult?) -> Void) {
         
         let responseParser: (Data) -> FirstLoginResult? = { data in
             var response: Any? = nil
@@ -41,7 +43,7 @@ class FirstLoginRequest: Network {
             return response as? FirstLoginResult
         }
         
-        let queryItems = FirstLoginQueryItems(id: id, projectId: projectId)
+        let queryItems = FirstLoginQueryItems(id: id, projectId: projectId, token: token)
         let resource = Network.buildResource(path: firstLoginPath,
                                              method: .get,
                                              queryItems: queryItems.toArray(),
