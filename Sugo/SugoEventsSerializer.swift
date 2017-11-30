@@ -57,6 +57,10 @@ class SugoEventsSerializer {
                     case "0":
                         type = "l"
                         break
+                    case "7":
+                        fallthrough
+                    case "8":
+                        fallthrough
                     case "1":
                         type = "f"
                         break
