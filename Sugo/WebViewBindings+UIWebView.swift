@@ -181,7 +181,7 @@ extension WebViewBindings {
     
     var jsUIWebView: String {
         
-        let js = self.jsUIWebViewUtils
+        let js = self.jsUIWebViewSugoioKit
             + self.jsUIWebViewSugoBegin
             + self.jsUIWebViewVariables
             + self.jsUIWebViewAPI
@@ -194,8 +194,8 @@ extension WebViewBindings {
         return js
     }
     
-    var jsUIWebViewUtils: String {
-        return self.jsSource(of: "Utils")
+    var jsUIWebViewSugoioKit: String {
+        return self.jsSource(of: "SugoioKit")
     }
     
     var jsUIWebViewSugoBegin: String {
