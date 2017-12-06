@@ -201,23 +201,13 @@ extension ObjectSerializer {
             let width = event!["clientWidth"] as? Int,
             let height = event!["clientHeight"] as? Int,
             let nodes = event!["nodes"] as? String {
-            storage.title = title
-            storage.path = path
-            storage.width = "\(width)"
-            storage.height = "\(height)"
-            storage.nodes = nodes
+            storage.setHTMLInfo(withTitle: title, path: path, width: "\(width)", height: "\(height)", nodes: nodes)
             eventString.removeAll()
             eventData.removeAll()
             event?.removeAll()
         }
         
-        return [
-            "title": storage.title,
-            "url": storage.path,
-            "clientWidth": storage.width,
-            "clientHeight": storage.height,
-            "nodes": storage.nodes
-        ]
+        return storage.getHTMLInfo()
     }
 
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
@@ -225,13 +215,7 @@ extension ObjectSerializer {
         let wvBindings = WebViewBindings.global
         webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewExcute.Report"), completionHandler: nil)
         
-        return [
-            "title": WebViewInfoStorage.global.title,
-            "url": WebViewInfoStorage.global.path,
-            "clientWidth": WebViewInfoStorage.global.width,
-            "clientHeight": WebViewInfoStorage.global.height,
-            "nodes": WebViewInfoStorage.global.nodes
-        ]
+        return WebViewInfoStorage.global.getHTMLInfo()
     }
     
 }

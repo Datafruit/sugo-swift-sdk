@@ -13,11 +13,11 @@ class WebViewInfoStorage: NSObject {
     var eventID: String
     var eventName: String
     var properties: String
-    var title: String
-    var path: String
-    var width: String
-    var height: String
-    var nodes: String
+    private var title: String
+    private var path: String
+    private var width: String
+    private var height: String
+    private var nodes: String
     
     static var global: WebViewInfoStorage {
         return singleton
@@ -35,5 +35,27 @@ class WebViewInfoStorage: NSObject {
         self.nodes = String()
         super.init()
     }
+    
+    func getHTMLInfo() -> [String: Any] {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+        
+        return ["title": self.title,
+                "url": self.path,
+                "clientWidth": self.width,
+                "clientHeight": self.height,
+                "nodes": self.nodes]
+    }
+    
+    func setHTMLInfo(withTitle title: String, path: String, width: String, height: String, nodes: String) {
+        objc_sync_enter(self)
+        self.title = title
+        self.path = path
+        self.width = width
+        self.height = height
+        self.nodes = nodes
+        objc_sync_exit(self)
+    }
+    
 }
 

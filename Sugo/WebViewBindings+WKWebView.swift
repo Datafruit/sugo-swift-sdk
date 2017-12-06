@@ -83,20 +83,16 @@ extension WebViewBindings: WKScriptMessageHandler {
                 
             case "SugoWKWebViewReporter":
                 if let body = message.body as? [String: Any] {
-                    if let title = body["title"] as? String {
-                        WebViewInfoStorage.global.title = title
-                    }
-                    if let path = body["path"] as? String {
-                        WebViewInfoStorage.global.path = path
-                    }
-                    if let clientWidth = body["clientWidth"] as? String {
-                        WebViewInfoStorage.global.width = clientWidth
-                    }
-                    if let clientHeight = body["clientHeight"] as? String {
-                        WebViewInfoStorage.global.height = clientHeight
-                    }
-                    if let nodes = body["nodes"] as? String {
-                        WebViewInfoStorage.global.nodes = nodes
+                    if let title = body["title"] as? String,
+                        let path = body["path"] as? String,
+                        let clientWidth = body["clientWidth"] as? Int,
+                        let clientHeight = body["clientHeight"] as? Int,
+                        let nodes = body["nodes"] as? String {
+                        WebViewInfoStorage.global.setHTMLInfo(withTitle: title,
+                                                              path: path,
+                                                              width: "\(clientWidth)",
+                            height: "\(clientHeight)",
+                            nodes: nodes)
                     }
                 }
                 
