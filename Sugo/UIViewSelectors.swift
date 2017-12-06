@@ -68,24 +68,22 @@ extension UIView {
     }
 
     @objc func mp_controllerVariable() -> String? {
-        if self is UIControl {
-            var responder = self.next
-            while responder != nil && !(responder is UIViewController) {
-                responder = responder?.next
-            }
-            if let responder = responder {
-                let mirrored_object = Mirror(reflecting: responder)
-                if mirrored_object.children.count > 0 {
-                    for (_, attr) in mirrored_object.children.enumerated() {
-                        if let property_name = attr.label {
-                            if let value = attr.value as? UIView, value == self {
-                                return property_name
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        if self is UIControl {
+//            var responder = self.next
+//            while responder != nil && !(responder is UIViewController) {
+//                responder = responder?.next
+//            }
+//            if let responder = responder {
+//                let mirrored_object = Mirror(reflecting: responder)
+//                for (_, attr) in mirrored_object.children.enumerated() {
+//                    if let property_name = attr.label {
+//                        if let value = attr.value as? UIView, value == self {
+//                            return property_name
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return nil
     }
 
