@@ -80,6 +80,7 @@ class SnapshotRequest: BaseWebSocketMessage {
             response.serializedObjects = serializedObjects
             Logger.debug(message: "responseCommand did serialize: \(Date())")
             connection.send(message: response)
+            Logger.debug(message: "responseCommand snapshot sent: \(Date())")
         }
 
         return operation
