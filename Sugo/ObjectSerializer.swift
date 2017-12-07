@@ -213,8 +213,9 @@ extension ObjectSerializer {
     func getWKWebViewHTMLInfo(from webView: WKWebView) -> [String: Any] {
         
         let wvBindings = WebViewBindings.global
-        webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewExcute.Report"), completionHandler: nil)
-        
+        if wvBindings.wkWebViewJavaScriptInjected {
+            webView.evaluateJavaScript(wvBindings.jsSource(of: "WebViewExcute.Report"), completionHandler: nil)
+        }
         return WebViewInfoStorage.global.getHTMLInfo()
     }
     

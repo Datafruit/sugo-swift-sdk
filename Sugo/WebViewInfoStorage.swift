@@ -13,6 +13,19 @@ class WebViewInfoStorage: NSObject {
     var eventID: String
     var eventName: String
     var properties: String
+    var hasNewFrame: Bool {
+        get {
+            objc_sync_enter(self)
+            defer { objc_sync_exit(self) }
+            return newFrame
+        }
+        set {
+            objc_sync_enter(self)
+            newFrame = newValue
+            objc_sync_exit(self)
+        }
+    }
+    private var newFrame: Bool
     private var title: String
     private var path: String
     private var width: String
@@ -28,6 +41,7 @@ class WebViewInfoStorage: NSObject {
         self.eventID = String()
         self.eventName = String()
         self.properties = String()
+        self.newFrame = false
         self.title = String()
         self.path = String()
         self.width = String()
@@ -38,6 +52,9 @@ class WebViewInfoStorage: NSObject {
     
     func getHTMLInfo() -> [String: Any] {
         objc_sync_enter(self)
+        if self.newFrame {
+            self.newFrame = false
+        }
         defer { objc_sync_exit(self) }
         
         return ["title": self.title,
@@ -54,6 +71,7 @@ class WebViewInfoStorage: NSObject {
         self.width = width
         self.height = height
         self.nodes = nodes
+        self.newFrame = true
         objc_sync_exit(self)
     }
     
