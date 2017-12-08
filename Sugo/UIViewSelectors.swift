@@ -68,22 +68,26 @@ extension UIView {
     }
 
     @objc func mp_controllerVariable() -> String? {
-//        if self is UIControl {
-//            var responder = self.next
-//            while responder != nil && !(responder is UIViewController) {
-//                responder = responder?.next
-//            }
-//            if let responder = responder {
-//                let mirrored_object = Mirror(reflecting: responder)
-//                for (_, attr) in mirrored_object.children.enumerated() {
-//                    if let property_name = attr.label {
-//                        if let value = attr.value as? UIView, value == self {
-//                            return property_name
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        /* Deprecated
+        // when a UIViewController has a property that is not a NSObject, Mirror.children will crash, and ivar_getTypeEncoding isn't available in Swift
+        // when current UIVIewController is a rootViewController of a UINavigationController, this function cannot get correct responder
+        if self is UIControl {
+            var responder = self.next
+            while responder != nil && !(responder is UIViewController) {
+                responder = responder?.next
+            }
+            if let responder = responder {
+                let mirrored_object = Mirror(reflecting: responder)
+                for (_, attr) in mirrored_object.children.enumerated() {
+                    if let property_name = attr.label {
+                        if let value = attr.value as? UIView, value == self {
+                            return property_name
+                        }
+                    }
+                }
+            }
+        }
+         */
         return nil
     }
 
