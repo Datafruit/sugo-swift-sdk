@@ -14,10 +14,12 @@ extension WebViewBindings: WKScriptMessageHandler {
     func startWKWebViewBindings(webView: inout WKWebView) {
         if !self.wkWebViewJavaScriptInjected {
             self.wkWebViewCurrentJS = self.wkJavaScript
-            webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
-            webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTrack")
-            webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTime")
-            webView.configuration.userContentController.add(self, name: "SugoWKWebViewReporter")
+            if !webView.configuration.userContentController.userScripts.contains(self.wkWebViewCurrentJS) {
+                webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
+                webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTrack")
+                webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTime")
+                webView.configuration.userContentController.add(self, name: "SugoWKWebViewReporter")
+            }
             self.wkWebViewJavaScriptInjected = true
             Logger.debug(message: "WKWebView Injected")
         }
