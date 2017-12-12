@@ -1,22 +1,22 @@
 //
-//  UITableViewBinding.swift
+//  UICollectionViewBinding.swift
 //  Sugo
 //
-//  Created by Yarden Eitan on 8/24/16.
-//  Copyright © 2016 Sugo. All rights reserved.
+//  Created by lzackx on 2017/12/12.
+//  Copyright © 2017年 sugo. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class UITableViewBinding: CodelessBinding {
-
-
+class UICollectionViewBinding: CodelessBinding {
+    
+    
     init(eventID: String?, eventName: String, path: String, delegate: AnyClass, attributes: Attributes? = nil) {
         super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
         self.swizzleClass = delegate
     }
-
+    
     convenience init?(object: [String: Any]) {
         guard let path = object["path"] as? String, path.count >= 1 else {
             Logger.warn(message: "must supply a view path to bind by")
@@ -32,8 +32,8 @@ class UITableViewBinding: CodelessBinding {
             Logger.warn(message: "binding requires an event name")
             return nil
         }
-
-        guard let delegate = object["table_delegate"] as? String, let delegateClass = NSClassFromString(delegate) else {
+        
+        guard let delegate = object["collection_delegate"] as? String, let delegateClass = NSClassFromString(delegate) else {
             Logger.warn(message: "binding requires a delegate class")
             return nil
         }
@@ -47,23 +47,23 @@ class UITableViewBinding: CodelessBinding {
                   path: path,
                   delegate: delegateClass,
                   attributes: attr)
-
+        
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
     override func execute() {
         if !running && swizzleClass != nil {
             let executeBlock = {
-                (view: AnyObject?, command: Selector, tableView: AnyObject?, indexPath: AnyObject?) in
-                guard let tableView = tableView as? UITableView, let indexPath = indexPath as? IndexPath else {
+                (view: AnyObject?, command: Selector, collectionView: AnyObject?, indexPath: AnyObject?) in
+                guard let collectionView = collectionView as? UICollectionView, let indexPath = indexPath as? IndexPath else {
                     return
                 }
                 if let root = UIApplication.shared.keyWindow {
                     // select targets based off path
-                    if self.path.isSelected(leaf: tableView, from: root) {
+                    if self.path.isSelected(leaf: collectionView, from: root) {
                         var p = Properties()
                         if let a = self.attributes {
                             p += a.parse()
@@ -84,22 +84,12 @@ class UITableViewBinding: CodelessBinding {
                             }
                         }
                         p[keys["EventType"]!] = values["click"]!
-                        var textLabel = String()
-                        var detailTextLabel = String()
                         var contentInfo = String()
-                        if let cell = tableView.cellForRow(at: indexPath) {
-                            if let cellText = cell.textLabel?.text {
-                                textLabel = cellText
-                            }
-                            if let cellDetailText = cell.detailTextLabel?.text {
-                                detailTextLabel = cellDetailText
-                            }
+                        if let cell = collectionView.cellForItem(at: indexPath) {
                             contentInfo = self.contentInfoOfView(view: cell.contentView)
                         }
                         p += ["cell_index": "\(indexPath.row)",
                             "cell_section": "\(indexPath.section)",
-                            "cell_label": textLabel,
-                            "cell_detail_label": detailTextLabel,
                             "cell_content_info": contentInfo]
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
@@ -107,25 +97,24 @@ class UITableViewBinding: CodelessBinding {
                     }
                 }
             }
-
+            
             //swizzle
-            Swizzler.swizzleSelector(NSSelectorFromString("tableView:didSelectRowAtIndexPath:"),
-                                     withSelector:
-                                        #selector(UIViewController.sugoTableViewDidSelectRowAtIndexPath(tableView:indexPath:)),
+            Swizzler.swizzleSelector(NSSelectorFromString("collectionView:didSelectItemAtIndexPath:"),
+                                     withSelector: #selector(UIViewController.sugoCollectionViewDidSelectItemAtIndexPath(collectionView:indexPath:)),
                                      for: swizzleClass,
                                      name: name,
                                      block: executeBlock)
-
+            
             running = true
         }
     }
-
+    
     override func stop() {
         if running {
             //unswizzle
-            Swizzler.unswizzleSelector(NSSelectorFromString("tableView:didSelectRowAtIndexPath:"),
-                aClass: swizzleClass,
-                name: name)
+            Swizzler.unswizzleSelector(NSSelectorFromString("collectionView:didSelectItemAtIndexPath:"),
+                                       aClass: swizzleClass,
+                                       name: name)
             running = false
         }
     }
@@ -176,34 +165,24 @@ class UITableViewBinding: CodelessBinding {
         
         return infos
     }
-
+    
     override var description: String {
-        return "UITableView Codeless Binding: \(eventName) for \(path)"
+        return "UICollectionView Codeless Binding: \(eventName) for \(path)"
     }
-
+    
     override func isEqual(_ object: Any?) -> Bool {
-        guard let object = object as? UITableViewBinding else {
+        guard let object = object as? UICollectionViewBinding else {
             return false
         }
-
+        
         if object === self {
             return true
         } else {
             return super.isEqual(object)
         }
     }
-
+    
     override var hash: Int {
         return super.hash
     }
 }
-
-
-
-
-
-
-
-
-
-
