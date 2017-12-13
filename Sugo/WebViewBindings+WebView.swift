@@ -100,14 +100,12 @@ extension WebViewBindings {
         guard let webView = view as? WKWebView else {
             return
         }
-        if self.wkWebView != nil && self.wkWebView != webView {
-            self.wkVCPath.removeAll()
-            self.stopWKWebViewBindings(webView: self.wkWebView!)
-        } else if self.wkWebView != nil {
+        if self.wkWebView != nil {
             self.wkVCPath.removeAll()
             self.stopWKWebViewBindings(webView: self.wkWebView!)
             return
         }
+        self.stopWKWebViewBindings(webView: webView)
         if let vc = UIViewController.sugoCurrentUIViewController() {
             self.wkVCPath = NSStringFromClass(vc.classForCoder)
             Logger.debug(message: "view controller name: \(self.wkVCPath)")

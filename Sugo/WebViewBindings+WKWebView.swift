@@ -12,43 +12,38 @@ import WebKit
 extension WebViewBindings: WKScriptMessageHandler {
     
     func startWKWebViewBindings(webView: inout WKWebView) {
-        if !self.wkWebViewJavaScriptInjected {
-            self.wkWebViewCurrentJS = self.wkJavaScript
-            if !webView.configuration.userContentController.userScripts.contains(self.wkWebViewCurrentJS) {
-                webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
-                webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTrack")
-                webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTime")
-                webView.configuration.userContentController.add(self, name: "SugoWKWebViewReporter")
-            }
-            self.wkWebViewJavaScriptInjected = true
-            Logger.debug(message: "WKWebView Injected")
-        }
+        
+        self.wkWebViewCurrentJS = self.wkJavaScript
+        webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
+        webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTrack")
+        webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTime")
+        webView.configuration.userContentController.add(self, name: "SugoWKWebViewReporter")
+        Logger.debug(message: "WKWebView Injected")
     }
     
     func stopWKWebViewBindings(webView: WKWebView) {
-        if self.wkWebViewJavaScriptInjected {
-            webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTrack")
-            webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTime")
-            webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewReporter")
-            self.wkWebViewJavaScriptInjected = false
-            self.wkWebView = nil
-        }
+
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTrack")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTime")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewReporter")
+        self.wkWebView = nil
+
     }
     
     func updateWKWebViewBindings(webView: inout WKWebView) {
-        if self.wkWebViewJavaScriptInjected {
-            var userScripts = webView.configuration.userContentController.userScripts
-            if let index = userScripts.index(of: self.wkWebViewCurrentJS) {
-                userScripts.remove(at: index)
-            }
-            webView.configuration.userContentController.removeAllUserScripts()
-            for userScript in userScripts {
-                webView.configuration.userContentController.addUserScript(userScript)
-            }
-            self.wkWebViewCurrentJS = self.wkJavaScript
-            webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
-            Logger.debug(message: "WKWebView Updated")
+
+        var userScripts = webView.configuration.userContentController.userScripts
+        if let index = userScripts.index(of: self.wkWebViewCurrentJS) {
+            userScripts.remove(at: index)
         }
+        webView.configuration.userContentController.removeAllUserScripts()
+        for userScript in userScripts {
+            webView.configuration.userContentController.addUserScript(userScript)
+        }
+        self.wkWebViewCurrentJS = self.wkJavaScript
+        webView.configuration.userContentController.addUserScript(self.wkWebViewCurrentJS)
+        Logger.debug(message: "WKWebView Updated")
+
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
