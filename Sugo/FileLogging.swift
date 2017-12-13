@@ -13,12 +13,30 @@ class FileLogging: Logging {
     private let fileHandle: FileHandle
 
     init(path: String) {
-        if let handle = FileHandle(forWritingAtPath: path) {
-            fileHandle = handle
+        
+        if let cachesDirectory = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,
+                                                                     FileManager.SearchPathDomainMask.userDomainMask,
+                                                                     true).first {
+            let fileManager = FileManager.default
+            let logPath = cachesDirectory + "/Sugo/" + path
+            
+            if !fileManager.fileExists(atPath: logPath) {
+                do {
+                    try fileManager.createDirectory(atPath: cachesDirectory + "/Sugo/", withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                    
+                }
+                fileManager.createFile(atPath: logPath, contents: nil)
+            }
+            if let handle = FileHandle(forWritingAtPath: logPath) {
+                fileHandle = handle
+            } else {
+                fileHandle = FileHandle.standardError
+            }
         } else {
             fileHandle = FileHandle.standardError
         }
-
+        
         // Move to the end of the file so we can append messages
         fileHandle.seekToEndOfFile()
     }
