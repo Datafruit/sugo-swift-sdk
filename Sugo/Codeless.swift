@@ -14,8 +14,9 @@ class Codeless {
 
     enum BindingType: String {
         case controlBinding = "ui_control"
-        case tableViewBinding = "ui_table_view"
         case textViewBinding = "ui_text_view"
+        case tableViewBinding = "ui_table_view"
+        case collectionViewBinding = "ui_collection_view"
     }
 
     class func createBinding(object: [String: Any]) -> CodelessBinding? {
@@ -27,10 +28,12 @@ class Codeless {
         switch bindingTypeEnum {
         case .controlBinding:
             return UIControlBinding(object: object)
-        case .tableViewBinding:
-            return UITableViewBinding(object: object)
         case .textViewBinding:
             return UITextViewBinding(object: object)
+        case .tableViewBinding:
+            return UITableViewBinding(object: object)
+        case .collectionViewBinding:
+            return UICollectionViewBinding(object: object)
         }
     }
 }

@@ -105,6 +105,7 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
 		A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */; };
 /* End PBXBuildFile section */
 
@@ -209,6 +210,7 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
 		A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirstLoginRequest.swift; path = Sugo/FirstLoginRequest.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -386,8 +388,9 @@
 			children = (
 				14EADCEE1DF65ACA00E6B711 /* CodelessBinding.swift */,
 				14EADD101DF65ACB00E6B711 /* UIControlBinding.swift */,
-				14EADD141DF65ACB00E6B711 /* UITableViewBinding.swift */,
 				141524221E8F41B80072C0DC /* UITextViewBinding.swift */,
+				14EADD141DF65ACB00E6B711 /* UITableViewBinding.swift */,
+				A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */,
 			);
 			name = CommonViewBindings;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				14E1971A1EC073B200E26E9C /* Heats.swift in Sources */,
 				14EADD3D1DF65ACB00E6B711 /* ObjectIdentityProvider.swift in Sources */,
 				14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */,
+				A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */,
 				14EADD231DF65ACB00E6B711 /* BindingMessage.swift in Sources */,
 				14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */,
 				144203F31E4897D80013FFCC /* Reachability.swift in Sources */,

@@ -29,6 +29,7 @@
 		147C471C1E8D189A00C1DF08 /* WebTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */; };
 		147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */; };
 		147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */; };
+		A74C45551FDF872000D91B0F /* UICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C45541FDF872000D91B0F /* UICollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTableViewController.swift; sourceTree = "<group>"; };
 		147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewViewController.swift; sourceTree = "<group>"; };
 		147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewViewController.swift; sourceTree = "<group>"; };
+		A74C45541FDF872000D91B0F /* UICollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +149,9 @@
 			children = (
 				147C47131E8D180900C1DF08 /* NativeTableViewController.swift */,
 				147C47151E8D182900C1DF08 /* UIControlViewController.swift */,
-				146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */,
 				147C47191E8D187300C1DF08 /* UITextViewViewController.swift */,
+				146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */,
+				A74C45541FDF872000D91B0F /* UICollectionViewController.swift */,
 			);
 			name = Native;
 			sourceTree = "<group>";
@@ -190,7 +193,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Sugo;
 				TargetAttributes = {
 					147C00FA1DF67587001FF110 = {
@@ -241,6 +244,7 @@
 				147C47091E8D177700C1DF08 /* HomeTableViewController.swift in Sources */,
 				147C47121E8D17F100C1DF08 /* SwitchModeViewController.swift in Sources */,
 				147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */,
+				A74C45551FDF872000D91B0F /* UICollectionViewController.swift in Sources */,
 				147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */,
 				147C47161E8D182900C1DF08 /* UIControlViewController.swift in Sources */,
 				147C00FF1DF67587001FF110 /* AppDelegate.swift in Sources */,
@@ -289,7 +293,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -297,7 +303,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -340,7 +350,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -348,7 +360,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;

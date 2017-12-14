@@ -12,6 +12,20 @@ import Foundation
 
 extension UIViewController {
     
+    @objc func sugoCollectionViewDidSelectItemAtIndexPath(collectionView: UICollectionView, indexPath: IndexPath) {
+        let originalSelector = NSSelectorFromString("collectionView:didSelectItemAtIndexPath:")
+        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+            let swizzle = Swizzler.swizzles[originalMethod] {
+            typealias SUGOCFunction = @convention(c) (AnyObject, Selector, UICollectionView, IndexPath) -> Void
+            let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+            curriedImplementation(self, originalSelector, collectionView, indexPath)
+            
+            for (_, block) in swizzle.blocks {
+                block(self, swizzle.selector, collectionView, indexPath as AnyObject?)
+            }
+        }
+    }
+    
     @objc func sugoTableViewDidSelectRowAtIndexPath(tableView: UITableView, indexPath: IndexPath) {
         let originalSelector = NSSelectorFromString("tableView:didSelectRowAtIndexPath:")
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
