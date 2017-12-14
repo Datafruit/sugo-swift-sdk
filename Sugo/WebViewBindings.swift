@@ -38,7 +38,6 @@ class WebViewBindings: NSObject {
     lazy var uiWebViewDidFinishLoadBlockName = UUID().uuidString
     
     var wkWebView: WKWebView?
-    lazy var wkWebViewJavaScriptInjected = false
     lazy var wkDidMoveToWindowBlockName = UUID().uuidString
     lazy var wkWebViewCurrentJS = WKUserScript()
     
@@ -93,7 +92,6 @@ class WebViewBindings: NSObject {
         self.uiWebViewDidFinishLoadBlockName.removeAll()
         
         self.wkWebView = nil
-        self.wkWebViewJavaScriptInjected = false
         self.wkDidMoveToWindowBlockName.removeAll()
     }
     
