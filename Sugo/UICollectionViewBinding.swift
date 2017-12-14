@@ -33,7 +33,7 @@ class UICollectionViewBinding: CodelessBinding {
             return nil
         }
         
-        guard let delegate = object["collection_delegate"] as? String, let delegateClass = NSClassFromString(delegate) else {
+        guard let delegate = object["table_delegate"] as? String, let delegateClass = NSClassFromString(delegate) else {
             Logger.warn(message: "binding requires a delegate class")
             return nil
         }
