@@ -114,6 +114,7 @@ class SugoManager {
     init() {
         instances = [String: SugoInstance]()
         Logger.addLogging(PrintLogging())
+        Logger.addLogging(FileLogging(path: "sugo.log"))
     }
 
     func initialize(id projectID: String,
