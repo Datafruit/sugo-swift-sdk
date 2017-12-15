@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name                  = 'sugo-swift-sdk'
-  s.version               = '3.1.0'
+  s.version               = '3.2.0'
   s.license               = 'Apache License, Version 2.0'
   s.summary               = 'Official Sugo Swift SDK for iOS (Swift)'
   s.homepage              = 'https://github.com/Datafruit/sugo-swift-sdk'
