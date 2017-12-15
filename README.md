@@ -170,7 +170,19 @@ Sugo.mainInstance().connectToCodeless(via: url)    // url参数为扫描二维�
 
 ##### UITableView
 
-所有`UITableView`类及其子类，需要指定其`delegate`属性，方可被埋点绑定事件。基于`UITableView`运行原理的特殊性，埋点绑定事件的时候只需要整个圈选，SDK会自动上报`UITableView`被选中的详细位置信息。
+所有`UITableView`类及其子类，需要指定其`delegate`属性，并实现以下方法，方可被埋点绑定事件。基于`UITableView`运行原理的特殊性，埋点绑定事件的时候只需要整个圈选，SDK会自动上报`UITableView`被选中的详细位置信息。
+
+```
+optional func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+```
+
+##### UICollectionView
+
+所有`UICollectionView`类及其子类，需要指定其`delegate`属性，并实现以下方法，方可被埋点绑定事件。基于`UICollectionView`运行原理的特殊性，埋点绑定事件的时候只需要整个圈选，SDK会自动上报`UICollectionView`被选中的详细位置信息。
+
+```
+optional func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+```
 
 #### 2.4.2 UIWebView
 
