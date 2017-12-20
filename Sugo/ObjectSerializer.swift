@@ -36,6 +36,12 @@ class ObjectSerializer: NSObject {
             return
         }
 
+        if let view = object as? UIView {
+            if !view.translatesAutoresizingMaskIntoConstraints {
+                view.translatesAutoresizingMaskIntoConstraints = true
+            }
+        }
+        
         context.addVisitedObject(object)
 
         var propertyValues = [String: AnyObject]()
