@@ -332,6 +332,18 @@ sugo.timeEvent(event_name);	// 在开始统计时长的时候调用
 sugo.track(event_id, event_name, props);	// 准备把自定义事件发送到服务器时
 ```
 
+#### 3.2.5 跟踪用户首次登录
+
+当需要跟踪用户首次登录用户账户时，可调用
+
+* `open func trackFirstLogin(with id: String, dimension: String)`
+
+示例如下(其中`dimension`参数为用户已自定义的维度名)：
+
+```
+Sugo.mainInstance().trackFirstLogin(with: "userId", dimension: "userIdDimension")
+```
+
 ## 4. 反馈
 
 已经成功集成了此SDK了，想了解SDK的最新动态, 请`Star` 或 `Watch` 我们的仓库： [Github](https://github.com/Datafruit/sugo-swift-sdk.git)。
