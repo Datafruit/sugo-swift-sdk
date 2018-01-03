@@ -97,7 +97,7 @@
 		14EADD481DF65ACB00E6B711 /* Swizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD0C1DF65ACB00E6B711 /* Swizzle.swift */; };
 		14EADD491DF65ACB00E6B711 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD0D1DF65ACB00E6B711 /* Track.swift */; };
 		14EADD4B1DF65ACB00E6B711 /* UIColorToNSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD0F1DF65ACB00E6B711 /* UIColorToNSString.swift */; };
-		14EADD4C1DF65ACB00E6B711 /* UIControlBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD101DF65ACB00E6B711 /* UIControlBinding.swift */; };
+		14EADD4C1DF65ACB00E6B711 /* UIViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD101DF65ACB00E6B711 /* UIViewBinding.swift */; };
 		14EADD4D1DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD111DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift */; };
 		14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD121DF65ACB00E6B711 /* UIFontToNSDictionary.swift */; };
 		14EADD4F1DF65ACB00E6B711 /* UIImageToNSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD131DF65ACB00E6B711 /* UIImageToNSDictionary.swift */; };
@@ -202,7 +202,7 @@
 		14EADD0C1DF65ACB00E6B711 /* Swizzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swizzle.swift; sourceTree = "<group>"; };
 		14EADD0D1DF65ACB00E6B711 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		14EADD0F1DF65ACB00E6B711 /* UIColorToNSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorToNSString.swift; sourceTree = "<group>"; };
-		14EADD101DF65ACB00E6B711 /* UIControlBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlBinding.swift; sourceTree = "<group>"; };
+		14EADD101DF65ACB00E6B711 /* UIViewBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewBinding.swift; sourceTree = "<group>"; };
 		14EADD111DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsToNSDictionary.swift; sourceTree = "<group>"; };
 		14EADD121DF65ACB00E6B711 /* UIFontToNSDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontToNSDictionary.swift; sourceTree = "<group>"; };
 		14EADD131DF65ACB00E6B711 /* UIImageToNSDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageToNSDictionary.swift; sourceTree = "<group>"; };
@@ -387,7 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				14EADCEE1DF65ACA00E6B711 /* CodelessBinding.swift */,
-				14EADD101DF65ACB00E6B711 /* UIControlBinding.swift */,
+				14EADD101DF65ACB00E6B711 /* UIViewBinding.swift */,
 				141524221E8F41B80072C0DC /* UITextViewBinding.swift */,
 				14EADD141DF65ACB00E6B711 /* UITableViewBinding.swift */,
 				A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */,
@@ -704,7 +704,7 @@
 				14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */,
 				144203F31E4897D80013FFCC /* Reachability.swift in Sources */,
 				14EADD4B1DF65ACB00E6B711 /* UIColorToNSString.swift in Sources */,
-				14EADD4C1DF65ACB00E6B711 /* UIControlBinding.swift in Sources */,
+				14EADD4C1DF65ACB00E6B711 /* UIViewBinding.swift in Sources */,
 				14EADD291DF65ACB00E6B711 /* ClearMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

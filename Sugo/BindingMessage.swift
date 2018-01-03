@@ -85,10 +85,13 @@ class CodelessBindingCollection {
         for oldBinding in bindings {
             oldBinding.stop()
         }
+        Sugo.mainInstance().decideInstance.codelessInstance.codelessBindings.subtract(bindings)
+        
         bindings = newBindings
         for newBinding in bindings {
             newBinding.execute()
         }
+        Sugo.mainInstance().decideInstance.codelessInstance.codelessBindings.formUnion(bindings)
     }
 
     func cleanup() {

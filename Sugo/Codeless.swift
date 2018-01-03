@@ -13,7 +13,7 @@ class Codeless {
     var codelessBindings = Set<CodelessBinding>()
 
     enum BindingType: String {
-        case controlBinding = "ui_control"
+        case viewBinding = "ui_view"
         case textViewBinding = "ui_text_view"
         case tableViewBinding = "ui_table_view"
         case collectionViewBinding = "ui_collection_view"
@@ -22,12 +22,12 @@ class Codeless {
     class func createBinding(object: [String: Any]) -> CodelessBinding? {
         guard let bindingType = object["event_type"] as? String,
               let bindingTypeEnum = BindingType.init(rawValue: bindingType) else {
-            return UIControlBinding(object: object)
+            return UIViewBinding(object: object)
         }
 
         switch bindingTypeEnum {
-        case .controlBinding:
-            return UIControlBinding(object: object)
+        case .viewBinding:
+            return UIViewBinding(object: object)
         case .textViewBinding:
             return UITextViewBinding(object: object)
         case .tableViewBinding:
