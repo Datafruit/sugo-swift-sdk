@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
     end
 
   spec.subspec 'weex' do |weex|
-    weex.source_files   = 'Sugo/Weex/*.{m,h}'
+    weex.source_files   = 'Sugo/Weex/*.swift'
     weex.dependency 'WeexSDK'
   end
 end
