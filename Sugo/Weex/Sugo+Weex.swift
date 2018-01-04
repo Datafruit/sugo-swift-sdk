@@ -6,7 +6,6 @@
 //  Copyright © 2018年 com.taobao.weex. All rights reserved.
 //
 
-import Sugo
 import WeexSDK
 
 extension SugoInstance {
