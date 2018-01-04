@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   spec.default_subspec       = 'core'
 
   spec.subspec 'core' do |core|
-    core.source_files      = 'Sugo/*.swift'
+    core.source_files      = 'Sugo/*.{h,swift}'
     core.resources         = 'Sugo/*.js', 'Sugo/Sugo*.plist'
     core.frameworks        = 'UIKit', 'Foundation', 'CoreTelephony', 'SystemConfiguration', 'WebKit', 'JavaScriptCore'
     end
