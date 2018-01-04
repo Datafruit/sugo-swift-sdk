@@ -8,6 +8,7 @@
 
 #import "SugoWeexModule.h"
 
+#pragma clang diagnostic ignored "-Wundeclared-selector"
 @implementation SugoWeexModule
 
     @synthesize weexInstance;
@@ -23,3 +24,4 @@
     WX_EXPORT_METHOD_SYNC(@selector(logout))
     
 @end
+#pragma clang diagnostic pop
