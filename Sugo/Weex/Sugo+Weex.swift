@@ -9,7 +9,7 @@
 import Sugo
 import WeexSDK
 
-public extension SugoInstance {
+extension SugoInstance {
     
     public func registerModule() {
         WXSDKEngine.registerModule("sugo", with: NSClassFromString("SugoWeexModule"))
