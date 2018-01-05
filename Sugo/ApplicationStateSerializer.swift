@@ -46,16 +46,16 @@ class ApplicationStateSerializer {
         }
         return image
     }
-
-    func getWindow(at index: Int) -> UIWindow? {
-        return application.windows[index]
-    }
-
+    
     func getObjectHierarchyForKeyWindow() -> [String: AnyObject] {
         if let window = application.keyWindow {
             return serializer.getSerializedObjects(rootObject: window)
         }
         return [:]
+    }
+
+    func getWindow(at index: Int) -> UIWindow? {
+        return application.windows[index]
     }
     
     func getObjectHierarchyForWindow(at index: Int) -> [String: AnyObject] {
