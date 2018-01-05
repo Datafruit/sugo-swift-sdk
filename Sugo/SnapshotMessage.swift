@@ -64,7 +64,7 @@ class SnapshotRequest: BaseWebSocketMessage {
             var serializedObjects: [String: AnyObject]!
             
             DispatchQueue.main.sync {
-                screenshot = serializer.getScreenshotForWindow(at: 0)
+                screenshot = serializer.getScreenshotForKeyWindow()
             }
             response.screenshot = screenshot
 
