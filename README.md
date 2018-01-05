@@ -33,6 +33,12 @@
 pod 'sugo-swift-sdk'
 ```
 
+若需要支持**Weex**的可视化埋点功能，请**替代**使用
+
+```
+pod 'sugo-swift-sdk/weex'
+```
+
 #### 1.1.2 执行集成命令
 
 关闭Xcode，并在`Podfile`目录下执行以下命令：
@@ -92,9 +98,10 @@ func initSugo() {
     let id: String = "Add_Your_Project_ID_Here"
     let token: String = "Add_Your_App_Token_Here"
     Sugo.initialize(id: id, token: token)
-    Sugo.mainInstance().loggingEnabled = true    // 如果需要查看SDK的Log，请设置为true
-    Sugo.mainInstance().flushInterval = 5    // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
-    Sugo.mainInstance().cacheInterval = 60    // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
+    Sugo.mainInstance().loggingEnabled = true   // 如果需要查看SDK的Log，请设置为true
+    Sugo.mainInstance().flushInterval = 5       // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
+    Sugo.mainInstance().cacheInterval = 60      // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
+    // Sugo.mainInstance().registerModule()     // 需要支持Weex可视化埋点时调用
 }
 ```
 #### 2.2.3 调用SDK对象初始化代码
@@ -163,10 +170,18 @@ Sugo.mainInstance().connectToCodeless(via: url)    // url参数为扫描二维�
 
 **对于所有`UIView`，都有一个`String?`类型的`sugoViewId`属性，可以用于唯一指定容易混淆的可视化埋点视图，推荐初始化时设置使用**
 
+可以通过如下方式设置：
 
-##### UIControl
+```
+view.sugoViewId = "CustomStringValue"
+```
 
-所有`UIControl`类及其子类，皆可被埋点绑定事件。
+##### UIView
+
+满足以下条件的`UIView`及其子类可以被可视化埋点绑定事件：
+
+* `userInteractionEnabled`属性为`true`，且是`UIControl`或其子类
+* `userInteractionEnabled`属性为`true`，且`gestureRecognizers`数组属性中包含`UITapGestureRecognizer`或其子类的手势实例，且其`enabled`属性为`true`
 
 ##### UITableView
 
@@ -323,16 +338,7 @@ Sugo.mainInstance().unregisterSuperProperty("key")
 Sugo.mainInstance().clearSuperProperties()
 ```
 
-#### 3.2.4 WebView埋点
-
-当需要在WebView(UIWebView或WKWebView)中进行代码埋点时，在页面加载完毕后，可调用以下API(是`3.2.1`与`3.2.2`同名方法在JavaScript中的接口，实现机制相同)进行JavaScript内容的代码埋点
-
-```
-sugo.timeEvent(event_name);	// 在开始统计时长的时候调用
-sugo.track(event_id, event_name, props);	// 准备把自定义事件发送到服务器时
-```
-
-#### 3.2.5 跟踪用户首次登录
+#### 3.2.3.5 跟踪用户首次登录
 
 当需要跟踪用户首次登录用户账户时，可调用
 
@@ -342,6 +348,25 @@ sugo.track(event_id, event_name, props);	// 准备把自定义事件发送到服
 
 ```
 Sugo.mainInstance().trackFirstLogin(with: "userId", dimension: "userIdDimension")
+```
+
+#### 3.2.4 WebView埋点
+
+当需要在WebView(UIWebView或WKWebView)中进行代码埋点时，在页面加载完毕后，可调用以下API(是`3.2.1`与`3.2.2`同名方法在JavaScript中的接口，实现机制相同)进行JavaScript内容的代码埋点
+
+```
+sugo.track(event_id, event_name, props);    // 准备把自定义事件发送到服务器时
+sugo.timeEvent(event_name);	                // 在开始统计时长的时候调用
+```
+
+#### 3.2.5 Weex埋点
+
+当需要在Weex(Vue)中进行代码埋点时，可调用以下API(是`3.2.1`与`3.2.2`同名方法在Weex中的接口，实现机制相同)进行JavaScript的代码埋点
+
+```
+let sugo = weex.requireModule('sugo');
+sugo.track(event_name, props);              // 准备把自定义事件发送到服务器时
+sugo.timeEvent(event_name);                 // 在开始统计时长的时候调用
 ```
 
 ## 4. 反馈
