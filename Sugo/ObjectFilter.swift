@@ -35,7 +35,10 @@ class ObjectFilter: CustomStringConvertible {
             for view in views {
                 var children = getChildren(of: view, searchClass: currentClass)
                 if let index = index, index < children.count {
-                    if view.isKind(of: UIView.self) {
+                    if (view.isKind(of: UIView.self))
+                        || (view.isKind(of: UIViewController.self)
+                        && !view.isKind(of: UINavigationController.self)
+                        && !view.isKind(of: UITabBarController.self)) {
                         children = [children[index]]
                     } else {
                         children = []
