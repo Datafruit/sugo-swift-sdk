@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Sugo
 import WeexSDK
 
 public extension SugoWeexModule {
