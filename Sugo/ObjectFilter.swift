@@ -142,8 +142,17 @@ class ObjectFilter: CustomStringConvertible {
             }
         } else if let viewController = object as? UIViewController {
             
-            if viewController is UINavigationController || viewController is UITabBarController {
-                result.append(UIViewController.sugoCurrentUIViewController()!)
+            if let nvc = viewController as? UINavigationController {
+                for vc in nvc.viewControllers {
+                    result.append(vc)
+                }
+            }
+            
+            if let tbc = viewController as? UITabBarController,
+                let tbcvcs = tbc.viewControllers {
+                for vc in tbcvcs {
+                    result.append(vc)
+                }
             }
             
             if let nvc = viewController.navigationController {
@@ -179,7 +188,7 @@ class ObjectFilter: CustomStringConvertible {
             children.append(rootVC)
         } else if let view = object as? UIView {
             for subview in view.subviews {
-                if searchClass == nil || subview.isKind(of: searchClass!) {
+                if searchClass == nil || subview.isMember(of: searchClass!) {
                     children.append(subview)
                 }
             }
