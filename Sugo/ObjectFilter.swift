@@ -142,14 +142,16 @@ class ObjectFilter: CustomStringConvertible {
             }
         } else if let viewController = object as? UIViewController {
             
-            if let nvc = viewController as? UINavigationController {
+            if let nvc = viewController as? UINavigationController,
+                nvc.viewControllers.count > 0 {
                 for vc in nvc.viewControllers {
                     result.append(vc)
                 }
             }
             
             if let tbc = viewController as? UITabBarController,
-                let tbcvcs = tbc.viewControllers {
+                let tbcvcs = tbc.viewControllers,
+                tbcvcs.count > 0 {
                 for vc in tbcvcs {
                     result.append(vc)
                 }
