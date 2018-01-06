@@ -22,11 +22,7 @@ class UIViewBinding: CodelessBinding {
         } else {
             self.controlEvent = UIControlEvents(rawValue: 0)
         }
-        if let verifyEvent = verifyEvent {
-            self.verifyEvent = verifyEvent
-        } else {
-            self.verifyEvent = UIControlEvents(rawValue: 0)
-        }
+        self.verifyEvent = self.controlEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         self.appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
