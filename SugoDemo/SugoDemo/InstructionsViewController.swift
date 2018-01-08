@@ -30,8 +30,7 @@ class InstructionsViewController: UIViewController, UIWebViewDelegate {
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         print("\(#function)")
-        return Sugo.mainInstance().webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
-
+        return true
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {

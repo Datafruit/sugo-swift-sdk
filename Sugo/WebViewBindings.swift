@@ -34,6 +34,7 @@ class WebViewBindings: NSObject {
     lazy var uiWebViewSwizzleRunning = false
     lazy var uiWebViewJavaScriptInjected = false
     lazy var uiDidMoveToWindowBlockName = UUID().uuidString
+    lazy var uiWebViewShouldStartLoadBlockName = UUID().uuidString
     lazy var uiWebViewDidStartLoadBlockName = UUID().uuidString
     lazy var uiWebViewDidFinishLoadBlockName = UUID().uuidString
     
@@ -118,10 +119,6 @@ class WebViewBindings: NSObject {
             self.stringHeats = string
             self.isHeatMapModeOn = mode
         }
-    }
-    
-    func npi(with webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        return self.webView(webView, shouldStartLoadWith: request, navigationType:navigationType)
     }
     
 }

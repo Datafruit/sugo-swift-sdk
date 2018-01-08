@@ -826,11 +826,6 @@ extension SugoInstance {
             self.trackInstance.clearTimedEvents(&self.timedEvents)
         }
     }
-
-    open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        
-        return WebViewBindings.global.npi(with:webView, shouldStartLoadWith: request, navigationType: navigationType)
-    }
     
     /**
      Returns the currently set super properties.

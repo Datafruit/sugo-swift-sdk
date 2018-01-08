@@ -14,6 +14,12 @@ extension WebViewBindings {
     func startUIWebViewBindings(webView: inout UIWebView) {
         if !self.uiWebViewSwizzleRunning {
             if let delegate = webView.delegate {
+                Swizzler.swizzleSelector(#selector(delegate.webView(_:shouldStartLoadWith:navigationType:)),
+                                         withSelector: #selector(UIWebView.sugoWebViewShouldStartLoad(_:shouldStartLoadWith:navigationType:)),
+                                         for: type(of: delegate),
+                                         and: UIWebView.self,
+                                         name: self.uiWebViewShouldStartLoadBlockName,
+                                         block: self.webViewShouldStartLoad)
                 Swizzler.swizzleSelector(#selector(delegate.webViewDidStartLoad(_:)),
                                          withSelector: #selector(UIWebView.sugoWebViewDidStartLoad(_:)),
                                          for: type(of: delegate),
@@ -106,8 +112,13 @@ extension WebViewBindings {
         }
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webViewShouldStartLoad(view: AnyObject?, command: Selector, webView: AnyObject?, sugoUrlRequest: AnyObject?) {
         
+        guard let webView = webView as? UIWebView,
+            let sugoUrlRequest = sugoUrlRequest as? SugoURLRequestObject else {
+                return
+        }
+        let request = sugoUrlRequest.urlRequest
         var shouldStartLoad = true
         if let url = request.url {
             Logger.debug(message: "request: \(url.absoluteString)")
@@ -137,14 +148,39 @@ extension WebViewBindings {
         if shouldStartLoad && webView.window != nil {
             trackStayEvent(of: webView)
         }
-        
-        return shouldStartLoad
+    }
+    
+}
+
+class SugoURLRequestObject: NSObject {
+    
+    var urlRequest: URLRequest
+    
+    init(request: URLRequest) {
+        urlRequest = request
+        super.init()
     }
     
 }
 
 extension UIWebView {
     
+    @objc func sugoWebViewShouldStartLoad(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        var returnValue = true
+        if let delegate = webView.delegate {
+            let originalSelector = #selector(delegate.webView(_:shouldStartLoadWith:navigationType:))
+            if let originalMethod = class_getInstanceMethod(type(of: delegate), originalSelector),
+                let swizzle = Swizzler.swizzles[originalMethod] {
+                for (_, block) in swizzle.blocks {
+                    block(self, swizzle.selector, webView, SugoURLRequestObject(request: request))
+                }
+                typealias SUGOCFunction = @convention(c) (AnyObject, Selector, UIWebView, URLRequest, UIWebViewNavigationType) -> Bool
+                let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
+                returnValue = curriedImplementation(self, originalSelector, webView, request, navigationType)
+            }
+        }
+        return returnValue
+    }
     @objc func sugoWebViewDidStartLoad(_ webView: UIWebView) {
         if let delegate = webView.delegate {
             let originalSelector = #selector(delegate.webViewDidStartLoad(_:))
