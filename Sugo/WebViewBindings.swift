@@ -89,6 +89,7 @@ class WebViewBindings: NSObject {
         self.uiWebViewSwizzleRunning = false
         self.uiWebViewJavaScriptInjected = false
         self.uiDidMoveToWindowBlockName.removeAll()
+        self.uiWebViewShouldStartLoadBlockName.removeAll()
         self.uiWebViewDidStartLoadBlockName.removeAll()
         self.uiWebViewDidFinishLoadBlockName.removeAll()
         
