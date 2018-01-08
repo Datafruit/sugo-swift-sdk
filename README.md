@@ -207,15 +207,6 @@ optional func collectionView(_ collectionView: UICollectionView, didSelectItemAt
 * `optional public func webViewDidStartLoad(_ webView: UIWebView)`
 * `optional public func webViewDidFinishLoad(_ webView: UIWebView)`
 
-其中，`optional func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool`内需指定返回值（若有类似功能的实现，请确保SDK的返回值优先级最低，在此方法最后调用即可），例子如下：
-
-```
-	func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-
-        return Sugo.mainInstance().webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
-	}
-```
-
 #### 2.4.3 WKWebView
 
 所有`WKWebView`类及其子类下的网页元素，皆可被埋点绑定事件。
