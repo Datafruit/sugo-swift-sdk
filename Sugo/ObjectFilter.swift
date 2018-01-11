@@ -35,7 +35,10 @@ class ObjectFilter: CustomStringConvertible {
             for view in views {
                 var children = getChildren(of: view, searchClass: currentClass)
                 if let index = index, index < children.count {
-                    if view.isKind(of: UIView.self) {
+                    if (view.isKind(of: UIView.self))
+                        || (view.isKind(of: UIViewController.self)
+                        && !view.isKind(of: UINavigationController.self)
+                        && !view.isKind(of: UITabBarController.self)) {
                         children = [children[index]]
                     } else {
                         children = []
@@ -139,8 +142,19 @@ class ObjectFilter: CustomStringConvertible {
             }
         } else if let viewController = object as? UIViewController {
             
-            if viewController is UINavigationController || viewController is UITabBarController {
-                result.append(UIViewController.sugoCurrentUIViewController()!)
+            if let nvc = viewController as? UINavigationController,
+                nvc.viewControllers.count > 0 {
+                for vc in nvc.viewControllers {
+                    result.append(vc)
+                }
+            }
+            
+            if let tbc = viewController as? UITabBarController,
+                let tbcvcs = tbc.viewControllers,
+                tbcvcs.count > 0 {
+                for vc in tbcvcs {
+                    result.append(vc)
+                }
             }
             
             if let nvc = viewController.navigationController {
@@ -176,7 +190,7 @@ class ObjectFilter: CustomStringConvertible {
             children.append(rootVC)
         } else if let view = object as? UIView {
             for subview in view.subviews {
-                if searchClass == nil || subview.isKind(of: searchClass!) {
+                if searchClass == nil || subview.isMember(of: searchClass!) {
                     children.append(subview)
                 }
             }

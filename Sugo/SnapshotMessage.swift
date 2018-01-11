@@ -64,14 +64,14 @@ class SnapshotRequest: BaseWebSocketMessage {
             var serializedObjects: [String: AnyObject]!
             
             DispatchQueue.main.sync {
-                screenshot = serializer.getScreenshotForWindow(at: 0)
+                screenshot = serializer.getScreenshotForKeyWindow()
             }
             response.screenshot = screenshot
 
             if imageHash == response.imageHash {
                 if WebViewInfoStorage.global.hasNewFrame {
                     DispatchQueue.main.sync {
-                        serializedObjects = serializer.getObjectHierarchyForWindow(at: 0)
+                        serializedObjects = serializer.getObjectHierarchyForKeyWindow()
                     }
                     connection.setSessionObjectSynchronized(with: serializedObjects, for: "snapshot_hierarchy")
                     if WebViewInfoStorage.global.hasNewFrame {
@@ -82,7 +82,7 @@ class SnapshotRequest: BaseWebSocketMessage {
                 }
             } else {
                 DispatchQueue.main.sync {
-                    serializedObjects = serializer.getObjectHierarchyForWindow(at: 0)
+                    serializedObjects = serializer.getObjectHierarchyForKeyWindow()
                 }
                 connection.setSessionObjectSynchronized(with: serializedObjects, for: "snapshot_hierarchy")
             }

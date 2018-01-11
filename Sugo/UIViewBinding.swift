@@ -1,5 +1,5 @@
 //
-//  UIControlBinding.swift
+//  UIViewBinding.swift
 //  Sugo
 //
 //  Created by Yarden Eitan on 8/24/16.
@@ -9,20 +9,24 @@
 import Foundation
 import UIKit
 
-class UIControlBinding: CodelessBinding {
+class UIViewBinding: CodelessBinding {
 
     let controlEvent: UIControlEvents
     let verifyEvent: UIControlEvents
     var verified: NSHashTable<UIControl>
-    var appliedTo: NSHashTable<UIControl>
+    var appliedTo: NSHashTable<UIView>
 
-    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents, verifyEvent: UIControlEvents, attributes: Attributes? = nil) {
-        self.controlEvent = controlEvent
-        self.verifyEvent = verifyEvent
+    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents? = nil, verifyEvent: UIControlEvents? = nil, attributes: Attributes? = nil) {
+        if let controlEvent = controlEvent {
+            self.controlEvent = controlEvent
+        } else {
+            self.controlEvent = UIControlEvents(rawValue: 0)
+        }
+        self.verifyEvent = self.controlEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         self.appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
-        self.swizzleClass = UIControl.self
+        self.swizzleClass = UIView.self
     }
 
     convenience init?(object: [String: Any]) {
@@ -41,38 +45,30 @@ class UIControlBinding: CodelessBinding {
             return nil
         }
 
-        guard let controlEvent = object["control_event"] as? UInt, controlEvent & UIControlEvents.allEvents.rawValue != 0 else {
-            Logger.warn(message: "must supply a valid UIControlEvents value for control_event")
-            return nil
+        var finalControlEvent: UIControlEvents?
+        var finalVerifyEvent: UIControlEvents?
+        if let controlEvent = object["control_event"] as? UInt, controlEvent & UIControlEvents.allEvents.rawValue != 0 {
+            finalControlEvent = UIControlEvents(rawValue: controlEvent)
+            if let verifyEvent = object["verify_event"] as? UInt, verifyEvent & UIControlEvents.allEvents.rawValue != 0 {
+                finalVerifyEvent = UIControlEvents(rawValue: verifyEvent)
+            } else if controlEvent & UIControlEvents.allTouchEvents.rawValue != 0 {
+                finalVerifyEvent = UIControlEvents.touchDown
+            } else if controlEvent & UIControlEvents.allEditingEvents.rawValue != 0 {
+                finalVerifyEvent = UIControlEvents.editingDidBegin
+            }
         }
 
-        var finalVerifyEvent: UIControlEvents
-        if let verifyEvent = object["verify_event"] as? UInt, verifyEvent & UIControlEvents.allEvents.rawValue != 0 {
-            finalVerifyEvent = UIControlEvents(rawValue: verifyEvent)
-        } else if controlEvent & UIControlEvents.allTouchEvents.rawValue != 0 {
-            finalVerifyEvent = UIControlEvents.touchDown
-        } else if controlEvent & UIControlEvents.allEditingEvents.rawValue != 0 {
-            finalVerifyEvent = UIControlEvents.editingDidBegin
-        } else {
-            Logger.warn(message: "wasn't able to fetch a valid verify event")
-            return nil
+        var finalAttributes: Attributes?
+        if let attributes = object["attributes"] as? InternalProperties {
+            finalAttributes = Attributes(attributes: attributes)
         }
         
-        if let attributes = object["attributes"] as? InternalProperties {
-            let attr = Attributes(attributes: attributes)
-            self.init(eventID: eventID,
-                      eventName: eventName,
-                      path: path,
-                      controlEvent: UIControlEvents(rawValue: controlEvent),
-                      verifyEvent: finalVerifyEvent,
-                      attributes: attr)
-        } else {
-            self.init(eventID: eventID,
-                      eventName: eventName,
-                      path: path,
-                      controlEvent: UIControlEvents(rawValue: controlEvent),
-                      verifyEvent: finalVerifyEvent)
-        }
+        self.init(eventID: eventID,
+                  eventName: eventName,
+                  path: path,
+                  controlEvent: finalControlEvent,
+                  verifyEvent: finalVerifyEvent,
+                  attributes: finalAttributes)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -91,7 +87,7 @@ class UIControlBinding: CodelessBinding {
 
 
     override func isEqual(_ object: Any?) -> Bool {
-        guard let object = object as? UIControlBinding else {
+        guard let object = object as? UIViewBinding else {
             return false
         }
 
@@ -107,10 +103,10 @@ class UIControlBinding: CodelessBinding {
     }
 
     override var description: String {
-        return "UIControl Codeless Binding: \(eventName) for \(path)"
+        return "UIView Codeless Binding: \(eventName) for \(path)"
     }
 
-    func resetUIControlStore() {
+    func resetUIViewStore() {
         verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
     }
@@ -121,7 +117,7 @@ class UIControlBinding: CodelessBinding {
             let executeBlock = {
                 (view: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
                 if let root = UIApplication.shared.keyWindow {
-                    if let view = view as? UIControl, self.appliedTo.contains(view) {
+                    if let view = view as? UIView, self.appliedTo.contains(view) {
                         if !self.path.isSelected(leaf: view, from: root, isFuzzy: true) {
                             if Sugo.mainInstance().heatMap.mode {
                                 Sugo.mainInstance().heatMap.wipeObjectOfPath(path: self.path.string)
@@ -130,24 +126,36 @@ class UIControlBinding: CodelessBinding {
                             self.appliedTo.remove(view)
                         }
                     } else {
-                        var objects: [UIControl]
+                        var objects: [UIView]
                         // select targets based off path
-                        if let view = view as? UIControl {
+                        if let view = view as? UIView {
                             if self.path.isSelected(leaf: view, from: root, isFuzzy: true) {
                                 objects = [view]
                             } else {
                                 objects = []
                             }
                         } else {
-                            objects = self.path.selectFrom(root: root) as! [UIControl]
+                            objects = self.path.selectFrom(root: root) as! [UIView]
                         }
 
-                        for control in objects {
-                            if self.verifyEvent != UIControlEvents(rawValue:0) && self.verifyEvent != self.controlEvent {
-                                control.addTarget(self, action: #selector(self.preVerify(sender:event:)), for: self.verifyEvent)
+                        for view in objects {
+                            if let view = view as? UIControl {
+                                if self.verifyEvent != UIControlEvents(rawValue:0) && self.verifyEvent != self.controlEvent {
+                                    view.addTarget(self, action: #selector(self.preVerify(sender:event:)), for: self.verifyEvent)
+                                }
+                                view.addTarget(self, action: #selector(self.execute(sender:event:)), for: self.controlEvent)
+                            } else if view.isUserInteractionEnabled
+                                && view.gestureRecognizers != nil
+                                && view.gestureRecognizers!.count > 0 {
+                                for gestureRecognizer in view.gestureRecognizers! {
+                                    if !(gestureRecognizer is UITapGestureRecognizer) || !gestureRecognizer.isEnabled {
+                                        continue
+                                    }
+                                    gestureRecognizer.addTarget(self, action: #selector(self.handleGesture(_:)))
+                                    break;
+                                }
                             }
-                            control.addTarget(self, action: #selector(self.execute(sender:event:)), for: self.controlEvent)
-                            self.appliedTo.add(control)
+                            self.appliedTo.add(view)
                         }
                         if Sugo.mainInstance().heatMap.mode {
                             Sugo.mainInstance().heatMap.renderObjectOfPath(path: self.path.string, root: root)
@@ -172,6 +180,33 @@ class UIControlBinding: CodelessBinding {
             running = true
         }
     }
+    
+    @objc func handleGesture(_ sender: UIGestureRecognizer) {
+        var p = Properties()
+        if let a = self.attributes {
+            p += a.parse()
+        }
+        let keys = SugoDimensions.keys
+        let values = SugoDimensions.values
+        if let vc = UIViewController.sugoCurrentUIViewController() {
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder) {
+                    p[keys["PageName"]!] = infoPage
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
+                    break
+                }
+            }
+        }
+        p[keys["EventType"]!] = values["click"]!
+        self.track(eventID: self.eventID,
+                   eventName: self.eventName,
+                   properties: p)
+
+    }
 
     override func stop() {
         if running {
@@ -184,19 +219,31 @@ class UIControlBinding: CodelessBinding {
                                        name: name)
 
             // remove target-action pairs
-            for control in appliedTo.allObjects {
-                stopOn(view: control)
+            for view in appliedTo.allObjects {
+                stopOn(view: view)
             }
-            resetUIControlStore()
+            resetUIViewStore()
             running = false
         }
     }
 
-    func stopOn(view: UIControl) {
-        if verifyEvent != UIControlEvents(rawValue: 0) && verifyEvent != controlEvent {
-            view.removeTarget(self, action: #selector(self.preVerify(sender:event:)), for: verifyEvent)
+    func stopOn(view: UIView) {
+        if let view = view as? UIControl {
+            if verifyEvent != UIControlEvents(rawValue: 0) && verifyEvent != controlEvent {
+                view.removeTarget(self, action: #selector(self.preVerify(sender:event:)), for: verifyEvent)
+            }
+            view.removeTarget(self, action: #selector(self.execute(sender:event:)), for: controlEvent)
+        } else if view.isUserInteractionEnabled
+            && view.gestureRecognizers != nil
+            && view.gestureRecognizers!.count > 0 {
+            for gestureRecognizer in view.gestureRecognizers! {
+                if !(gestureRecognizer is UITapGestureRecognizer) || !gestureRecognizer.isEnabled {
+                    continue
+                }
+                gestureRecognizer.removeTarget(self, action: #selector(self.handleGesture(_:)))
+                break;
+            }
         }
-        view.removeTarget(self, action: #selector(self.execute(sender:event:)), for: controlEvent)
     }
 
     func verifyControlMatchesPath(_ control: AnyObject) -> Bool {
