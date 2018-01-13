@@ -37,8 +37,6 @@ class ObjectFilter: CustomStringConvertible {
                 if let index = index, index < children.count {
                     if view.isKind(of: UIView.self) {
                         children = [children[index]]
-                    } else {
-                        children = []
                     }
                 }
                 result += children
