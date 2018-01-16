@@ -35,13 +35,8 @@ class ObjectFilter: CustomStringConvertible {
             for view in views {
                 var children = getChildren(of: view, searchClass: currentClass)
                 if let index = index, index < children.count {
-                    if (view.isKind(of: UIView.self))
-                        || (view.isKind(of: UIViewController.self)
-                        && !view.isKind(of: UINavigationController.self)
-                        && !view.isKind(of: UITabBarController.self)) {
+                    if view.isKind(of: UIView.self) {
                         children = [children[index]]
-                    } else {
-                        children = []
                     }
                 }
                 result += children
@@ -202,13 +197,15 @@ class ObjectFilter: CustomStringConvertible {
                     children.append(visibleViewController)
                 } else if let topViewController = navigationController.topViewController {
                     children.append(topViewController)
-                } else if let childViewController = navigationController.childViewControllers.last {
+                } else if let childViewController = navigationController.viewControllers.last {
                     children.append(childViewController)
                 }
             } else if let tabBarController = viewController as? UITabBarController {
                 // UITabBarController
                 if let selectedViewController = tabBarController.selectedViewController {
                     children.append(selectedViewController)
+                } else if let childViewController = tabBarController.viewControllers?.last {
+                    children.append(childViewController)
                 }
             } else {
                 // UINavigationController
@@ -227,10 +224,10 @@ class ObjectFilter: CustomStringConvertible {
                         children.append(child)
                     }
                 }
-                if let presentedVC = viewController.presentedViewController,
-                    (searchClass == nil || presentedVC.isKind(of: searchClass!)) {
-                    children.append(presentedVC)
-                }
+            }
+            if let presentedVC = viewController.presentedViewController,
+                (searchClass == nil || presentedVC.isKind(of: searchClass!)) {
+                children.append(presentedVC)
             }
             if viewController.isViewLoaded && (searchClass == nil || viewController.view.isKind(of: searchClass!)) {
                 children.append(viewController.view)
