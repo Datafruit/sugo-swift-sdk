@@ -35,7 +35,8 @@ class DeviceInfoRequest: BaseWebSocketMessage {
                                                           libVersion: AutomaticProperties.libVersion(),
                                                           availableFontFamilies: self.availableFontFamilies(),
                                                           mainBundleIdentifier: Bundle.main.bundleIdentifier,
-                                                          urlSchemesKeyValue: Sugo.mainInstance().urlCodelessSecretKey)
+                                                          urlSchemesKeyValue: Sugo.mainInstance().urlCodelessSecretKey,
+                                                          trackingVersion: "1")
                 response = DeviceInfoResponse(infoResponseInput)
             }
             connection.send(message: response)
@@ -83,6 +84,7 @@ struct InfoResponseInput {
     let availableFontFamilies: [[String: Any]]
     let mainBundleIdentifier: String?
     let urlSchemesKeyValue: String?
+    let trackingVersion: String
 }
 
 class DeviceInfoResponse: BaseWebSocketMessage {
@@ -94,6 +96,7 @@ class DeviceInfoResponse: BaseWebSocketMessage {
         payload["device_model"] = infoResponse.deviceModel as AnyObject
         payload["available_font_families"] = infoResponse.availableFontFamilies as AnyObject
         payload["lib_language"] = infoResponse.libLanguage as AnyObject
+        payload["tracking_version"] = infoResponse.trackingVersion as AnyObject
 
         if let appVersion = infoResponse.appVersion {
             payload["app_version"] = appVersion as AnyObject
