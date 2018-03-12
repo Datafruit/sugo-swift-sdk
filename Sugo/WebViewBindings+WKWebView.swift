@@ -84,12 +84,9 @@ extension WebViewBindings: WKScriptMessageHandler {
                         let path = body["path"] as? String,
                         let clientWidth = body["clientWidth"] as? Int,
                         let clientHeight = body["clientHeight"] as? Int,
+                        let viewportContent = body["viewportContent"] as? String,
                         let nodes = body["nodes"] as? String {
-                        WebViewInfoStorage.global.setHTMLInfo(withTitle: title,
-                                                              path: path,
-                                                              width: "\(clientWidth)",
-                            height: "\(clientHeight)",
-                            nodes: nodes)
+                        WebViewInfoStorage.global.setHTMLInfo(withTitle: title, path: path, width: "\(clientWidth)", height: "\(clientHeight)", viewportContent: viewportContent, nodes: nodes)
                     }
                 }
                 

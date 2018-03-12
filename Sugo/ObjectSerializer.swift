@@ -206,8 +206,9 @@ extension ObjectSerializer {
             let path = event!["path"] as? String,
             let width = event!["clientWidth"] as? Int,
             let height = event!["clientHeight"] as? Int,
+            let viewportContent = event!["viewportContent"] as? String,
             let nodes = event!["nodes"] as? String {
-            storage.setHTMLInfo(withTitle: title, path: path, width: "\(width)", height: "\(height)", nodes: nodes)
+            storage.setHTMLInfo(withTitle: title, path: path, width: "\(width)", height: "\(height)", viewportContent: viewportContent, nodes: nodes)
             eventString.removeAll()
             eventData.removeAll()
             event?.removeAll()
