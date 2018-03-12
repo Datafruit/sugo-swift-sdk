@@ -182,30 +182,37 @@ class UIViewBinding: CodelessBinding {
     }
     
     @objc func handleGesture(_ sender: UIGestureRecognizer) {
-        var p = Properties()
-        if let a = self.attributes {
-            p += a.parse()
+        
+        guard let view = sender.view else {
+            return
         }
-        let keys = SugoDimensions.keys
-        let values = SugoDimensions.values
-        if let vc = UIViewController.sugoCurrentUIViewController() {
-            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
-            for info in SugoPageInfos.global.infos {
-                if let infoPage = info["page"] as? String,
-                    infoPage == NSStringFromClass(vc.classForCoder) {
-                    p[keys["PageName"]!] = infoPage
-                    if let infoPageCategory = info["page_category"] as? String {
-                        p[keys["PageCategory"]!] = infoPageCategory;
+        var shouldTrack = false
+        shouldTrack = verifyControlMatchesPath(view)
+        if shouldTrack {
+            var p = Properties()
+            if let a = self.attributes {
+                p += a.parse()
+            }
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            if let vc = UIViewController.sugoCurrentUIViewController() {
+                p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+                for info in SugoPageInfos.global.infos {
+                    if let infoPage = info["page"] as? String,
+                        infoPage == NSStringFromClass(vc.classForCoder) {
+                        p[keys["PageName"]!] = infoPage
+                        if let infoPageCategory = info["page_category"] as? String {
+                            p[keys["PageCategory"]!] = infoPageCategory;
+                        }
+                        break
                     }
-                    break
                 }
             }
+            p[keys["EventType"]!] = values["click"]!
+            self.track(eventID: self.eventID,
+                       eventName: self.eventName,
+                       properties: p)
         }
-        p[keys["EventType"]!] = values["click"]!
-        self.track(eventID: self.eventID,
-                   eventName: self.eventName,
-                   properties: p)
-
     }
 
     override func stop() {
