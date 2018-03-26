@@ -10,7 +10,7 @@ import Foundation
 
 
 struct QueueConstants {
-    static var queueSize = 500
+    static var queueSize = 5000
 }
 
 struct APIConstants {

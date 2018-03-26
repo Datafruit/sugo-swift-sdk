@@ -160,6 +160,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
 
     #endif
     
+    var enable = true
     var sessionID = ""
     var projectId = ""
     var apiToken = ""
@@ -177,7 +178,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     let heatMap = HeatMap(data: Data())
     let reachability = Reachability()!
 
-    init(projectID: String?,
+    init(isEnable: Bool? = true,
+         projectID: String?,
          apiToken: String?,
          launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
          flushInterval: Double,
@@ -191,6 +193,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             self.apiToken = apiToken
         }
         
+        enable = isEnable!
         trackInstance = Track(apiToken: self.apiToken)
         flushInstance.delegate = self
         cacheInstance.delegate = self
@@ -588,6 +591,10 @@ extension SugoInstance {
      - important: You do not need to call this method.**
      */
     open func archive() {
+        
+        guard self.enable else {
+            return
+        }
         let properties = ArchivedProperties(superProperties: superProperties,
                                             timedEvents: timedEvents,
                                             distinctId: distinctId)
@@ -653,6 +660,9 @@ extension SugoInstance {
      */
     open func flush(completion: (() -> Void)? = nil) {
         
+        guard self.enable else {
+            return
+        }
         guard self.decideInstance.webSocketWrapper == nil
             || !self.decideInstance.webSocketWrapper!.connected else {
             return
@@ -722,6 +732,10 @@ extension SugoInstance {
      */
     open func track(eventID: String? = nil, eventName: String?, properties: Properties? = nil) {
 
+        guard self.enable else {
+            return
+        }
+        
         let date = Date()
         serialQueue.async() {
             self.trackInstance.track(eventID: eventID,
@@ -736,6 +750,9 @@ extension SugoInstance {
     
     open func trackFirstLogin(with id: String, dimension: String) {
         
+        guard self.enable else {
+            return
+        }
         let firstLoginKey = "FirstLoginTime"
         let keys = SugoDimensions.keys
         let values = SugoDimensions.values
@@ -784,6 +801,9 @@ extension SugoInstance {
     
     open func untrackFirstLogin() {
         
+        guard self.enable else {
+            return
+        }
         let keys = SugoDimensions.keys
         UserDefaults.standard.removeObject(forKey: keys["LoginUserId"]!)
         UserDefaults.standard.synchronize()
@@ -812,6 +832,10 @@ extension SugoInstance {
 
      */
     open func time(event: String) {
+        
+        guard self.enable else {
+            return
+        }
         let startTime = Date().timeIntervalSince1970
         serialQueue.async() {
             self.trackInstance.time(event: event, timedEvents: &self.timedEvents, startTime: startTime)
@@ -822,6 +846,10 @@ extension SugoInstance {
      Clears all current event timers.
      */
     open func clearTimedEvents() {
+        
+        guard self.enable else {
+            return
+        }
         serialQueue.async() {
             self.trackInstance.clearTimedEvents(&self.timedEvents)
         }
@@ -833,6 +861,10 @@ extension SugoInstance {
      - returns: the current super properties
      */
     open func currentSuperProperties() -> [String: Any] {
+        
+        guard self.enable else {
+            return [String: Any]()
+        }
         return superProperties
     }
 
@@ -840,6 +872,9 @@ extension SugoInstance {
      Clears all currently set super properties.
      */
     open func clearSuperProperties() {
+        guard self.enable else {
+            return
+        }
         dispatchAndTrack() {
             self.trackInstance.clearSuperProperties(&self.superProperties)
         }
@@ -857,6 +892,9 @@ extension SugoInstance {
      - parameter properties: properties dictionary
      */
     open func registerSuperProperties(_ properties: Properties) {
+        guard self.enable else {
+            return
+        }
         dispatchAndTrack() {
             self.trackInstance.registerSuperProperties(properties,
                                                        superProperties: &self.superProperties)
@@ -875,6 +913,9 @@ extension SugoInstance {
      */
     open func registerSuperPropertiesOnce(_ properties: Properties,
                                             defaultValue: SugoType? = nil) {
+        guard self.enable else {
+            return
+        }
         dispatchAndTrack() {
             self.trackInstance.registerSuperPropertiesOnce(properties,
                                                            superProperties: &self.superProperties,
@@ -896,6 +937,9 @@ extension SugoInstance {
      - parameter propertyName: array of property name strings to remove
      */
     open func unregisterSuperProperty(_ propertyName: String) {
+        guard self.enable else {
+            return
+        }
         dispatchAndTrack() {
             self.trackInstance.unregisterSuperProperty(propertyName,
                                                        superProperties: &self.superProperties)
@@ -903,6 +947,9 @@ extension SugoInstance {
     }
 
     func dispatchAndTrack(closure: @escaping () -> Void) {
+        guard self.enable else {
+            return
+        }
         serialQueue.async() {
             closure()
             self.archiveProperties()
