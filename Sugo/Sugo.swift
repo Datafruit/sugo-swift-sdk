@@ -43,14 +43,16 @@ open class Sugo {
      You can always get the instance by calling getInstance(name)
      */
     @discardableResult
-    open class func initialize(id projectID: String,
+    open class func initialize(isEnable: Bool? = true,
+                               projectID: String,
                                token apiToken: String,
                                launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
                                flushInterval: Double = 60,
                                cacheInterval: Double = 3600,
                                instanceName: String = UUID().uuidString) -> SugoInstance {
         
-        return SugoManager.sharedInstance.initialize(id:            projectID,
+        return SugoManager.sharedInstance.initialize(isEnable:      isEnable!,
+                                                     id:            projectID,
                                                      token:         apiToken,
                                                      launchOptions: launchOptions,
                                                      flushInterval: flushInterval,
@@ -117,13 +119,15 @@ class SugoManager {
         Logger.addLogging(FileLogging(path: "sugo.log"))
     }
 
-    func initialize(id projectID: String,
+    func initialize(isEnable: Bool? = true,
+                    id projectID: String,
                     token apiToken: String,
                     launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
                     flushInterval: Double,
                     cacheInterval: Double,
                     instanceName: String) -> SugoInstance {
-        let instance = SugoInstance(projectID:      projectID,
+        let instance = SugoInstance(isEnable:       isEnable,
+                                    projectID:      projectID,
                                     apiToken:       apiToken,
                                     launchOptions:  launchOptions,
                                     flushInterval:  flushInterval,
