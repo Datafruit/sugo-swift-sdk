@@ -261,9 +261,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                                        selector: #selector(applicationWillEnterForeground(_:)),
                                        name: .UIApplicationWillEnterForeground,
                                        object: nil)
-//        #if os(iOS)
-//        initializeGestureRecognizer()
-//        #endif
+        #if targetEnvironment(simulator)
+        initializeGestureRecognizer()
+        #endif
     }
 
     deinit {
@@ -281,17 +281,45 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
         let sharedApplication = UIApplication.shared
 
-        taskId = sharedApplication.beginBackgroundTask() {
-            self.taskId = UIBackgroundTaskInvalid
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundEnter"]!)
+        self.time(event: values["BackgroundStay"]!)
+        let uiwv = WebViewBindings.global.uiWebView
+        let wkwv = WebViewBindings.global.wkWebView
+        if uiwv != nil || wkwv != nil {
+            if uiwv != nil && sharedApplication.keyWindow == uiwv?.window {
+                WebViewBindings.global.trackStayEvent(of: uiwv!)
+            }
+            if wkwv != nil && sharedApplication.keyWindow == wkwv?.window {
+                wkwv!.evaluateJavaScript("sugo.trackStayEvent();", completionHandler: nil)
+            }
+        } else if let vc = UIViewController.sugoCurrentUIViewController() {
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String  {
+                    p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
+                    break
+                }
+            }
+            self.track(eventName: values["PageStay"]!, properties: p)
         }
-
+        
         if flushOnBackground {
             flush()
         }
         
-        let values = SugoDimensions.values
-        self.track(eventName: values["BackgroundEnter"]!)
-        self.time(event: values["BackgroundStay"]!)
+        taskId = sharedApplication.beginBackgroundTask() {
+            self.taskId = UIBackgroundTaskInvalid
+        }
+        
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
@@ -304,6 +332,40 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
 
     @objc private func applicationWillEnterForeground(_ notification: Notification) {
+        
+        let sharedApplication = UIApplication.shared
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundStay"]!)
+        self.track(eventName: values["BackgroundExit"]!)
+        let uiwv = WebViewBindings.global.uiWebView
+        let wkwv = WebViewBindings.global.wkWebView
+        if uiwv != nil || wkwv != nil {
+            if uiwv != nil && sharedApplication.keyWindow == uiwv?.window {
+                uiwv!.stringByEvaluatingJavaScript(from: "sugo.trackBrowseEvent();")
+            }
+            if wkwv != nil && sharedApplication.keyWindow == wkwv?.window {
+                wkwv!.evaluateJavaScript("sugo.trackBrowseEvent();", completionHandler: nil)
+            }
+        } else if let vc = UIViewController.sugoCurrentUIViewController() {
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String {
+                    p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
+                    break
+                }
+            }
+            self.track(eventName: values["PageEnter"]!, properties: p)
+            self.time(event: values["PageStay"]!)
+        }
+        
         serialQueue.async() {
             if self.taskId != UIBackgroundTaskInvalid {
                 UIApplication.shared.endBackgroundTask(self.taskId)
@@ -313,10 +375,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                 #endif
             }
         }
-        
-        let values = SugoDimensions.values
-        self.track(eventName: values["BackgroundStay"]!)
-        self.track(eventName: values["BackgroundExit"]!)
     }
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
@@ -386,7 +444,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         if let ASIdentifierManagerClass = NSClassFromString("ASIdentifierManager") {
             let sharedManagerSelector = NSSelectorFromString("sharedManager")
             if let sharedManagerIMP = ASIdentifierManagerClass.method(for: sharedManagerSelector) {
-                typealias sharedManagerFunc = @convention(c) (AnyObject, Selector) -> AnyObject!
+                typealias sharedManagerFunc = @convention(c) (AnyObject, Selector) -> AnyObject?
                 let curriedImplementation = unsafeBitCast(sharedManagerIMP, to: sharedManagerFunc.self)
                 if let sharedManager = curriedImplementation(ASIdentifierManagerClass.self, sharedManagerSelector) {
                     let advertisingTrackingEnabledSelector = NSSelectorFromString("isAdvertisingTrackingEnabled")
@@ -464,7 +522,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.connectGestureRecognized(gesture:)))
             gestureRecognizer.minimumPressDuration = 1
             gestureRecognizer.cancelsTouchesInView = false
-            #if (arch(i386) || arch(x86_64)) && os(iOS)
+            #if targetEnvironment(simulator)
                 gestureRecognizer.numberOfTouchesRequired = 2
             #else
                 gestureRecognizer.numberOfTouchesRequired = 4
@@ -991,7 +1049,7 @@ extension SugoInstance {
             self.time(event: values["PageStay"]!)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
-                                 withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
+                                 withSelector: #selector(UIViewController.sugoViewDidAppearBlock(_:)),
                                  for: UIViewController.self,
                                  name: UUID().uuidString,
                                  block: viewDidAppearBlock)

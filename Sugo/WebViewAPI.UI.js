@@ -69,6 +69,13 @@
         sugo.callNative('time', eventUUID);
     };
 
+    sugo.trackBrowseEvent = function() {
+        if (sugo.can_track_web_page) {
+            sugo.track('浏览', sugo.view_props);
+            sugo.enter_time = new Date().getTime();
+        }
+    };
+
     sugo.trackStayEvent = function() {
         var event = {};
         if (sugo.enter_time) {
@@ -83,6 +90,11 @@
             sugo.enter_time = null;
         }
         return JSON.stringify(event);
+    };
+
+    var sugoio = {
+        track: sugo.track,
+        time_event: sugo.timeEvent
     };
 
     var sugoio = {
