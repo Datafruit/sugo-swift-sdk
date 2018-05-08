@@ -261,9 +261,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                                        selector: #selector(applicationWillEnterForeground(_:)),
                                        name: .UIApplicationWillEnterForeground,
                                        object: nil)
-//        #if os(iOS)
-//        initializeGestureRecognizer()
-//        #endif
+        #if targetEnvironment(simulator)
+        initializeGestureRecognizer()
+        #endif
     }
 
     deinit {
@@ -386,7 +386,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         if let ASIdentifierManagerClass = NSClassFromString("ASIdentifierManager") {
             let sharedManagerSelector = NSSelectorFromString("sharedManager")
             if let sharedManagerIMP = ASIdentifierManagerClass.method(for: sharedManagerSelector) {
-                typealias sharedManagerFunc = @convention(c) (AnyObject, Selector) -> AnyObject!
+                typealias sharedManagerFunc = @convention(c) (AnyObject, Selector) -> AnyObject?
                 let curriedImplementation = unsafeBitCast(sharedManagerIMP, to: sharedManagerFunc.self)
                 if let sharedManager = curriedImplementation(ASIdentifierManagerClass.self, sharedManagerSelector) {
                     let advertisingTrackingEnabledSelector = NSSelectorFromString("isAdvertisingTrackingEnabled")
@@ -464,7 +464,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.connectGestureRecognized(gesture:)))
             gestureRecognizer.minimumPressDuration = 1
             gestureRecognizer.cancelsTouchesInView = false
-            #if (arch(i386) || arch(x86_64)) && os(iOS)
+            #if targetEnvironment(simulator)
                 gestureRecognizer.numberOfTouchesRequired = 2
             #else
                 gestureRecognizer.numberOfTouchesRequired = 4
@@ -991,7 +991,7 @@ extension SugoInstance {
             self.time(event: values["PageStay"]!)
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidAppear(_:)),
-                                 withSelector: #selector(UIViewController.sugoViewDidAppear(_:)),
+                                 withSelector: #selector(UIViewController.sugoViewDidAppearBlock(_:)),
                                  for: UIViewController.self,
                                  name: UUID().uuidString,
                                  block: viewDidAppearBlock)

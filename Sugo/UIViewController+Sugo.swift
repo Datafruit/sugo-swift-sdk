@@ -58,9 +58,9 @@ extension UIViewController {
 
 extension UIViewController {
     
-    @objc func sugoViewDidAppear(_ animated: Bool) {
+    @objc func sugoViewDidAppearBlock(_ animated: Bool) {
         let originalSelector = #selector(UIViewController.viewDidAppear(_:))
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+        if let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
@@ -71,9 +71,11 @@ extension UIViewController {
             }
         }
     }
+    
     @objc func sugoViewDidDisappearBlock(_ animated: Bool) {
+        Logger.info(message: "sugoViewDidDisappearBlock")
         let originalSelector = #selector(UIViewController.viewDidDisappear(_:))
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
+        if let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias SUGOCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
