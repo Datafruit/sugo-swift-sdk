@@ -281,17 +281,45 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
         let sharedApplication = UIApplication.shared
 
-        taskId = sharedApplication.beginBackgroundTask() {
-            self.taskId = UIBackgroundTaskInvalid
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundEnter"]!)
+        self.time(event: values["BackgroundStay"]!)
+        let uiwv = WebViewBindings.global.uiWebView
+        let wkwv = WebViewBindings.global.wkWebView
+        if uiwv != nil || wkwv != nil {
+            if uiwv != nil && sharedApplication.keyWindow == uiwv?.window {
+                WebViewBindings.global.trackStayEvent(of: uiwv!)
+            }
+            if wkwv != nil && sharedApplication.keyWindow == wkwv?.window {
+                wkwv!.evaluateJavaScript("sugo.trackStayEvent();", completionHandler: nil)
+            }
+        } else if let vc = UIViewController.sugoCurrentUIViewController() {
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String  {
+                    p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
+                    break
+                }
+            }
+            self.track(eventName: values["PageStay"]!, properties: p)
         }
-
+        
         if flushOnBackground {
             flush()
         }
         
-        let values = SugoDimensions.values
-        self.track(eventName: values["BackgroundEnter"]!)
-        self.time(event: values["BackgroundStay"]!)
+        taskId = sharedApplication.beginBackgroundTask() {
+            self.taskId = UIBackgroundTaskInvalid
+        }
+        
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
@@ -304,6 +332,40 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
 
     @objc private func applicationWillEnterForeground(_ notification: Notification) {
+        
+        let sharedApplication = UIApplication.shared
+        let values = SugoDimensions.values
+        self.track(eventName: values["BackgroundStay"]!)
+        self.track(eventName: values["BackgroundExit"]!)
+        let uiwv = WebViewBindings.global.uiWebView
+        let wkwv = WebViewBindings.global.wkWebView
+        if uiwv != nil || wkwv != nil {
+            if uiwv != nil && sharedApplication.keyWindow == uiwv?.window {
+                uiwv!.stringByEvaluatingJavaScript(from: "sugo.trackBrowseEvent();")
+            }
+            if wkwv != nil && sharedApplication.keyWindow == wkwv?.window {
+                wkwv!.evaluateJavaScript("sugo.trackBrowseEvent();", completionHandler: nil)
+            }
+        } else if let vc = UIViewController.sugoCurrentUIViewController() {
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+            var p = Properties()
+            p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            for info in SugoPageInfos.global.infos {
+                if let infoPage = info["page"] as? String,
+                    infoPage == NSStringFromClass(vc.classForCoder),
+                    let infoPageName = info["page_name"] as? String {
+                    p[keys["PageName"]!] = infoPageName
+                    if let infoPageCategory = info["page_category"] as? String {
+                        p[keys["PageCategory"]!] = infoPageCategory;
+                    }
+                    break
+                }
+            }
+            self.track(eventName: values["PageEnter"]!, properties: p)
+            self.time(event: values["PageStay"]!)
+        }
+        
         serialQueue.async() {
             if self.taskId != UIBackgroundTaskInvalid {
                 UIApplication.shared.endBackgroundTask(self.taskId)
@@ -313,10 +375,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                 #endif
             }
         }
-        
-        let values = SugoDimensions.values
-        self.track(eventName: values["BackgroundStay"]!)
-        self.track(eventName: values["BackgroundExit"]!)
     }
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
