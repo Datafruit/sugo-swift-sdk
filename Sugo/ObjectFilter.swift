@@ -236,8 +236,8 @@ class ObjectFilter: CustomStringConvertible {
 
         // Reorder the cells in a table view so that they are arranged by y position
         if let sClass = searchClass, sClass.isSubclass(of: UITableViewCell.self) {
-            children.sort {
-                return $0.frame.origin.y < $1.frame.origin.y
+            children.sort { (cell1, cell2) -> Bool in
+                return (cell1 as! UITableViewCell).frame.origin.y < (cell2 as! UITableViewCell).frame.origin.y
             }
         }
         return children
