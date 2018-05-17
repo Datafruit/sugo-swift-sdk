@@ -39,6 +39,17 @@ class Decide {
         let userDefaults = UserDefaults.standard
         var cacheObject = [String: Any]()
         var cacheVersion = -1;
+        var cacheAppVersion = String()
+        var currentAppVersion = String()
+        
+        if let sugoEventBindingsAppVersion = userDefaults.string(forKey: "SugoEventBindingsAppVersion"){
+            cacheAppVersion = sugoEventBindingsAppVersion
+        }
+        
+        if let infoDict = Bundle.main.infoDictionary,
+            let bundleShortVersionString = infoDict["CFBundleShortVersionString"] as? String  {
+            currentAppVersion = bundleShortVersionString
+        }
         
         if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
             
@@ -55,7 +66,8 @@ class Decide {
             }
         }
         
-        if let cv = cacheObject["event_bindings_version"] as? Int {
+        if let cv = cacheObject["event_bindings_version"] as? Int,
+            cacheAppVersion == currentAppVersion {
             cacheVersion = cv
         }
         
@@ -93,7 +105,8 @@ class Decide {
         }
         
         let responseVersion = responseObject["event_bindings_version"] as? Int
-        if responseVersion != cacheVersion {
+        if responseVersion != cacheVersion || cacheAppVersion != currentAppVersion {
+            userDefaults.set(currentAppVersion, forKey: "SugoEventBindingsAppVersion")
             userDefaults.set(resultData, forKey: "SugoEventBindings")
             userDefaults.synchronize()
             handleDecide(object: responseObject)
