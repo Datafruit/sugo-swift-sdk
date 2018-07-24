@@ -866,6 +866,10 @@ extension SugoInstance {
         UserDefaults.standard.removeObject(forKey: keys["LoginUserId"]!)
         UserDefaults.standard.synchronize()
     }
+    
+    open func update(sessionID: String) {
+        self.sessionID = sessionID
+    }
 
     /**
      Starts a timer that will be stopped and added as a property when a
