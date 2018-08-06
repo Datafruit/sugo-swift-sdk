@@ -105,6 +105,8 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
+		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
 		A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */; };
 /* End PBXBuildFile section */
@@ -210,6 +212,8 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
 		A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirstLoginRequest.swift; path = Sugo/FirstLoginRequest.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -219,6 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */,
 				14B71B271E48798A0038E3D6 /* SystemConfiguration.framework in Frameworks */,
 				14EADCD71DF65A6900E6B711 /* CoreTelephony.framework in Frameworks */,
 				14EADCD91DF65A6F00E6B711 /* JavaScriptCore.framework in Frameworks */,
@@ -270,6 +275,7 @@
 				144DB1841DF65F5A007B2275 /* Transformers */,
 				144DB1861DF66004007B2275 /* Data */,
 				144DB1851DF65F6C007B2275 /* Logger */,
+				A71BD3DD211779E50029F09A /* Locations */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -522,6 +528,7 @@
 		14EADCD31DF65A5B00E6B711 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A71BD3D7211768BE0029F09A /* CoreLocation.framework */,
 				14B71B261E48798A0038E3D6 /* SystemConfiguration.framework */,
 				14C7E7A91DF6A37500CB906A /* UIKit.framework */,
 				14EADCDA1DF65A7B00E6B711 /* WebKit.framework */,
@@ -530,6 +537,14 @@
 				14EADCD41DF65A5B00E6B711 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A71BD3DD211779E50029F09A /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				A71BD3DE21177A1E0029F09A /* Locations.swift */,
+			);
+			name = Locations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -576,7 +591,7 @@
 				TargetAttributes = {
 					14EADCB81DF65A5000E6B711 = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -665,6 +680,7 @@
 				14EADD471DF65ACB00E6B711 /* SSLSecurity.swift in Sources */,
 				144D07251EBDB3D5004D7585 /* HeatMap.swift in Sources */,
 				14EADD3F1DF65ACB00E6B711 /* ObjectSerializer.swift in Sources */,
+				A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */,
 				1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */,
 				147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */,
 				14EADD2D1DF65ACB00E6B711 /* DeviceInfoMessage.swift in Sources */,

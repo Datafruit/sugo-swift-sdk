@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 /**
  *  Delegate protocol for controlling the Sugo API's network behavior.
@@ -186,6 +187,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     let heatsInstance = Heats()
     let heatMap = HeatMap(data: Data())
     let reachability = Reachability()!
+    let locations = Locations()
 
     init(isEnable: Bool? = true,
          projectID: String?,
@@ -231,10 +233,10 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         if SugoPermission.canTrackNativePage {
             trackStayTime()
         }
+        setCurrentRadio()
         
         let notificationCenter = NotificationCenter.default
         
-        setCurrentRadio()
         notificationCenter.addObserver(self,
                                        selector: #selector(setCurrentRadio),
                                        name: .CTRadioAccessTechnologyDidChange,
@@ -278,9 +280,27 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         flushInstance.applicationDidBecomeActive()
+        
+        switch (CLLocationManager.authorizationStatus()) {
+        case .authorizedAlways:
+            fallthrough
+        case .authorizedWhenInUse:
+            self.locations.locationManager.startUpdatingLocation()
+            break;
+        case .denied:
+            fallthrough
+        case .restricted:
+            break;
+        case .notDetermined:
+            self.locations.locationManager.requestAlwaysAuthorization()
+            self.locations.locationManager.requestWhenInUseAuthorization()
+            fallthrough
+        default:
+            break;
+        }
     }
 
     @objc private func applicationWillResignActive(_ notification: Notification) {
@@ -288,6 +308,23 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
 
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
+        
+        switch (CLLocationManager.authorizationStatus()) {
+        case .authorizedAlways:
+            fallthrough
+        case .authorizedWhenInUse:
+            self.locations.locationManager.stopUpdatingLocation()
+            break;
+        case .denied:
+            fallthrough
+        case .restricted:
+            fallthrough
+        case .notDetermined:
+            fallthrough
+        default:
+            break;
+        }
+        
         let sharedApplication = UIApplication.shared
 
         let values = SugoDimensions.values
