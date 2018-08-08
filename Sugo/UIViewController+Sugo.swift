@@ -109,33 +109,43 @@ extension UIViewController {
     
     private class func searchViewController(from viewController: UIViewController) -> UIViewController? {
         
-        if viewController.presentedViewController != nil,
-            let presentedViewController = viewController.presentedViewController {
-            return searchViewController(from: presentedViewController)
-        } else if viewController is UISplitViewController,
+        if viewController is UINavigationController,
+            let nvc = viewController as? UINavigationController {
+            
+            if let visibleVC = nvc.visibleViewController {
+                return searchViewController(from:visibleVC)
+            }
+            if let topVC = nvc.topViewController {
+                return searchViewController(from:topVC)
+            }
+            if !nvc.childViewControllers.isEmpty {
+                return searchViewController(from: nvc.childViewControllers.last!)
+            }
+        }
+        if viewController is UITabBarController,
+            let tvc = viewController as? UITabBarController {
+            
+            if let selectedVC = tvc.selectedViewController {
+                return searchViewController(from:selectedVC)
+            }
+            if !tvc.childViewControllers.isEmpty {
+                return searchViewController(from: tvc.childViewControllers.last!)
+            }
+        }
+        if viewController is UISplitViewController,
             let svc = viewController as? UISplitViewController {
             if !svc.viewControllers.isEmpty {
                 return searchViewController(from: svc.viewControllers.last!)
-            } else {
-                return viewController
             }
-        } else if viewController is UINavigationController,
-            let nvc = viewController as? UINavigationController {
-            if !nvc.viewControllers.isEmpty {
-                return searchViewController(from: nvc.topViewController!)
-            } else {
-                return viewController
-            }
-        } else if viewController is UITabBarController,
-            let tvc = viewController as? UITabBarController {
-            if tvc.viewControllers != nil && !tvc.viewControllers!.isEmpty {
-                return searchViewController(from: tvc.selectedViewController!)
-            } else {
-                return viewController
-            }
-        } else {
-            return viewController
         }
+        if !viewController.childViewControllers.isEmpty {
+            return searchViewController(from:viewController.childViewControllers.last!)
+        }
+        if let presentedVC = viewController.presentedViewController {
+            return searchViewController(from:presentedVC)
+        }
+        
+        return viewController
     }
     
 }
