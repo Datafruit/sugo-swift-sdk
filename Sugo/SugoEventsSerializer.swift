@@ -91,6 +91,7 @@ class SugoEventsSerializer {
         dataString = dataString + LinesSeperator
         
         // Mark: - For values
+        var exceptionEvents = [[String: Any]]()
         for object in batch {
             var value: [String: Any] = [String: Any]()
             for key in keys {
@@ -108,6 +109,13 @@ class SugoEventsSerializer {
                     } else {
                         value[key] = ""
                     }
+                    if object[key] is String
+                        && (types[key] == "i"
+                            || types[key] == "l"
+                            || types[key] == "f") {
+                        exceptionEvents.append(object)
+                        value[key] = 0
+                    }
                 } else {
                     value[key] = ""
                 }
@@ -121,6 +129,38 @@ class SugoEventsSerializer {
             }
             dataString.removeLast()
             dataString = dataString + LinesSeperator
+        }
+        
+        if exceptionEvents.count > 0 {
+            if let exceptionEventsData = try? JSONSerialization.data(withJSONObject: exceptionEvents, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                
+                let exceptionEventString = exceptionEventsData.base64EncodedString(options: .endLineWithCarriageReturn)
+                
+                
+                let requestBody = exceptionEventString.data(using: String.Encoding.utf8)
+                let projectId = Sugo.mainInstance().projectId + "_filter"
+                let responseParser: (Data) -> Int? = { data in
+                    let response = String(data: data, encoding: String.Encoding.utf8)
+                    if let response = response {
+                        return Int(response) ?? 0
+                    }
+                    return nil
+                }
+                let resource = Network.buildResource(path: FlushType.events.rawValue,
+                                                     method: .post,
+                                                     requestBody: requestBody,
+                                                     queryItems: [URLQueryItem(name: "locate",
+                                                                               value: projectId)],
+                                                     headers: ["Accept-Encoding": "gzip"],
+                                                     parse: responseParser)
+                Network.apiRequest(base: BasePath.CollectEventsAPI,
+                                   resource: resource,
+                                   failure: { (reason, data, response) in
+                                    Logger.debug(message: "reason: \(reason), data: \(String(describing: data)), response: \(String(describing: response))")
+                }, success: { (result, response) in
+                    Logger.debug(message: "result: \(result), response: \(String(describing: response))")
+                })
+            }
         }
         
         return base64Encode(dataString: dataString)
