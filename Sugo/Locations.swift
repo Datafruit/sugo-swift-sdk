@@ -21,13 +21,13 @@ class Locations: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
     }
     
-    private func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
         
         AutomaticProperties.properties["latitude"] = Double(0)
         AutomaticProperties.properties["longitude"] = Double(0)
     }
     
-    private func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let location = locations.last else {
             return
@@ -37,7 +37,7 @@ class Locations: NSObject, CLLocationManagerDelegate {
         AutomaticProperties.properties["longitude"] = Double(coordinate.longitude)
     }
     
-    private func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         
         AutomaticProperties.properties["latitude"] = Double(0)
         AutomaticProperties.properties["longitude"] = Double(0)
