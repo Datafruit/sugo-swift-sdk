@@ -75,6 +75,15 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         }
     }
     
+    open var flushMaxEvents: UInt {
+        set {
+            flushInstance.flushMaxEvents = newValue
+        }
+        get {
+            return flushInstance.flushMaxEvents
+        }
+    }
+    
     /// Cache timer's interval.
     /// Setting a cache interval of 0 will turn off the cache timer.
     open var cacheInterval: Double {

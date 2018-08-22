@@ -54,6 +54,21 @@ class Flush: AppLifecycle {
             return _flushLimit
         }
     }
+    
+    var _flushMaxEvents: UInt = 200
+    var flushMaxEvents: UInt {
+        set {
+            objc_sync_enter(self)
+            _flushMaxEvents = newValue
+            objc_sync_exit(self)
+        }
+        get {
+            objc_sync_enter(self)
+            defer { objc_sync_exit(self) }
+            
+            return _flushMaxEvents
+        }
+    }
 
     func flushEventsQueue(_ eventsQueue: inout Queue) {
         flushQueue(type: .events, queue: &eventsQueue)

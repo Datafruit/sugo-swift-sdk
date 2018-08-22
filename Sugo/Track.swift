@@ -100,6 +100,10 @@ class Track {
             sugo.flushInstance.flushEventsQueue(&sugo.eventsQueue)
         }
         
+        if sugo.eventsQueue.count > sugo.flushMaxEvents {
+            sugo.eventsQueue.remove(at: 0)
+        }
+        
         if sugo.eventsQueue.count > QueueConstants.queueSize {
             sugo.eventsQueue.remove(at: 0)
         }
