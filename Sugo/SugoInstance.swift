@@ -913,8 +913,8 @@ extension SugoInstance {
         UserDefaults.standard.synchronize()
     }
     
-    open func update(sessionID: String) {
-        self.sessionID = sessionID
+    open func updateSessionID() {
+        self.sessionID = UUID().uuidString
     }
 
     /**
