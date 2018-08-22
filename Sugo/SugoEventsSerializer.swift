@@ -106,7 +106,7 @@ class SugoEventsSerializer {
                         value[key] = object[key]
                     } else if types[key] == "s" {
                         var string = object[key]
-                        if let s = string as? String, s.count > 100
+                        if let s = string as? String, s.count > 100 {
                             string = String(s[..<s.index(s.startIndex, offsetBy: 100)])
                         }
                         value[key] = string
