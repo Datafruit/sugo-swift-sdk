@@ -39,7 +39,7 @@ class Flush: AppLifecycle {
             return _flushInterval
         }
     }
-    var _flushLimit: UInt = 50
+    var _flushLimit: UInt = 16
     var flushLimit: UInt {
         set {
             objc_sync_enter(self)
