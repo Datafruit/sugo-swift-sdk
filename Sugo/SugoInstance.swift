@@ -744,7 +744,7 @@ extension SugoInstance {
         let defaultsKey = "trackedKey"
         if !UserDefaults.standard.bool(forKey: defaultsKey) {
             let date = Date()
-            let firstVisitTime = Double(date.timeIntervalSince1970 * 1000)
+            let firstVisitTime = UInt64(date.timeIntervalSince1970 * 1000)
             let keys = SugoDimensions.keys
             UserDefaults.standard.set(true, forKey: defaultsKey)
             UserDefaults.standard.set(firstVisitTime, forKey: keys["FirstVisitTime"]!)
