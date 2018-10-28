@@ -63,7 +63,7 @@ class Track {
             p[loginUserIdDimension] = loginUserId
             p[keys["FirstLoginTime"]!] = firstLoginTime
         }
-        p[keys["FirstVisitTime"]!] = UInt(UserDefaults.standard.double(forKey: keys["FirstVisitTime"]!))
+        p[keys["FirstVisitTime"]!] = UInt64(UserDefaults.standard.double(forKey: keys["FirstVisitTime"]!))
         
         if p[keys["EventType"]!] == nil {
             p[keys["EventType"]!] = evn!

@@ -1104,6 +1104,12 @@ extension SugoInstance {
         serialQueue.async {
             self.decideInstance.checkDecide(forceFetch: forceFetch,
                                             sugoInstance: self,
+                                            requestType: DecideRequest.RequestType.decideDimesion.rawValue,
+                                            completion: completion)
+            
+            self.decideInstance.checkDecide(forceFetch: forceFetch,
+                                            sugoInstance: self,
+                                            requestType: DecideRequest.RequestType.decideEvent.rawValue,
                                             completion: completion)
         }
     }

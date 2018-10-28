@@ -31,6 +31,7 @@ class Decide {
 
     func checkDecide(forceFetch: Bool = false,
                      sugoInstance: SugoInstance,
+                      requestType:Int,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
 
         var resultData = Data()
@@ -75,6 +76,7 @@ class Decide {
             let semaphore = DispatchSemaphore(value: 0)
             decideRequest.sendRequest(projectId: sugoInstance.projectId,
                                       token: sugoInstance.apiToken,
+                                      requestType: requestType,
                                       distinctId: sugoInstance.distinctId,
                                       eventBindingsVersion: cacheVersion) { decideResult in
 
@@ -109,18 +111,28 @@ class Decide {
             userDefaults.set(currentAppVersion, forKey: "SugoEventBindingsAppVersion")
             userDefaults.set(resultData, forKey: "SugoEventBindings")
             userDefaults.synchronize()
-            handleDecide(object: responseObject)
+            if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+                handleDecideDimensions(object: responseObject)
+            }else {
+                handleDecideEvent(object:responseObject)
+            }
         } else {
-            handleDecide(object: cacheObject)
+            if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+                handleDecideDimensions(object: cacheObject)
+            }else {
+                handleDecideEvent(object:cacheObject)
+            }
         }
         
         Logger.info(message: "decide check found \(decideResponse.newCodelessBindings.count) " +
             "new codeless bindings out of \(codelessInstance.codelessBindings)")
 
-        completion(decideResponse)
+        if requestType == DecideRequest.RequestType.decideEvent.rawValue{
+            completion(decideResponse)
+        }
     }
     
-    func handleDecide(object:[String: Any]) {
+    func handleDecideEvent(object:[String: Any]) {
         var parsedCodelessBindings = Set<CodelessBinding>()
         if let commonCodelessBindings = object["event_bindings"] as? [[String: Any]] {
             for commonBinding in commonCodelessBindings {
@@ -151,6 +163,9 @@ class Decide {
             SugoPageInfos.global.infos = pageInfo
         }
         
+    }
+    
+    func handleDecideDimensions(object:[String: Any]) {
         if let dimensions = object["dimensions"] as? [[String: Any]] {
             let userDefaults = UserDefaults.standard
             userDefaults.set(dimensions, forKey: "SugoDimensions")
