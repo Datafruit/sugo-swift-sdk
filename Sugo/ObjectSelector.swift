@@ -19,7 +19,7 @@ class ObjectSelector: NSObject {
     let scanner: Scanner
     var filters: [ObjectFilter]
 
-    let string: String
+    var string: String
 
     init(string: String) {
         self.string = string

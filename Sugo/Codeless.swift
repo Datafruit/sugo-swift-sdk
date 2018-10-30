@@ -17,6 +17,8 @@ class Codeless {
         case textViewBinding = "ui_text_view"
         case tableViewBinding = "ui_table_view"
         case collectionViewBinding = "ui_collection_view"
+        case tableViewCellBinding = "ui_table_view_cell"
+        case collectionViewCellBinding = "ui_collection_view_cell"
     }
 
     class func createBinding(object: [String: Any]) -> CodelessBinding? {
@@ -34,6 +36,10 @@ class Codeless {
             return UITableViewBinding(object: object)
         case .collectionViewBinding:
             return UICollectionViewBinding(object: object)
+        case .tableViewCellBinding:
+            return UITableViewCellBinding(object: object)
+        case .collectionViewCellBinding:
+            return UICollectionViewCellBinding(object:object)
         }
     }
 }

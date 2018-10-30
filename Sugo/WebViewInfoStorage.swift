@@ -32,6 +32,7 @@ class WebViewInfoStorage: NSObject {
     private var height: String
     private var viewportContent: String
     private var nodes: String
+    private var distance: String
     
     static var global: WebViewInfoStorage {
         return singleton
@@ -49,6 +50,7 @@ class WebViewInfoStorage: NSObject {
         self.height = String()
         self.viewportContent = String()
         self.nodes = String()
+        self.distance=String()
         super.init()
     }
     
@@ -64,7 +66,8 @@ class WebViewInfoStorage: NSObject {
                 "clientWidth": self.width,
                 "clientHeight": self.height,
                 "viewportContent": self.viewportContent,
-                "nodes": self.nodes]
+                "nodes": self.nodes,
+                "distance": self.distance]
     }
     
     func setHTMLInfo(withTitle title: String, path: String, width: String, height: String, viewportContent: String, nodes: String) {
@@ -75,6 +78,19 @@ class WebViewInfoStorage: NSObject {
         self.height = height
         self.viewportContent = viewportContent
         self.nodes = nodes
+        self.newFrame = true
+        objc_sync_exit(self)
+    }
+    
+    func setHTMLInfo(withTitle title: String, path: String, width: String, height: String, viewportContent: String, nodes: String, distance: String) {
+        objc_sync_enter(self)
+        self.title = title
+        self.path = path
+        self.width = width
+        self.height = height
+        self.viewportContent = viewportContent
+        self.nodes = nodes
+        self.distance=distance
         self.newFrame = true
         objc_sync_exit(self)
     }
