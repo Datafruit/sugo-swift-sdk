@@ -105,6 +105,7 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */; };
 		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
 		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
@@ -212,6 +213,7 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+Sugo.swift"; path = "Sugo/UIApplication+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 				14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */,
 				14C4CC6C1E32354A005ADF42 /* UIViewController+Sugo.swift */,
 				14785D801E5F04DF0053B3C8 /* SugoConfigurationPropertyList.swift */,
+				9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				14EADD251DF65ACB00E6B711 /* CGPointToNSDictionary.swift in Sources */,
 				14EADD3B1DF65ACB00E6B711 /* NSAttributedStringToNSDictionary.swift in Sources */,
 				14EADD1C1DF65ACB00E6B711 /* WebViewBindings+WebView.swift in Sources */,
+				9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */,
 				14364FE31DFA622600F7BE89 /* TrackMessage.swift in Sources */,
 				14E2B25D1E88C85F004DF09F /* Cache.swift in Sources */,
 				A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */,

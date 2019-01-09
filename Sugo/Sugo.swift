@@ -15,6 +15,7 @@ open class Sugo {
     public static var BindingsURL: String?
     public static var CollectionURL: String?
     public static var CodelessURL: String?
+    public static let CURRENTCONTROLLER:String = "CurrentControllerOrUrl"
     
     public class func registerPriorityProperties(priorityProperties: [String: Any]) {
         

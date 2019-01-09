@@ -239,6 +239,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     
     private func setupListeners() {
         
+        buildApplicationMoveEvent()
+        
         if SugoPermission.canTrackNativePage {
             trackStayTime()
         }
@@ -288,6 +290,139 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+//    -(void)buildApplicationMoveEvent{
+//    void (^sendEventBlock)(id, SEL,id) = ^(id application, SEL command,UIEvent *event) {
+//    UIApplication *app = (UIApplication *)application;
+//    if (!app) {
+//    return;
+//    }
+//    NSSet *touches = [event allTouches];
+//    for (UITouch *touch in touches) {
+//    switch ([touch phase]) {
+//    case UITouchPhaseBegan:
+//{
+//    CGPoint point = [touch locationInView:[UIApplication sharedApplication].keyWindow];
+//    int x = point.x;
+//    int y = point.y;
+//    NSInteger serialNum = [self calculateTouchArea:x withY:y];
+//    NSMutableDictionary *p = [[NSMutableDictionary alloc]init];
+//    NSDictionary *keys = [NSDictionary dictionaryWithDictionary:[Sugo sharedInstance].sugoConfiguration[@"DimensionKeys"]];
+//    NSDictionary *values = [NSDictionary dictionaryWithDictionary:[Sugo sharedInstance].sugoConfiguration[@"DimensionValues"]];
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    NSString *pathName = [ user objectForKey:CURRENTCONTROLLER];
+//    p[keys[@"PagePath"]] = pathName;
+//    p[keys[@"OnclickPoint"]] = [NSString stringWithFormat:@"%ld",serialNum];
+//
+//    //                    if (webviewUrl !=nil && ![webviewUrl isEqualToString:@""]) {
+//    //                        p[@"path_name"] = webviewUrl;
+//    //                    }
+//    [self trackEvent:values[@"ScreenTouch"] properties:p];
+//    break;
+//    }
+//    case UITouchPhaseMoved:
+//    case UITouchPhaseEnded:
+//    case UITouchPhaseCancelled:
+//    break;
+//    default:
+//    break;
+//    }
+//    }
+//
+//    };
+//    [MPSwizzler swizzleSelector:@selector(sendEvent:)
+//    onClass:[UIApplication class]
+//    withBlock:sendEventBlock
+//    named:[[NSUUID UUID] UUIDString]];
+//    }
+    
+    
+    private func buildApplicationMoveEvent(){
+        let sendEventBlock = {
+            [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
+            guard let app = viewController as? UIApplication else {
+                return
+            }
+            
+            guard let event = param1 as? UIEvent else{
+                return
+            }
+//            application: AnyObject?, command: AnyObject?, event:UIEvent
+            let keys = SugoDimensions.keys
+            let values = SugoDimensions.values
+//            NSSet *touches = [event allTouches];
+            let touches:Set<UITouch> = event.allTouches!
+            for touch in touches {
+                switch(touch.phase){
+                case UITouch.Phase.began:
+                    
+                    let point:CGPoint = touch.location(in: UIApplication.shared.keyWindow)
+                    let x:Float = Float(point.x)
+                    let y:Float = Float(point.y)
+                    let serialNum:NSInteger = self.calculateTouchArea(x: x, y: y)
+                    
+                    var p = Properties()
+                    let userDefaults = UserDefaults.standard
+                    let pagePath = userDefaults.string(forKey: Sugo.CURRENTCONTROLLER)
+                    p[keys["PagePath"]!] = pagePath;
+                    p[keys["OnclickPoint"]!] = "\(serialNum)"
+                    self.track(eventName: values["ScreenTouch"]!, properties: p)
+                    break
+                default:
+                    break
+                }
+            }
+        }
+        Swizzler.swizzleSelector(#selector(UIApplication.sendEvent(_ :)),
+                                 withSelector: #selector(UIApplication.sugoSendEventBlock(_ :)),
+                                 for: UIApplication.self,
+                                 name: UUID().uuidString,
+                                 block: sendEventBlock)
+    }
+    
+    
+    
+    
+    
+    private func calculateTouchArea(x:Float,y:Float) ->NSInteger{
+        let columnNum:Float = 18
+        let lineNum:Float = 32
+        var areaWidth:Float
+        var areaHeight:Float
+        let fullScreenH:Float = Float(UIScreen.main.bounds.size.height)
+        let fullScreenW:Float = Float(UIScreen.main.bounds.size.width)
+        var newY:Float = y
+        if fullScreenH>fullScreenW {
+            areaWidth = fullScreenW/columnNum
+            areaHeight = fullScreenH/lineNum
+        }else{//Landscape situation
+            let ratio = (fullScreenH/columnNum)/(fullScreenW/lineNum)
+            areaWidth = fullScreenW/columnNum
+            areaHeight = areaWidth*ratio
+            var statusheight:Float = 20
+            if UIScreen.main.bounds.height == 812{
+                statusheight = 44
+            }
+            let statusBarRatioHeight:Float = areaHeight/((fullScreenW/lineNum)/statusheight)
+            newY = y + statusBarRatioHeight
+        }
+        let columnSerialValue:Float = x/areaWidth
+        let lineNumSerialValue:Float = newY/areaHeight
+        var columnSerialNum:Int
+        if (columnSerialValue-Float(Int(columnSerialValue)))>0{
+            columnSerialNum = (Int(columnSerialValue)+1)
+        }else{
+            columnSerialNum = Int(columnSerialValue)
+        }
+        var lineNumSerialNum:Int
+        if(lineNumSerialValue-Float(Int(lineNumSerialValue)))>0{
+            lineNumSerialNum = Int(lineNumSerialValue)
+        }else{
+            lineNumSerialNum = Int(lineNumSerialValue)-1
+        }
+        
+        return columnSerialNum + lineNumSerialNum*Int(columnNum)
     }
     
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
@@ -1093,6 +1228,9 @@ extension SugoInstance {
             let values = SugoDimensions.values
             var p = Properties()
             p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(p[keys["PagePath"]!], forKey: Sugo.CURRENTCONTROLLER)
+            userDefaults.synchronize()
             for info in SugoPageInfos.global.infos {
                 if let infoPage = info["page"] as? String,
                     infoPage == NSStringFromClass(vc.classForCoder),

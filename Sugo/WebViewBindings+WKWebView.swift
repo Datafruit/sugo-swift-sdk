@@ -18,6 +18,7 @@ extension WebViewBindings: WKScriptMessageHandler {
         webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTrack")
         webView.configuration.userContentController.add(self, name: "SugoWKWebViewBindingsTime")
         webView.configuration.userContentController.add(self, name: "SugoWKWebViewReporter")
+        webView.configuration.userContentController.add(self,name:"registerPathName")
         Logger.debug(message: "WKWebView Injected")
     }
     
@@ -26,6 +27,7 @@ extension WebViewBindings: WKScriptMessageHandler {
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTrack")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewBindingsTime")
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "SugoWKWebViewReporter")
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "registerPathName")
         self.wkWebView = nil
 
     }
@@ -89,6 +91,10 @@ extension WebViewBindings: WKScriptMessageHandler {
                         WebViewInfoStorage.global.setHTMLInfo(withTitle: title, path: path, width: "\(clientWidth)", height: "\(clientHeight)", viewportContent: viewportContent, nodes: nodes)
                     }
                 }
+            case "registerPathName":
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(body["path_name"], forKey: Sugo.CURRENTCONTROLLER)
+                userDefaults.synchronize()
                 
             default:
                 Logger.debug(message: "Wrong message name = \(message.name)")
