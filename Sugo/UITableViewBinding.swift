@@ -101,6 +101,16 @@ class UITableViewBinding: CodelessBinding {
                             "cell_label": textLabel,
                             "cell_detail_label": detailTextLabel,
                             "cell_content_info": contentInfo]
+                        
+                        if self.classAttr != nil && (self.classAttr?.count)!>0 {
+                            let array : Array = self.classAttr!.components(separatedBy: ",")
+                            for item in array{
+                                let value = tableView.value(forKey: item)
+                                p[item] = value as? SugoType
+                            }
+                        }
+                        
+                        
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
                                    properties: p)

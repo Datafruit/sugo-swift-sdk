@@ -91,6 +91,15 @@ class UICollectionViewBinding: CodelessBinding {
                         p += ["cell_index": "\(indexPath.row)",
                             "cell_section": "\(indexPath.section)",
                             "cell_content_info": contentInfo]
+                        
+                        if self.classAttr != nil && (self.classAttr?.count)!>0 {
+                            let array : Array = self.classAttr!.components(separatedBy: ",")
+                            for item in array{
+                                let value = collectionView.value(forKey: item)
+                                p[item] = value as? SugoType
+                            }
+                        }
+                        
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
                                    properties: p)

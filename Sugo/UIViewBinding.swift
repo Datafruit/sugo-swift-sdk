@@ -209,6 +209,16 @@ class UIViewBinding: CodelessBinding {
                 }
             }
             p[keys["EventType"]!] = values["click"]!
+            
+            if self.classAttr != nil && (self.classAttr?.count)!>0 {
+                let array : Array = self.classAttr!.components(separatedBy: ",")
+                for item in array{
+                    let value = view.value(forKey: item)
+                    p[item] = value as? SugoType
+                }
+            }
+            
+            
             self.track(eventID: self.eventID,
                        eventName: self.eventName,
                        properties: p)
@@ -299,6 +309,23 @@ class UIViewBinding: CodelessBinding {
                 p[keys["EventType"]!] = values["focus"]!
             } else {
                 p[keys["EventType"]!] = values["click"]!
+            }
+            
+//            NSString *classAttr = [self classAttr];
+//            if (classAttr !=nil&&classAttr.length>0) {
+//                NSArray *attrArray = [classAttr componentsSeparatedByString:@","];
+//                for (NSString *item in attrArray) {
+//                    id value = [(UIView *)sender valueForKey:item];
+//                    p[item] = value;
+//                }
+//            }
+            
+            if self.classAttr != nil && (self.classAttr?.count)!>0 {
+                let array : Array = self.classAttr!.components(separatedBy: ",")
+                for item in array{
+                    let value = sender.value(forKey: item)
+                    p[item] = value as? SugoType
+                }
             }
             self.track(eventID: self.eventID,
                        eventName: self.eventName,

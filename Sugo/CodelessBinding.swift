@@ -17,6 +17,7 @@ class CodelessBinding: NSObject, NSCoding {
     var attributes: Attributes?
     var swizzleClass: AnyClass!
     var running: Bool
+    var classAttr:String?
 
     init(eventID: String?, eventName: String, path: String, attributes: Attributes? = nil) {
         self.eventID = eventID
@@ -26,6 +27,7 @@ class CodelessBinding: NSObject, NSCoding {
         self.name = UUID().uuidString
         self.running = false
         self.swizzleClass = nil
+        self.classAttr = ""
         super.init()
     }
 
@@ -36,10 +38,11 @@ class CodelessBinding: NSObject, NSCoding {
             let eventName = aDecoder.decodeObject(forKey: "eventName") as? String,
             let swizzleString = aDecoder.decodeObject(forKey: "swizzleClass") as? String,
             let swizzleClass = NSClassFromString(swizzleString),
+            let classAttrString = aDecoder.decodeObject(forKey: "swizzleClass") as? String,
             let paths = aDecoder.decodeObject(forKey: "paths") as? InternalProperties else {
                 return nil
         }
-        
+        self.classAttr = classAttrString
         self.eventID = eventID
         self.eventName = eventName
         self.path = ObjectSelector(string: path)
