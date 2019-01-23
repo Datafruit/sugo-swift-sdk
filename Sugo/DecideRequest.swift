@@ -10,8 +10,14 @@ import Foundation
 
 class DecideRequest: Network {
 
+    enum RequestType : Int{
+        case decideDimesion = 0
+        case decideEvent = 1
+    }
+    
     typealias DecideResult = [String: Any]
-    let decidePath = "/api/sdk/decide"
+    static let decideDimesionPath = "/api/sdk/decide-dimesion"
+    static let decideEventPath="/api/sdk/decide-event"
     var networkRequestsAllowedAfterTime = 0.0
     var networkConsecutiveFailures = 0
 
@@ -57,6 +63,7 @@ class DecideRequest: Network {
 
     func sendRequest(projectId: String,
                      token: String,
+                     requestType:Int,
                      distinctId: String,
                      eventBindingsVersion: Int,
                      completion: @escaping (DecideResult?) -> Void) {
@@ -75,6 +82,14 @@ class DecideRequest: Network {
                                           token: token,
                                           distinctId: distinctId,
                                           bindingsVersion: eventBindingsVersion)
+        
+        var decidePath : String
+        if requestType == RequestType.decideDimesion.rawValue {
+            decidePath=DecideRequest.decideDimesionPath
+        }else{
+            decidePath=DecideRequest.decideEventPath
+        }
+        
         let resource = Network.buildResource(path: decidePath,
                                              method: .get,
                                              queryItems: queryItems.toArray(),

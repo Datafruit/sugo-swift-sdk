@@ -74,6 +74,10 @@ class ObjectSerializer: NSObject {
         
         let classNameArr : Array<String> = getClassHierarchyArray(of: object)
         let className :String = classNameArr[0]
+        
+        if className == "SugoDemo.CustomButton"{
+            var a = 5
+        }
         let value  = Sugo.classAttributeDict[className]
         if value == nil {
             var count = UInt32()
@@ -85,7 +89,7 @@ class ObjectSerializer: NSObject {
                 let attrName:UnsafePointer<Int8> = ivar_getName(ivar)!
                 let proper = String.init(cString: attrName)
                 let type = String.init(cString: typeName)
-                print ("type："+"\(type)")
+                print ("type："+"\(type)"+";proper:"+"\(proper)")
                 if isBaseType(typeName: type){
                     if str == "" {
                         str = "\(proper)"
@@ -114,9 +118,12 @@ class ObjectSerializer: NSObject {
     }
     
     
+    
+    
+    
     func isBaseType(typeName:String) -> Bool{
         var typeStr:String = typeName
-        let arr : Array = ["int","double","float","char","long","short","signed","unsigned","short int","long int","unsigned int","unsigned short","unsigned long","long double","number","Boolean","BOOL","bool","NSString","NSDate","NSNumber","NSInteger","NSUInteger","enum","struct"]
+        let arr : Array = ["int","double","float","char","long","short","signed","unsigned","short int","long int","unsigned int","unsigned short","unsigned long","long double","number","Boolean","BOOL","bool","NSString","NSDate","NSNumber","NSInteger","NSUInteger","enum","struct","B","Q","d","q","c","i","s","l","C","I","S","L","f","d","b","b1","B",""]
         var isBaseType : Bool = false
         typeStr = typeStr.replacingOccurrences(of: "\\", with: "")
         typeStr = typeStr.replacingOccurrences(of: "\"", with: "")

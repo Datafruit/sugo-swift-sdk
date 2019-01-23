@@ -105,6 +105,7 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		9B24949021EC89C400739385 /* BindingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24948F21EC89C400739385 /* BindingUtils.swift */; };
 		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
 		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
@@ -212,6 +213,7 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		9B24948F21EC89C400739385 /* BindingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BindingUtils.swift; path = Sugo/BindingUtils.swift; sourceTree = SOURCE_ROOT; };
 		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				141524221E8F41B80072C0DC /* UITextViewBinding.swift */,
 				14EADD141DF65ACB00E6B711 /* UITableViewBinding.swift */,
 				A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */,
+				9B24948F21EC89C400739385 /* BindingUtils.swift */,
 			);
 			name = CommonViewBindings;
 			sourceTree = "<group>";
@@ -701,6 +704,7 @@
 				14EADD191DF65ACB00E6B711 /* Codeless.swift in Sources */,
 				14EADD1B1DF65ACB00E6B711 /* WebViewBindings.swift in Sources */,
 				14EADD2F1DF65ACB00E6B711 /* Error.swift in Sources */,
+				9B24949021EC89C400739385 /* BindingUtils.swift in Sources */,
 				14EADD4D1DF65ACB00E6B711 /* UIEdgeInsetsToNSDictionary.swift in Sources */,
 				148F37171E07B38900E2A98D /* Attributes.swift in Sources */,
 				14EADD211DF65ACB00E6B711 /* AutomaticProperties.swift in Sources */,

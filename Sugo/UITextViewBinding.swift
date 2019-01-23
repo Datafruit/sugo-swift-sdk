@@ -88,13 +88,11 @@ class UITextViewBinding: CodelessBinding {
                         let text = textView.text != nil ? textView.text : ""
                         p[keys["EventLabel"]!] = text
                         
-                        if self.classAttr != nil && (self.classAttr?.count)!>0 {
-                            let array : Array = self.classAttr!.components(separatedBy: ",")
-                            for item in array{
-                                let value = textView.value(forKey: item)
-                                p[item] = value as? SugoType
-                            }
+                        let classAttr = self.classAttr
+                        if classAttr != nil{
+                            p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: textView as UIView)
                         }
+                        
                         
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
