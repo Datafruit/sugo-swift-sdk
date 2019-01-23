@@ -31,24 +31,8 @@
 		147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */; };
 		9A3E75C0D130F7F69F6FA5BE /* Pods_SugoDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FD516860C9453E8B2306149 /* Pods_SugoDemo.framework */; };
 		9B24949221EC9DB600739385 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24949121EC9DB600739385 /* CustomButton.swift */; };
-		9B9C41B821F70E44000D12E6 /* Sugo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B269B2321E5E66900983649 /* Sugo.framework */; };
-		9B9C41B921F70E44000D12E6 /* Sugo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9B269B2321E5E66900983649 /* Sugo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A74C45551FDF872000D91B0F /* UICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C45541FDF872000D91B0F /* UICollectionViewController.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		9B9C41BA21F70E44000D12E6 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9B9C41B921F70E44000D12E6 /* Sugo.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewViewController.swift; sourceTree = "<group>"; };
@@ -88,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B9C41B821F70E44000D12E6 /* Sugo.framework in Frameworks */,
 				9A3E75C0D130F7F69F6FA5BE /* Pods_SugoDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,7 +198,6 @@
 				147C00F71DF67587001FF110 /* Sources */,
 				147C00F81DF67587001FF110 /* Frameworks */,
 				147C00F91DF67587001FF110 /* Resources */,
-				9B9C41BA21F70E44000D12E6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
