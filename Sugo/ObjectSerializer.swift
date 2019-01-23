@@ -28,7 +28,8 @@ class ObjectSerializer: NSObject {
         }
 
         return ["objects": context.getAllSerializedObjects() as AnyObject,
-                "rootObject": objectIdentityProvider.getIdentifier(for: rootObject) as AnyObject]
+                "rootObject": objectIdentityProvider.getIdentifier(for: rootObject) as AnyObject,
+                "classAttr":Sugo.classAttributeDict as AnyObject]
     }
 
     func visitObject(_ object: AnyObject?, context: ObjectSerializerContext) {
@@ -71,6 +72,38 @@ class ObjectSerializer: NSObject {
             }
         }
         
+        let classNameArr : Array<String> = getClassHierarchyArray(of: object)
+        let className :String = classNameArr[0]
+        
+        if className == "SugoDemo.CustomButton"{
+            var a = 5
+        }
+        let value  = Sugo.classAttributeDict[className]
+        if value == nil {
+            var count = UInt32()
+            let properties  = class_copyIvarList(object_getClass(object.self), &count)
+            var str : String = ""
+            for i in 0 ..< count {
+                let ivar : Ivar = properties![Int(i)]
+                let typeName: UnsafePointer<Int8> = ivar_getTypeEncoding(ivar)!
+                let attrName:UnsafePointer<Int8> = ivar_getName(ivar)!
+                let proper = String.init(cString: attrName)
+                let type = String.init(cString: typeName)
+                print ("type："+"\(type)"+";proper:"+"\(proper)")
+                if isBaseType(typeName: type){
+                    if str == "" {
+                        str = "\(proper)"
+                    }else{
+                        str = str + ",\(proper)"
+                    }
+                }
+            }
+            Sugo.classAttributeDict[className]=str
+        }
+        
+        
+        
+        
         var serializedObject: [String: Any] = ["id": objectIdentityProvider.getIdentifier(for: object),
                                 "class": getClassHierarchyArray(of: object),
                                 "properties": propertyValues,
@@ -82,6 +115,26 @@ class ObjectSerializer: NSObject {
             serializedObject["htmlPage"] = getWKWebViewHTMLInfo(from: object as! WKWebView)
         }
         context.addSerializedObject(serializedObject)
+    }
+    
+    
+    
+    
+    
+    func isBaseType(typeName:String) -> Bool{
+        var typeStr:String = typeName
+        let arr : Array = ["int","double","float","char","long","short","signed","unsigned","short int","long int","unsigned int","unsigned short","unsigned long","long double","number","Boolean","BOOL","bool","NSString","NSDate","NSNumber","NSInteger","NSUInteger","enum","struct","B","Q","d","q","c","i","s","l","C","I","S","L","f","d","b","b1","B",""]
+        var isBaseType : Bool = false
+        typeStr = typeStr.replacingOccurrences(of: "\\", with: "")
+        typeStr = typeStr.replacingOccurrences(of: "\"", with: "")
+        typeStr = typeStr.replacingOccurrences(of: "@", with: "")
+        for item in arr{
+            if item == typeStr{
+                isBaseType = true
+                break
+            }
+        }
+        return isBaseType
     }
 
     func getClassHierarchyArray(of object: AnyObject) -> [String] {

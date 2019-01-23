@@ -88,6 +88,12 @@ class UITextViewBinding: CodelessBinding {
                         let text = textView.text != nil ? textView.text : ""
                         p[keys["EventLabel"]!] = text
                         
+                        let classAttr = self.classAttr
+                        if classAttr != nil{
+                            p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: textView as UIView)
+                        }
+                        
+                        
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
                                    properties: p)

@@ -9,7 +9,7 @@
 import Foundation
 
 
-class CodelessBinding: NSObject, NSCoding {
+class CodelessBinding: NSObject,NSCoding{
     var name: String
     var path: ObjectSelector
     var eventID: String?
@@ -17,8 +17,9 @@ class CodelessBinding: NSObject, NSCoding {
     var attributes: Attributes?
     var swizzleClass: AnyClass!
     var running: Bool
+    var classAttr:InternalProperties?
 
-    init(eventID: String?, eventName: String, path: String, attributes: Attributes? = nil) {
+    init(eventID: String?, eventName: String, path: String, attributes: Attributes? = nil, classAttr:InternalProperties? = nil) {
         self.eventID = eventID
         self.eventName = eventName
         self.path = ObjectSelector(string: path)
@@ -26,6 +27,7 @@ class CodelessBinding: NSObject, NSCoding {
         self.name = UUID().uuidString
         self.running = false
         self.swizzleClass = nil
+        self.classAttr = classAttr
         super.init()
     }
 
@@ -36,10 +38,11 @@ class CodelessBinding: NSObject, NSCoding {
             let eventName = aDecoder.decodeObject(forKey: "eventName") as? String,
             let swizzleString = aDecoder.decodeObject(forKey: "swizzleClass") as? String,
             let swizzleClass = NSClassFromString(swizzleString),
+            let classAttrString = aDecoder.decodeObject(forKey: "classAttr") as? InternalProperties,
             let paths = aDecoder.decodeObject(forKey: "paths") as? InternalProperties else {
                 return nil
         }
-        
+        self.classAttr = classAttrString
         self.eventID = eventID
         self.eventName = eventName
         self.path = ObjectSelector(string: path)
@@ -56,6 +59,7 @@ class CodelessBinding: NSObject, NSCoding {
         aCoder.encode(eventName, forKey: "eventName")
         aCoder.encode(NSStringFromClass(swizzleClass), forKey: "swizzleClass")
         aCoder.encode(attributes?.paths, forKey: "paths")
+        aCoder.encode(classAttr, forKey:"classAttr")
     }
 
     override func isEqual(_ object: Any?) -> Bool {
@@ -66,7 +70,8 @@ class CodelessBinding: NSObject, NSCoding {
         if object === self {
             return true
         } else {
-            return self.eventName == object.eventName && self.path == object.path
+            
+            return self.eventName == object.eventName && self.path == object.path 
         }
     }
 
