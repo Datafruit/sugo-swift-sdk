@@ -9,6 +9,11 @@
 import Foundation
 
 class DecideRequest: Network {
+    
+    enum RequestType : Int{
+        case decideDimesion = 0
+        case decideEvent = 1
+    }
 
     enum RequestType : Int{
         case decideDimesion = 0

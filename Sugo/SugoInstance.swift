@@ -1090,7 +1090,8 @@ extension SugoInstance {
     // Mark: - track stay time
     
     func trackStayTime() {
-            
+        
+        weak var weakSelf = self
         let viewDidAppearBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
             guard let vc = viewController as? UIViewController else {
@@ -1150,6 +1151,35 @@ extension SugoInstance {
                 }
             }
             self.track(eventName: values["PageStay"]!, properties: p)
+            
+            let currentTime = UInt64(Date().timeIntervalSince1970)
+            if weakSelf!.decideInstance.locateInterval>0.0 &&  currentTime-weakSelf!.decideInstance.recentlySendLoacationTime>=Int64(weakSelf!.decideInstance.locateInterval){
+                weakSelf!.decideInstance.recentlySendLoacationTime=currentTime
+                
+                let values = SugoDimensions.keys
+                if values.count==0 {
+                    return;
+                }
+                switch (CLLocationManager.authorizationStatus()) {
+                case .authorizedWhenInUse,.authorizedAlways:
+                    let p : Properties = [values["EventType"]! : "位置",
+                                          values["PageName"]! : "位置信息收集",
+                                          "latitude" : AutomaticProperties.properties["latitude"] as! SugoType,
+                                          "longitude": AutomaticProperties.properties["longitude"] as! SugoType
+                    ]
+                    self.track(eventName: "位置信息收集", properties : p)
+                    break;
+                case .denied:
+                    break;
+                case .restricted:
+                    break;
+                case .notDetermined:
+                    break;
+                default:
+                    break;
+                }
+            }
+            
         }
         Swizzler.swizzleSelector(#selector(UIViewController.viewDidDisappear(_:)),
                                  withSelector: #selector(UIViewController.sugoViewDidDisappearBlock(_:)),

@@ -20,6 +20,35 @@ struct DecideResponse {
 }
 
 class Decide {
+    
+    var _locateInterval = 0.0
+    var locateInterval: Double {
+        set {
+            objc_sync_enter(self)
+            _locateInterval = newValue
+            objc_sync_exit(self)
+        }
+        get {
+            objc_sync_enter(self)
+            defer { objc_sync_exit(self) }
+            
+            return _locateInterval
+        }
+    }
+    var _recentlySendLoacationTime : UInt64 = 0
+    
+    var recentlySendLoacationTime: UInt64 {
+        set {
+            objc_sync_enter(self)
+            _recentlySendLoacationTime = UInt64(newValue)
+            objc_sync_exit(self)
+        }
+        get {
+            objc_sync_enter(self)
+            defer { objc_sync_exit(self) }
+            return _recentlySendLoacationTime
+        }
+    }
 
     var decideRequest = DecideRequest()
     var decideResponse = DecideResponse()
@@ -171,6 +200,11 @@ class Decide {
             let userDefaults = UserDefaults.standard
             userDefaults.set(dimensions, forKey: "SugoDimensions")
             userDefaults.synchronize()
+        }
+        
+        //获取地理位置上传间隔
+        if let locationConfigure = object["position_config"] as? Double {
+            self.locateInterval = locationConfigure * 60
         }
     }
 
