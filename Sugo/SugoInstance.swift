@@ -66,6 +66,17 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         }
     }
     
+    open var StartExtraAttrFunction: Bool {
+        set {
+            startExtraAttrFuncion = newValue
+        }
+        get {
+            return startExtraAttrFuncion
+        }
+    }
+    
+    
+    
     open var flushLimit: UInt {
         set {
             flushInstance.flushLimit = newValue
@@ -194,6 +205,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     let trackInstance: Track
     let decideInstance = Decide()
     let heatsInstance = Heats()
+    var startExtraAttrFuncion = true
     let heatMap = HeatMap(data: Data())
     let reachability = Reachability()!
     let locations = Locations()
@@ -1251,6 +1263,12 @@ extension SugoInstance {
         serialQueue.async {
             self.decideInstance.checkDecide(forceFetch: forceFetch,
                                             sugoInstance: self,
+                                            requestType: DecideRequest.RequestType.decideDimesion.rawValue,
+                                            completion: completion)
+            
+            self.decideInstance.checkDecide(forceFetch: forceFetch,
+                                            sugoInstance: self,
+                                            requestType: DecideRequest.RequestType.decideEvent.rawValue,
                                             completion: completion)
         }
     }

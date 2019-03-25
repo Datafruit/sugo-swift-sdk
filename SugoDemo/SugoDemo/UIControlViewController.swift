@@ -11,11 +11,12 @@ import Sugo
 
 class UIControlViewController: UIViewController {
 
+    @IBOutlet weak var customButton: CustomButton!
     @IBOutlet weak var userId: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        customButton.buttonTitle = "数果智能"
         // Do any additional setup after loading the view.
     }
 

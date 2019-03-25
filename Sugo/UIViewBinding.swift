@@ -16,7 +16,7 @@ class UIViewBinding: CodelessBinding {
     var verified: NSHashTable<UIControl>
     var appliedTo: NSHashTable<UIView>
 
-    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents? = nil, verifyEvent: UIControlEvents? = nil, attributes: Attributes? = nil) {
+    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents? = nil, verifyEvent: UIControlEvents? = nil, attributes: Attributes? = nil, classAttr:InternalProperties? = nil ) {
         if let controlEvent = controlEvent {
             self.controlEvent = controlEvent
         } else {
@@ -25,7 +25,7 @@ class UIViewBinding: CodelessBinding {
         self.verifyEvent = self.controlEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         self.appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
-        super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes)
+        super.init(eventID: eventID, eventName: eventName, path: path, attributes: attributes, classAttr:classAttr)
         self.swizzleClass = UIView.self
     }
 
@@ -44,7 +44,8 @@ class UIViewBinding: CodelessBinding {
             Logger.warn(message: "binding requires an event name")
             return nil
         }
-
+        
+    
         var finalControlEvent: UIControlEvents?
         var finalVerifyEvent: UIControlEvents?
         if let controlEvent = object["control_event"] as? UInt, controlEvent & UIControlEvents.allEvents.rawValue != 0 {
@@ -63,12 +64,18 @@ class UIViewBinding: CodelessBinding {
             finalAttributes = Attributes(attributes: attributes)
         }
         
+        var finalClassAttr: InternalProperties?
+        if let classAttr = object["classAttr"] as? InternalProperties {
+            finalClassAttr = classAttr
+        }
+        
         self.init(eventID: eventID,
                   eventName: eventName,
                   path: path,
                   controlEvent: finalControlEvent,
                   verifyEvent: finalVerifyEvent,
-                  attributes: finalAttributes)
+                  attributes: finalAttributes,
+                  classAttr:finalClassAttr)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -78,7 +85,7 @@ class UIViewBinding: CodelessBinding {
         appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         super.init(coder: aDecoder)
     }
-
+//
     override func encode(with aCoder: NSCoder) {
         aCoder.encode(controlEvent.rawValue, forKey: "controlEvent")
         aCoder.encode(verifyEvent.rawValue, forKey: "verifyEvent")
@@ -209,6 +216,13 @@ class UIViewBinding: CodelessBinding {
                 }
             }
             p[keys["EventType"]!] = values["click"]!
+            
+            let classAttr = self.classAttr
+            if classAttr != nil{
+                p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: view as UIView)
+            }
+            
+            
             self.track(eventID: self.eventID,
                        eventName: self.eventName,
                        properties: p)
@@ -300,6 +314,14 @@ class UIViewBinding: CodelessBinding {
             } else {
                 p[keys["EventType"]!] = values["click"]!
             }
+            
+            let classAttr = self.classAttr
+            if classAttr != nil{
+                p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: sender as UIView)
+            }
+            
+            
+            
             self.track(eventID: self.eventID,
                        eventName: self.eventName,
                        properties: p)
@@ -309,20 +331,17 @@ class UIViewBinding: CodelessBinding {
 }
 
 extension UIView {
-    
     @objc func viewCallOriginalMethodWithSwizzledBlocks(originalSelector: Selector) {
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias SUGOCFunction = @convention(c) (AnyObject, Selector) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
             curriedImplementation(self, originalSelector)
-
             for (_, block) in swizzle.blocks {
                 block(self, swizzle.selector, nil, nil)
             }
         }
     }
-    
     @objc func sugoViewDidMoveToWindow() {
         let originalSelector = NSSelectorFromString("didMoveToWindow")
         viewCallOriginalMethodWithSwizzledBlocks(originalSelector: originalSelector)
