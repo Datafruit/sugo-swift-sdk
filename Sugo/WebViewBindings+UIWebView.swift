@@ -153,34 +153,6 @@ extension WebViewBindings {
                         Sugo.mainInstance().time(event: eventName!)
                     }
                 }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-//                if let npi = url.host,
-//                    let uuid = url.query?.components(separatedBy: "=").last,
-//                    let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.dataOf('\(uuid)');"),
-//                    let eventData = eventString.data(using: String.Encoding.utf8),
-//                    let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-//                    let storage = WebViewInfoStorage.global
-//                    if npi == "track",
-//                        let eventID = event!["eventID"] as? String,
-//                        let eventName = event!["eventName"] as? String,
-//                        let properties = event!["properties"] as? String {
-//                        storage.eventID = eventID
-//                        storage.eventName = eventName
-//                        storage.properties = properties
-//                        track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
-//                    } else if npi == "time",
-//                        let eventName = event!["eventName"] as? String {
-//                        Sugo.mainInstance().time(event: eventName)
-//                    }
-//                }
                 shouldStartLoad = false
             }
         }

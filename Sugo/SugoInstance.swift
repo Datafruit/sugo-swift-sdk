@@ -292,52 +292,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         NotificationCenter.default.removeObserver(self)
     }
     
-//    -(void)buildApplicationMoveEvent{
-//    void (^sendEventBlock)(id, SEL,id) = ^(id application, SEL command,UIEvent *event) {
-//    UIApplication *app = (UIApplication *)application;
-//    if (!app) {
-//    return;
-//    }
-//    NSSet *touches = [event allTouches];
-//    for (UITouch *touch in touches) {
-//    switch ([touch phase]) {
-//    case UITouchPhaseBegan:
-//{
-//    CGPoint point = [touch locationInView:[UIApplication sharedApplication].keyWindow];
-//    int x = point.x;
-//    int y = point.y;
-//    NSInteger serialNum = [self calculateTouchArea:x withY:y];
-//    NSMutableDictionary *p = [[NSMutableDictionary alloc]init];
-//    NSDictionary *keys = [NSDictionary dictionaryWithDictionary:[Sugo sharedInstance].sugoConfiguration[@"DimensionKeys"]];
-//    NSDictionary *values = [NSDictionary dictionaryWithDictionary:[Sugo sharedInstance].sugoConfiguration[@"DimensionValues"]];
-//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//    NSString *pathName = [ user objectForKey:CURRENTCONTROLLER];
-//    p[keys[@"PagePath"]] = pathName;
-//    p[keys[@"OnclickPoint"]] = [NSString stringWithFormat:@"%ld",serialNum];
-//
-//    //                    if (webviewUrl !=nil && ![webviewUrl isEqualToString:@""]) {
-//    //                        p[@"path_name"] = webviewUrl;
-//    //                    }
-//    [self trackEvent:values[@"ScreenTouch"] properties:p];
-//    break;
-//    }
-//    case UITouchPhaseMoved:
-//    case UITouchPhaseEnded:
-//    case UITouchPhaseCancelled:
-//    break;
-//    default:
-//    break;
-//    }
-//    }
-//
-//    };
-//    [MPSwizzler swizzleSelector:@selector(sendEvent:)
-//    onClass:[UIApplication class]
-//    withBlock:sendEventBlock
-//    named:[[NSUUID UUID] UUIDString]];
-//    }
-    
-    
     private func buildApplicationMoveEvent(){
         let sendEventBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
