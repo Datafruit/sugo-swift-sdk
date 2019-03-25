@@ -145,13 +145,13 @@ class Decide {
             }else {
                 handleDecideEvent(object:responseObject)
             }
-        } else {
+           } else {
             if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
                 handleDecideDimensions(object: cacheObject)
             }else {
                 handleDecideEvent(object:cacheObject)
             }
-        }
+     }
         
         Logger.info(message: "decide check found \(decideResponse.newCodelessBindings.count) " +
             "new codeless bindings out of \(codelessInstance.codelessBindings)")
@@ -171,12 +171,14 @@ class Decide {
             }
         }
         
-        let finishedCodelessBindings = self.codelessInstance.codelessBindings.subtracting(parsedCodelessBindings)
+//        let finishedCodelessBindings = self.codelessInstance.codelessBindings.subtracting(parsedCodelessBindings)
+        let finishedCodelessBindings = self.codelessInstance.codelessBindings
         for finishedBinding in finishedCodelessBindings {
             finishedBinding.stop()
         }
         
-        let newCodelessBindings = parsedCodelessBindings.subtracting(self.codelessInstance.codelessBindings)
+//        let newCodelessBindings = parsedCodelessBindings.subtracting(self.codelessInstance.codelessBindings)
+        let newCodelessBindings = parsedCodelessBindings
         decideResponse.newCodelessBindings = newCodelessBindings
         
         self.codelessInstance.codelessBindings.formUnion(newCodelessBindings)
@@ -191,7 +193,6 @@ class Decide {
             SugoPageInfos.global.infos.removeAll()
             SugoPageInfos.global.infos = pageInfo
         }
-        
     }
     
     func handleDecideDimensions(object:[String: Any]) {

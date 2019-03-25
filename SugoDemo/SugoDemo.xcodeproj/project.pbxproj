@@ -29,6 +29,8 @@
 		147C471C1E8D189A00C1DF08 /* WebTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */; };
 		147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */; };
 		147C47201E8D18EB00C1DF08 /* WKWebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */; };
+		9A3E75C0D130F7F69F6FA5BE /* Pods_SugoDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FD516860C9453E8B2306149 /* Pods_SugoDemo.framework */; };
+		9B24949221EC9DB600739385 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24949121EC9DB600739385 /* CustomButton.swift */; };
 		A74C45551FDF872000D91B0F /* UICollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C45541FDF872000D91B0F /* UICollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +59,11 @@
 		147C471B1E8D189A00C1DF08 /* WebTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTableViewController.swift; sourceTree = "<group>"; };
 		147C471D1E8D18D600C1DF08 /* UIWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIWebViewViewController.swift; sourceTree = "<group>"; };
 		147C471F1E8D18EB00C1DF08 /* WKWebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewViewController.swift; sourceTree = "<group>"; };
+		2FD516860C9453E8B2306149 /* Pods_SugoDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SugoDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FEC0B1D76D513256289EDC1 /* Pods-SugoDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SugoDemo.debug.xcconfig"; path = "Target Support Files/Pods-SugoDemo/Pods-SugoDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		979668125173088E873104A3 /* Pods-SugoDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SugoDemo.release.xcconfig"; path = "Target Support Files/Pods-SugoDemo/Pods-SugoDemo.release.xcconfig"; sourceTree = "<group>"; };
+		9B24949121EC9DB600739385 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		9B269B2321E5E66900983649 /* Sugo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sugo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A74C45541FDF872000D91B0F /* UICollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A3E75C0D130F7F69F6FA5BE /* Pods_SugoDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,9 +82,11 @@
 		147C00F21DF67587001FF110 = {
 			isa = PBXGroup;
 			children = (
+				9B269B2321E5E66900983649 /* Sugo.framework */,
 				147C00FD1DF67587001FF110 /* SugoDemo */,
 				147C00FC1DF67587001FF110 /* Products */,
 				147C011F1DF68EB3001FF110 /* Frameworks */,
+				5B76E16C86A4F9F7F1D94026 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +116,7 @@
 		147C011F1DF68EB3001FF110 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2FD516860C9453E8B2306149 /* Pods_SugoDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,6 +163,7 @@
 				147C47191E8D187300C1DF08 /* UITextViewViewController.swift */,
 				146DDDB01E8E3B8500354294 /* UITableViewViewController.swift */,
 				A74C45541FDF872000D91B0F /* UICollectionViewController.swift */,
+				9B24949121EC9DB600739385 /* CustomButton.swift */,
 			);
 			name = Native;
 			sourceTree = "<group>";
@@ -166,6 +178,15 @@
 			name = Web;
 			sourceTree = "<group>";
 		};
+		5B76E16C86A4F9F7F1D94026 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3FEC0B1D76D513256289EDC1 /* Pods-SugoDemo.debug.xcconfig */,
+				979668125173088E873104A3 /* Pods-SugoDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -173,6 +194,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 147C01181DF67587001FF110 /* Build configuration list for PBXNativeTarget "SugoDemo" */;
 			buildPhases = (
+				5C1CA3C94CDACCB91BECF514 /* [CP] Check Pods Manifest.lock */,
 				147C00F71DF67587001FF110 /* Sources */,
 				147C00F81DF67587001FF110 /* Frameworks */,
 				147C00F91DF67587001FF110 /* Resources */,
@@ -198,6 +220,7 @@
 				TargetAttributes = {
 					147C00FA1DF67587001FF110 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 5PCYP5P3P9;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -235,6 +258,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C1CA3C94CDACCB91BECF514 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SugoDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		147C00F71DF67587001FF110 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -244,6 +292,7 @@
 				147C47091E8D177700C1DF08 /* HomeTableViewController.swift in Sources */,
 				147C47121E8D17F100C1DF08 /* SwitchModeViewController.swift in Sources */,
 				147C01331DF69C23001FF110 /* ActionCompleteViewController.swift in Sources */,
+				9B24949221EC9DB600739385 /* CustomButton.swift in Sources */,
 				A74C45551FDF872000D91B0F /* UICollectionViewController.swift in Sources */,
 				147C471E1E8D18D600C1DF08 /* UIWebViewViewController.swift in Sources */,
 				147C47161E8D182900C1DF08 /* UIControlViewController.swift in Sources */,
@@ -393,13 +442,14 @@
 		};
 		147C01191DF67587001FF110 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FEC0B1D76D513256289EDC1 /* Pods-SugoDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5PCYP5P3P9;
 				INFOPLIST_FILE = SugoDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo22333;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -408,13 +458,14 @@
 		};
 		147C011A1DF67587001FF110 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 979668125173088E873104A3 /* Pods-SugoDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5PCYP5P3P9;
 				INFOPLIST_FILE = SugoDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = io.sugo.SugoDemo22333;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

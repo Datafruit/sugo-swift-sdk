@@ -101,6 +101,12 @@ class UITableViewBinding: CodelessBinding {
                             "cell_label": textLabel,
                             "cell_detail_label": detailTextLabel,
                             "cell_content_info": contentInfo]
+                        
+                        let classAttr = self.classAttr
+                        if classAttr != nil{
+                            p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: tableView as UIView)
+                        }
+                        
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
                                    properties: p)

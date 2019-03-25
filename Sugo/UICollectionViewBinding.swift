@@ -91,6 +91,12 @@ class UICollectionViewBinding: CodelessBinding {
                         p += ["cell_index": "\(indexPath.row)",
                             "cell_section": "\(indexPath.section)",
                             "cell_content_info": contentInfo]
+                  
+                        let classAttr = self.classAttr
+                        if classAttr != nil{
+                            p =  BindingUtils.requireExtraAttrWithValue(classAttr: classAttr!, p: p, view: collectionView as UIView)
+                        }
+                        
                         self.track(eventID: self.eventID,
                                    eventName: self.eventName,
                                    properties: p)

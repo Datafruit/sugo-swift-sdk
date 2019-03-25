@@ -15,6 +15,11 @@ class DecideRequest: Network {
         case decideEvent = 1
     }
 
+    enum RequestType : Int{
+        case decideDimesion = 0
+        case decideEvent = 1
+    }
+    
     typealias DecideResult = [String: Any]
     static let decideDimesionPath = "/api/sdk/decide-dimesion"
     static let decideEventPath="/api/sdk/decide-event"
