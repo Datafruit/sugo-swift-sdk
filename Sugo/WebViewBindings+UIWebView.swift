@@ -123,23 +123,34 @@ extension WebViewBindings {
         if let url = request.url {
             Logger.debug(message: "request: \(url.absoluteString)")
             if url.scheme == "sugo.npi" {
-                if let npi = url.host,
-                    let uuid = url.query?.components(separatedBy: "=").last,
-                    let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.dataOf('\(uuid)');"),
-                    let eventData = eventString.data(using: String.Encoding.utf8),
-                    let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-                    let storage = WebViewInfoStorage.global
-                    if npi == "track",
-                        let eventID = event!["eventID"] as? String,
-                        let eventName = event!["eventName"] as? String,
-                        let properties = event!["properties"] as? String {
-                        storage.eventID = eventID
-                        storage.eventName = eventName
-                        storage.properties = properties
+                let eventString :String = (webView.stringByEvaluatingJavaScript(from: "sugo.dataOf();"))!
+                let eventData:Data = eventString.data(using: String.Encoding.utf8)!
+                let events = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String,String>
+                
+                if events == nil{
+                    return
+                }
+                for name in events!.keys{
+                    let eventStr=events?[name]
+                    let data = eventStr?.data(using: String.Encoding.utf8)!
+                    let event = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String,String>
+                    let npiStr = event!["eventType"]
+                    if npiStr == "registerPathName"{
+                        let userDefaults = UserDefaults.standard
+                        userDefaults.set(event!["path_name"], forKey: Sugo.CURRENTCONTROLLER)
+                        userDefaults.synchronize()
+                    }else if npiStr == "track"{
+                        let eventID = event!["eventID"]
+                        let eventName = event!["eventName"]
+                        let properties = event!["properties"]
+                        let storage = WebViewInfoStorage.global
+                        storage.eventID = eventID!
+                        storage.eventName = eventName!
+                        storage.properties = properties!
                         track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
-                    } else if npi == "time",
-                        let eventName = event!["eventName"] as? String {
-                        Sugo.mainInstance().time(event: eventName)
+                    } else if npiStr == "time"{
+                        let eventName  = event!["eventName"]
+                        Sugo.mainInstance().time(event: eventName!)
                     }
                 }
                 shouldStartLoad = false
