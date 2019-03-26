@@ -333,6 +333,21 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                     let pagePath = userDefaults.string(forKey: Sugo.CURRENTCONTROLLER)
                     p[keys["PagePath"]!] = pagePath;
                     p[keys["OnclickPoint"]!] = "\(serialNum)"
+                    if let vc = UIViewController.sugoCurrentUIViewController() {
+                        p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
+                        for info in SugoPageInfos.global.infos {
+                            if let infoPage = info["page"] as? String,
+                                infoPage == NSStringFromClass(vc.classForCoder) {
+                                p[keys["PageName"]!] = info["page_name"] as? String
+                                if let infoPageCategory = info["page_category"] as? String {
+                                    p[keys["PageCategory"]!] = infoPageCategory;
+                                }
+                                break
+                            }
+                        }
+                    }
+                    
+                    
                     self.track(eventName: values["ScreenTouch"]!, properties: p)
                     break
                 default:
@@ -352,8 +367,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     
     
     private func calculateTouchArea(x:Float,y:Float) ->NSInteger{
-        let columnNum:Float = 18
-        let lineNum:Float = 32
+        let columnNum:Float = 36
+        let lineNum:Float = 64
         var areaWidth:Float
         var areaHeight:Float
         let fullScreenH:Float = Float(UIScreen.main.bounds.size.height)
@@ -386,6 +401,10 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             lineNumSerialNum = Int(lineNumSerialValue)
         }else{
             lineNumSerialNum = Int(lineNumSerialValue)-1
+        }
+        
+        if columnSerialValue == 0{
+            columnSerialNum = columnSerialNum + 1
         }
         
         return columnSerialNum + lineNumSerialNum*Int(columnNum)
