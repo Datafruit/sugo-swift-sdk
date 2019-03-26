@@ -2,12 +2,12 @@
 Pod::Spec.new do |spec|
   spec.name                  = 'sugo-swift-sdk'
   spec.module_name           = 'Sugo'
-  spec.version               = '4.1.0'
+  spec.version               = '4.2.0'
   spec.license               = 'Apache License, Version 2.0'
   spec.summary               = 'Official Sugo Swift SDK for iOS (Swift)'
   spec.homepage              = 'https://github.com/Datafruit/sugo-swift-sdk'
   spec.author                = { 'sugo.io' => 'developer@sugo.io' }
-  spec.source                = { :git => 'https://github.com/Datafruit/sugo-swift-sdk.git', :tag => spec.version }
+  spec.source                = { :git => 'https://github.com/Datafruit/sugo-swift-sdk.git', :tag => spec.version ,:branch => 'infinitus' }
   spec.ios.deployment_target = '8.0'
   spec.default_subspec       = 'core'
 

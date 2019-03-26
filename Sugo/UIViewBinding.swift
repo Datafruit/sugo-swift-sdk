@@ -207,7 +207,7 @@ class UIViewBinding: CodelessBinding {
                 for info in SugoPageInfos.global.infos {
                     if let infoPage = info["page"] as? String,
                         infoPage == NSStringFromClass(vc.classForCoder) {
-                        p[keys["PageName"]!] = infoPage
+                        p[keys["PageName"]!] = info["page_name"] as? String
                         if let infoPageCategory = info["page_category"] as? String {
                             p[keys["PageCategory"]!] = infoPageCategory;
                         }
@@ -301,7 +301,7 @@ class UIViewBinding: CodelessBinding {
                 for info in SugoPageInfos.global.infos {
                     if let infoPage = info["page"] as? String,
                         infoPage == NSStringFromClass(vc.classForCoder) {
-                        p[keys["PageName"]!] = infoPage
+                        p[keys["PageName"]!] = info["page_name"] as? String
                         if let infoPageCategory = info["page_category"] as? String {
                             p[keys["PageCategory"]!] = infoPageCategory;
                         }
