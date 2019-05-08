@@ -239,7 +239,26 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         cacheInstance.cacheInterval = cacheInterval
         setupListeners()
         unarchive()
-        
+        buildPageInfo()
+    }
+    
+    private func buildPageInfo(){
+        let userDefaults = UserDefaults.standard
+        if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
+            var cacheObject = [String: Any]()
+            do {
+                if let co = try JSONSerialization.jsonObject(with: cacheData,
+                                                             options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                    cacheObject = co
+                    if let pageInfo = cacheObject["page_info"] as? [[String: Any]] {
+                        SugoPageInfos.global.infos.removeAll()
+                        SugoPageInfos.global.infos = pageInfo
+                    }
+                }
+            } catch {
+                Logger.debug(message: "buildPageInfo:Failed to serialize cache event bindings")
+            }
+        }
     }
 
     private func setupHomePath() {

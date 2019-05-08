@@ -10,6 +10,9 @@ import UIKit
 
 extension SugoInstance {
     public func buildApplicationMoveEvent(){
+        if(!self.openHeatMapFunc()){
+            return
+        }
         let sendEventBlock = {
             [unowned self] (viewController: AnyObject?, command: Selector, param1: AnyObject?, param2: AnyObject?) in
             guard let app = viewController as? UIApplication else {
@@ -27,7 +30,6 @@ extension SugoInstance {
             for touch in touches {
                 switch(touch.phase){
                 case UITouch.Phase.began:
-                    
                     let point:CGPoint = touch.location(in: UIApplication.shared.keyWindow)
                     let x:Float = Float(point.x)
                     let y:Float = Float(point.y)
@@ -35,8 +37,8 @@ extension SugoInstance {
                     
                     var p = Properties()
                     let userDefaults = UserDefaults.standard
-                    let pagePath = userDefaults.string(forKey: Sugo.CURRENTCONTROLLER)
-                    p[keys["PagePath"]!] = pagePath;
+                    let pagePath:String = userDefaults.string(forKey: Sugo.CURRENTCONTROLLER) as! String
+                    p[keys["PagePath"]!] = pagePath
                     p[keys["OnclickPoint"]!] = "\(serialNum)"
                     if let vc = UIViewController.sugoCurrentUIViewController() {
                         p[keys["PagePath"]!] = NSStringFromClass(vc.classForCoder)
@@ -52,8 +54,10 @@ extension SugoInstance {
                         }
                     }
                     
+                    if(self.isSubmitPointWithThisPage(pathName: pagePath)){
+                        self.track(eventName: values["ScreenTouch"]!, properties: p)
+                    }
                     
-                    self.track(eventName: values["ScreenTouch"]!, properties: p)
                     break
                 default:
                     break
@@ -67,6 +71,37 @@ extension SugoInstance {
                                  block: sendEventBlock)
     }
     
+    private func openHeatMapFunc()->Bool{
+        var isOk:Bool = false
+        for info in SugoPageInfos.global.infos {
+            if let isSubmitPoint = info["isSubmitPoint"] as? Bool {
+                if(isSubmitPoint) {
+                    isOk = true
+                    break
+                }
+            }
+        }
+        return isOk
+    }
+    
+    private func isSubmitPointWithThisPage(pathName:String) ->Bool{
+        var isOk:Bool = false
+        for info in SugoPageInfos.global.infos {
+            if let name = info["page"] as? String{
+                if(name == pathName){
+                    continue
+                }
+                if let isSubmitPoint = info["isSubmitPoint"] as? Bool {
+                    if(isSubmitPoint) {
+                        isOk = true
+                    }else{
+                        break
+                    }
+                }
+            }
+        }
+        return isOk
+    }
     
     
     
