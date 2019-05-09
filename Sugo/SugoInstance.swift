@@ -207,7 +207,6 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         cacheInstance.cacheInterval = cacheInterval
         setupListeners()
         unarchive()
-        
     }
 
     private func setupHomePath() {
@@ -698,8 +697,10 @@ extension SugoInstance {
                 let values = SugoDimensions.values
                 self.track(eventName: values["Integration"]!)
                 self.track(eventName: values["FirstVisit"]!)
+                self.trackFirstStartTime()
             }
         }
+        
     }
 }
 
@@ -850,6 +851,34 @@ extension SugoInstance {
                 UserDefaults.standard.set(firstLoginTimes, forKey: keys[firstLoginKey]!)
                 UserDefaults.standard.synchronize()
                 self.track(eventName: values["FirstLogin"])
+            }
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        
+    }
+    
+    open func trackFirstStartTime() {
+        let values = SugoDimensions.values
+        let userDefault = UserDefaults.standard
+        var firstLoginTimes = [String: UInt]()
+        let firstStartRequest = FirstStartRequest()
+        let semaphore = DispatchSemaphore(value: 0)
+        var currentAppVersion = String()
+        if let infoDict = Bundle.main.infoDictionary,
+            let bundleShortVersionString = infoDict["CFBundleShortVersionString"] as? String  {
+                currentAppVersion = bundleShortVersionString
+        }
+        firstStartRequest.sendRequest(deviceId:deviceId, projectId: projectId, token: apiToken,appVersion:currentAppVersion) {
+            [unowned self] (firstStartResult) in
+            
+            guard let firstStartResult = firstStartResult,
+                let isFirstStart = firstStartResult["isFirstStart"] as? Int else {
+                    semaphore.signal()
+                    return
+            }
+            if (isFirstStart==1){
+                self.track(eventName: values["FirstInstallation"])
             }
             semaphore.signal()
         }

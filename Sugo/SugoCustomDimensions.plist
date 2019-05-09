@@ -71,6 +71,8 @@
 	</dict>
 	<key>Values</key>
 	<dict>
+		<key>FirstInstallation</key>
+		<string>首次安装</string>
 		<key>Integration</key>
 		<string>APP安装</string>
 		<key>FirstVisit</key>
