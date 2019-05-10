@@ -49,10 +49,14 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     
     /// secret key that gives key to heat_map
     open var urlHeatMapSecretKey: String?
+    
+    let ENTERBACKGROUNDTIME : String = "enterBackgroundTime"
 
     /// Controls whether to show spinning network activity indicator when flushing
     /// data to the Sugo servers. Defaults to true.
     open var showNetworkActivityIndicator = true
+    
+    private var startupInterval = 30
     
     /// Flush timer's interval.
     /// Setting a flush interval of 0 will turn off the flush timer.
@@ -207,6 +211,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         cacheInstance.cacheInterval = cacheInterval
         setupListeners()
         unarchive()
+        self.judgeWakeUpOrStartApp()
     }
 
     private func setupHomePath() {
@@ -275,6 +280,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
 
     @objc private func applicationWillResignActive(_ notification: Notification) {
         flushInstance.applicationWillResignActive()
+        self.setupBackgroundTime()
     }
 
     @objc private func applicationDidEnterBackground(_ notification: Notification) {
@@ -334,8 +340,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         
         let sharedApplication = UIApplication.shared
         let values = SugoDimensions.values
-        self.track(eventName: values["BackgroundStay"]!)
-        self.track(eventName: values["BackgroundExit"]!)
+        self.judgeWakeUpOrStartApp()
         let uiwv = WebViewBindings.global.uiWebView
         let wkwv = WebViewBindings.global.wkWebView
         if uiwv != nil || wkwv != nil {
@@ -375,6 +380,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             }
         }
     }
+    
+    
+    
 
     @objc private func applicationWillTerminate(_ notification: Notification) {
         
@@ -394,6 +402,47 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
             self.archive()
         }
     }
+    
+    func requireBackgroundTime() -> Double{
+        let userDefaults = UserDefaults.standard
+        var backgroundTime = userDefaults.string(forKey: ENTERBACKGROUNDTIME)
+        if backgroundTime == nil {
+            backgroundTime = "0"
+        }
+        let time :Double = Double(backgroundTime as! String)!
+        return time
+    }
+    
+    func setupBackgroundTime(){
+        let userDefaults = UserDefaults.standard
+        let timeString : String = String(self.getNowTimeStamp())
+        userDefaults.set(timeString, forKey: ENTERBACKGROUNDTIME)
+        userDefaults.synchronize()
+    }
+    
+    
+    func getNowTimeStamp() -> TimeInterval {
+        let now = Date()
+        let timeInterval:TimeInterval = now.timeIntervalSince1970
+        return timeInterval
+    }
+    
+    func judgeWakeUpOrStartApp(){
+        let values = SugoDimensions.values
+        let currentTime : Double = Double(self.getNowTimeStamp())
+        let backgrundTime: Double = self.requireBackgroundTime()
+        if (Int(currentTime-backgrundTime) > startupInterval) {
+           self.track(eventName: values["AppEnter"]!)
+            self.time(event: values["AppStay"]!)
+        }else{
+            self.track(eventName: values["BackgroundStay"]!)
+            self.track(eventName: values["BackgroundExit"]!)
+        }
+        self.setupBackgroundTime()
+    }
+    
+    
+    
     
     func defaultDistinctId() -> String {
         
@@ -465,6 +514,8 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         }
         return ifa
     }
+    
+    
 
     #if os(iOS)
     func updateNetworkActivityIndicator(_ on: Bool) {
@@ -860,8 +911,6 @@ extension SugoInstance {
     
     open func trackFirstStartTime() {
         let values = SugoDimensions.values
-        let userDefault = UserDefaults.standard
-        var firstLoginTimes = [String: UInt]()
         let firstStartRequest = FirstStartRequest()
         let semaphore = DispatchSemaphore(value: 0)
         var currentAppVersion = String()
