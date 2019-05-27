@@ -62,17 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     fileprivate func initSugo() {
-        let id: String = "Add_Your_Project_ID_Here"
-        let token: String = "Add_Your_App_Token_Here"
-//        Sugo.BindingsURL = ""
-//        Sugo.CollectionURL = ""
-//        Sugo.CodelessURL = ""
-        let priorityProperties = [String: Any]()
-        Sugo.registerPriorityProperties(priorityProperties: priorityProperties)
-        Sugo.initialize(projectID: id, token: token)
-        Sugo.mainInstance().loggingEnabled = true
-        Sugo.mainInstance().flushInterval = 5
-        Sugo.mainInstance().cacheInterval = 60
+        let id: String = "com_SJLnjowGe_project_HyErw0VBW" // 项目ID
+        let token: String = "4216f38f4959de6f2342918d0e3eace1" // 应用ID
+        Sugo.BindingsURL = "http://192.168.0.220:8000" // 设置获取绑定事件配置的URL，端口默认为8000
+        Sugo.CollectionURL = "http://192.168.0.220" // 设置传输绑定事件的网管URL，端口默认为80
+        Sugo.CodelessURL = "ws://192.168.0.220:8887" // 设置连接可视化埋点的URL，端口默认为8887
+        Sugo.initialize(projectID: id, token: token){
+            Sugo.mainInstance().loggingEnabled = true // 如果需要查看SDK的Log，请设置为true
+            Sugo.mainInstance().flushInterval = 5 // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
+            Sugo.mainInstance().cacheInterval = 60 // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
+            Sugo.mainInstance().buildApplicationMoveEvent()
+        }
+
     }
     
 }

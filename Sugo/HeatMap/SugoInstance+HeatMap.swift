@@ -10,7 +10,9 @@ import UIKit
 
 extension SugoInstance {
     public func buildApplicationMoveEvent(){
-        if(!self.openHeatMapFunc()){
+        let userDefaults = UserDefaults.standard
+        let isHeatMapFunc = userDefaults.bool(forKey: "isHeatMapFunc")
+        if(!isHeatMapFunc || !self.openHeatMapFunc()){
             return
         }
         let sendEventBlock = {
