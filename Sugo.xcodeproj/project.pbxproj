@@ -108,7 +108,6 @@
 		9B24949021EC89C400739385 /* BindingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24948F21EC89C400739385 /* BindingUtils.swift */; };
 		9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */; };
 		9B2D4A8722969F2000CC70B3 /* SugoInitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */; };
-		9B2D4A892296AF6300CC70B3 /* SugoInstance+HeatMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2D4A882296AF6300CC70B3 /* SugoInstance+HeatMap.swift */; };
 		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
 		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
@@ -219,7 +218,6 @@
 		9B24948F21EC89C400739385 /* BindingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BindingUtils.swift; path = Sugo/BindingUtils.swift; sourceTree = SOURCE_ROOT; };
 		9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+Sugo.swift"; path = "Sugo/UIApplication+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SugoInitRequest.swift; path = Sugo/SugoInitRequest.swift; sourceTree = SOURCE_ROOT; };
-		9B2D4A882296AF6300CC70B3 /* SugoInstance+HeatMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SugoInstance+HeatMap.swift"; path = "Sugo/HeatMap/SugoInstance+HeatMap.swift"; sourceTree = SOURCE_ROOT; };
 		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 		144DB1801DF65C89007B2275 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				9B2D4A882296AF6300CC70B3 /* SugoInstance+HeatMap.swift */,
 				147C00EC1DF6698C001FF110 /* Sugo.swift */,
 				147C00F01DF66C17001FF110 /* SugoInstance.swift */,
 				147C00EE1DF66B90001FF110 /* SugoType.swift */,
@@ -661,7 +658,6 @@
 				14EADD3C1DF65ACB00E6B711 /* ObjectFilter.swift in Sources */,
 				14EADD4F1DF65ACB00E6B711 /* UIImageToNSDictionary.swift in Sources */,
 				14EADD501DF65ACB00E6B711 /* UITableViewBinding.swift in Sources */,
-				9B2D4A892296AF6300CC70B3 /* SugoInstance+HeatMap.swift in Sources */,
 				14EADD491DF65ACB00E6B711 /* Track.swift in Sources */,
 				14EADD2E1DF65ACB00E6B711 /* DisconnectMessage.swift in Sources */,
 				14E1971C1EC0787500E26E9C /* HeatsResponse.swift in Sources */,

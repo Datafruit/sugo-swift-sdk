@@ -71,9 +71,7 @@ extension AppDelegate {
             Sugo.mainInstance().loggingEnabled = true // 如果需要查看SDK的Log，请设置为true
             Sugo.mainInstance().flushInterval = 5 // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
             Sugo.mainInstance().cacheInterval = 60 // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
-            Sugo.mainInstance().buildApplicationMoveEvent()
         }
-
     }
     
 }
