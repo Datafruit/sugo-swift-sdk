@@ -105,8 +105,9 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
-		9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */; };
 		9B24949021EC89C400739385 /* BindingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24948F21EC89C400739385 /* BindingUtils.swift */; };
+		9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */; };
+		9B2D4A8722969F2000CC70B3 /* SugoInitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */; };
 		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
 		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
@@ -214,8 +215,9 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
-		9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+Sugo.swift"; path = "Sugo/UIApplication+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		9B24948F21EC89C400739385 /* BindingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BindingUtils.swift; path = Sugo/BindingUtils.swift; sourceTree = SOURCE_ROOT; };
+		9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+Sugo.swift"; path = "Sugo/UIApplication+Sugo.swift"; sourceTree = SOURCE_ROOT; };
+		9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SugoInitRequest.swift; path = Sugo/SugoInitRequest.swift; sourceTree = SOURCE_ROOT; };
 		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
 				144203F21E4897D80013FFCC /* Reachability.swift */,
 				A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */,
+				9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */,
 				14EADD231DF65ACB00E6B711 /* BindingMessage.swift in Sources */,
 				14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */,
+				9B2D4A8722969F2000CC70B3 /* SugoInitRequest.swift in Sources */,
 				144203F31E4897D80013FFCC /* Reachability.swift in Sources */,
 				14EADD4B1DF65ACB00E6B711 /* UIColorToNSString.swift in Sources */,
 				14EADD4C1DF65ACB00E6B711 /* UIViewBinding.swift in Sources */,

@@ -1175,7 +1175,9 @@ extension SugoInstance {
             self.track(eventName: values["PageStay"]!, properties: p)
             
             let currentTime = UInt64(Date().timeIntervalSince1970)
-            if weakSelf!.decideInstance.locateInterval>0.0 &&  currentTime-weakSelf!.decideInstance.recentlySendLoacationTime>=Int64(weakSelf!.decideInstance.locateInterval){
+            let userDefaults = UserDefaults.standard
+            let uploadLocation = userDefaults.integer(forKey: "uploadLocation")
+            if uploadLocation>0 && weakSelf!.decideInstance.locateInterval>0.0 &&  currentTime-weakSelf!.decideInstance.recentlySendLoacationTime>=Int64(uploadLocation*60){
                 weakSelf!.decideInstance.recentlySendLoacationTime=currentTime
                 
                 let values = SugoDimensions.keys

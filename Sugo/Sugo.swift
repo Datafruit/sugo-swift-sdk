@@ -43,22 +43,50 @@ open class Sugo {
      - returns: returns a Sugo instance if needed to keep throughout the project.
      You can always get the instance by calling getInstance(name)
      */
-    @discardableResult
+
     open class func initialize(isEnable: Bool? = true,
                                projectID: String,
                                token apiToken: String,
                                launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
                                flushInterval: Double = 60,
                                cacheInterval: Double = 3600,
-                               instanceName: String = UUID().uuidString) -> SugoInstance {
+                               instanceName: String = UUID().uuidString,
+                               completion: () -> Void) {
+        let sugoInitRequest = SugoInitRequest()
+        let semaphore = DispatchSemaphore(value: 0)
+        sugoInitRequest.sendRequest(appVersion: (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!, projectId: projectID, token: apiToken) {
+            (sugoInitResult) in
+
+            guard let sugoInitResult = sugoInitResult,
+                let isSugoInitialize = sugoInitResult["isSugoInitialize"] as? Bool,
+                let isHeatMapFunc = sugoInitResult["isHeatMapFunc"] as? Bool,
+                let uploadLocation = sugoInitResult["uploadLocation"] as? Int else {
+                    semaphore.signal()
+                    return
+            }
+            
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(isSugoInitialize, forKey: "isSugoInitialize")
+            userDefaults.set(isHeatMapFunc, forKey: "isHeatMapFunc")
+            userDefaults.set(uploadLocation, forKey: "uploadLocation")
+            userDefaults.synchronize()
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
-        return SugoManager.sharedInstance.initialize(isEnable:      isEnable!,
-                                                     id:            projectID,
-                                                     token:         apiToken,
-                                                     launchOptions: launchOptions,
-                                                     flushInterval: flushInterval,
-                                                     cacheInterval: cacheInterval,
-                                                     instanceName:  instanceName)
+        let userDefaults = UserDefaults.standard
+        let isSugoInitialize = userDefaults.bool(forKey: "isSugoInitialize")
+        if !isSugoInitialize {
+            return
+        }
+        SugoManager.sharedInstance.initialize(isEnable:      isEnable!,
+                                              id:            projectID,
+                                              token:         apiToken,
+                                              launchOptions: launchOptions,
+                                              flushInterval: flushInterval,
+                                              cacheInterval: cacheInterval,
+                                              instanceName:  instanceName)
+        completion()
     }
 
     /**
