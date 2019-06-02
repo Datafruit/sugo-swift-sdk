@@ -53,6 +53,7 @@ extension WebViewBindings {
                 source = try NSString(contentsOfFile: sourcePath,
                                       encoding: String.Encoding.utf8.rawValue) as String
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.debug(message: "Can not get javascript source from bundle resource")
             }
         }

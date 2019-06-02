@@ -62,39 +62,105 @@ class Decide {
                      sugoInstance: SugoInstance,
                      requestType:Int,
                      completion: @escaping ((_ response: DecideResponse?) -> Void)) {
+        var cacheObject = [String: Any]()
+        let userDefault = UserDefaults.standard
+        var cacheAppVersion = String()
+        var isUpdateConfig = userDefault.bool(forKey: "isUpdateConfig")
+        var latestVersion = String()
+        let latestDimensionVersion = userDefault.integer(forKey: "latestDimensionVersion")
+        let latestEventBindingVersion = userDefault.integer(forKey: "latestEventBindingVersion")
+        if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+            latestVersion = String(latestDimensionVersion)
+            if let sugoEventBindingsAppVersion = userDefault.string(forKey: "SugoDecideDimesionAppVersion"){
+                cacheAppVersion = sugoEventBindingsAppVersion
+            }
+            if let cacheData = userDefault.data(forKey: "SugoDecideDimesion") {
+                
+                let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
+                Logger.debug(message: "Cache decide result:\n\(cacheString.debugDescription)")
+                
+                do {
+                    if let co = try JSONSerialization.jsonObject(with: cacheData,
+                                                                 options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                        cacheObject = co
+                    }
+                } catch {
+                    Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
+                    Logger.debug(message: "Failed to serialize cache event bindings")
+                }
+            }
+        }else{
+            latestVersion = String(latestEventBindingVersion)
+            if let sugoEventBindingsAppVersion = userDefault.string(forKey: "SugoEventBindingsAppVersion"){
+                cacheAppVersion = sugoEventBindingsAppVersion
+            }
+            if let cacheData = userDefault.data(forKey: "SugoEventBindings") {
+                
+                let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
+                Logger.debug(message: "Cache decide result:\n\(cacheString.debugDescription)")
+                
+                do {
+                    if let co = try JSONSerialization.jsonObject(with: cacheData,
+                                                                 options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
+                        cacheObject = co
+                    }
+                } catch {
+                    Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
+                    Logger.debug(message: "Failed to serialize cache event bindings")
+                }
+            }
+        }
+        
+        if isUpdateConfig {
+            if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(-1, forKey: "SugoDecideDimesionAppVersion")
+                userDefaults.synchronize()
+            }else {
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(-1, forKey: "SugoEventBindingsAppVersion")
+                userDefaults.synchronize()
+            }
+        }else {
+            if cacheAppVersion == latestVersion {
+                if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+                    handleDecideDimensions(object: cacheObject)
+                }else {
+                    handleDecideEvent(object:cacheObject)
+                }
+                if requestType == DecideRequest.RequestType.decideEvent.rawValue{
+                    completion(decideResponse)
+                }
+                return
+            }
+        }
 
         var resultData = Data()
         var responseObject = [String: Any]()
         
         let userDefaults = UserDefaults.standard
-        var cacheObject = [String: Any]()
         var cacheVersion = -1;
-        var cacheAppVersion = String()
         var currentAppVersion = String()
         
-        if let sugoEventBindingsAppVersion = userDefaults.string(forKey: "SugoEventBindingsAppVersion"){
-            cacheAppVersion = sugoEventBindingsAppVersion
+        if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+            if let sugoEventBindingsAppVersion = userDefaults.string(forKey: "SugoDecideDimesionAppVersion"){
+                cacheAppVersion = sugoEventBindingsAppVersion
+            }
+        }else {
+            if let sugoEventBindingsAppVersion = userDefaults.string(forKey: "SugoEventBindingsAppVersion"){
+                cacheAppVersion = sugoEventBindingsAppVersion
+            }
         }
+       
         
         if let infoDict = Bundle.main.infoDictionary,
             let bundleShortVersionString = infoDict["CFBundleShortVersionString"] as? String  {
             currentAppVersion = bundleShortVersionString
         }
         
-        if let cacheData = userDefaults.data(forKey: "SugoEventBindings") {
-            
-            let cacheString = String(data: cacheData, encoding: String.Encoding.utf8)
-            Logger.debug(message: "Cache decide result:\n\(cacheString.debugDescription)")
-
-            do {
-                if let co = try JSONSerialization.jsonObject(with: cacheData,
-                                                             options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
-                    cacheObject = co
-                }
-            } catch {
-                Logger.debug(message: "Failed to serialize cache event bindings")
-            }
-        }
+        
+        
+        
         
         if let cv = cacheObject["event_bindings_version"] as? Int,
             cacheAppVersion == currentAppVersion {
@@ -121,6 +187,7 @@ class Decide {
                     let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                     Logger.debug(message: "Decide result:\n\(resultString.debugDescription)")
                 } catch {
+                    Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                     Logger.debug(message: "Decide serialize result error")
                 }
                                         
@@ -137,12 +204,14 @@ class Decide {
         
         let responseVersion = responseObject["event_bindings_version"] as? Int
         if responseVersion != cacheVersion || cacheAppVersion != currentAppVersion {
-            userDefaults.set(currentAppVersion, forKey: "SugoEventBindingsAppVersion")
-            userDefaults.set(resultData, forKey: "SugoEventBindings")
             userDefaults.synchronize()
             if requestType == DecideRequest.RequestType.decideDimesion.rawValue{
+                userDefaults.set(currentAppVersion, forKey: "SugoDecideDimesionAppVersion")
+                userDefaults.set(resultData, forKey: "SugoDecideDimesion")
                 handleDecideDimensions(object: responseObject)
             }else {
+                userDefaults.set(currentAppVersion, forKey: "SugoEventBindingsAppVersion")
+                userDefaults.set(resultData, forKey: "SugoEventBindings")
                 handleDecideEvent(object:responseObject)
             }
            } else {

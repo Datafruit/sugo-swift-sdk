@@ -24,7 +24,7 @@ class FileLogging: Logging {
                 do {
                     try fileManager.createDirectory(atPath: cachesDirectory + "/Sugo/", withIntermediateDirectories: true, attributes: nil)
                 } catch {
-                    
+                    Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 }
                 fileManager.createFile(atPath: logPath, contents: nil)
             }

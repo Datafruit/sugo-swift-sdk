@@ -110,6 +110,7 @@ class WebViewBindings: NSObject {
                                                           options: JSONSerialization.WritingOptions.prettyPrinted)
             self.stringBindings = String(data: jsonBindings, encoding: String.Encoding.utf8)!
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.debug(message: "Failed to serialize JSONObject: \(self.bindings)")
         }
     }

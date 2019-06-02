@@ -34,6 +34,7 @@ sugo.init_path = function() {
             var init_code = new Function('sugo', sugo.init.code);
             init_code(sugo);
         } catch (e) {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             console.log(sugo.init.code);
         }
     }
@@ -68,6 +69,7 @@ sugo.delegate = function(eventType) {
                                     var sugo_props = new Function('e', 'element', 'conf', 'instance', event.code);
                                     custom_props = sugo_props(e, ele, event, sugo);
                                 } catch (e) {
+                                    Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                                     console.log(event.code);
                                 }
                             }

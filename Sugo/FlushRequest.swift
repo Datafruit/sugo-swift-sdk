@@ -47,6 +47,30 @@ class FlushRequest: Network {
                                 completion(success)
         })
     }
+    
+    public func sendExecption(map:[String:String],topic:String) {
+        let date = try! JSONSerialization.data(withJSONObject: map, options: .prettyPrinted)
+        let responseParser: (Data) -> Int? = { data in
+            let response = String(data: data, encoding: String.Encoding.utf8)
+            if let response = response {
+                return Int(response) ?? 0
+            }
+            return nil
+        }
+        let resource = Network.buildResource(path: "/post",
+                                             method: .post,
+                                             requestBody: date,
+                                             queryItems: [URLQueryItem(name: "locate",
+                                                                       value: topic)],
+                                             headers: ["Accept-Encoding": "gzip"],
+                                             parse: responseParser)
+        
+        flushRequestHandler(BasePath.CollectEventsAPI,
+                            resource: resource,
+                            completion: { success in
+                                
+        })
+    }
 
     private func flushRequestHandler(_ base: String,
                                      resource: Resource<Int>,

@@ -15,8 +15,10 @@ open class Sugo {
     public static var BindingsURL: String?
     public static var CollectionURL: String?
     public static var CodelessURL: String?
-    public static let CURRENTCONTROLLER:String = "CurrentControllerOrUrl"
+    public static var SugoExceptionTopic:String?
+    public static var CURRENTCONTROLLER:String = "CurrentControllerOrUrl"
     public static var classAttributeDict:Dictionary<String, String> = [:]
+    
     public class func registerPriorityProperties(priorityProperties: [String: Any]) {
         
         let userDefaults = UserDefaults.standard
@@ -52,15 +54,53 @@ open class Sugo {
                                cacheInterval: Double = 3600,
                                instanceName: String = UUID().uuidString,
                                completion: () -> Void) {
+
+        
+        
+        do{
+            try checkInitialize(projectID: projectID, token: apiToken, completion: completion)
+        }catch{
+            print("AVCaptureDeviceInput exception: \(error.localizedDescription)")
+            let flushRequest = FlushRequest()
+            let dict = ExceptionUtils.exceptionInfo(error: error)
+            
+            
+            var topic = "sugo_exception";
+            if (Sugo.SugoExceptionTopic != nil) {
+                topic = Sugo.SugoExceptionTopic!
+            }
+            flushRequest.sendExecption(map:dict,topic:topic)
+        }
+        
+        
+        
+    }
+    
+    
+    
+    class func checkInitialize(isEnable: Bool? = true,
+                                    projectID: String,
+                                    token apiToken: String,
+                                    launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
+                                    flushInterval: Double = 60,
+                                    cacheInterval: Double = 3600,
+                                    instanceName: String = UUID().uuidString,
+                                    completion: () -> Void) throws{
+        
+       
+        
         let sugoInitRequest = SugoInitRequest()
         let semaphore = DispatchSemaphore(value: 0)
         sugoInitRequest.sendRequest(appVersion: (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!, projectId: projectID, token: apiToken) {
             (sugoInitResult) in
-
+            
             guard let sugoInitResult = sugoInitResult,
                 let isSugoInitialize = sugoInitResult["isSugoInitialize"] as? Bool,
                 let isHeatMapFunc = sugoInitResult["isHeatMapFunc"] as? Bool,
-                let uploadLocation = sugoInitResult["uploadLocation"] as? Int else {
+                let uploadLocation = sugoInitResult["uploadLocation"] as? Int,
+                let latestEventBindingVersion = sugoInitResult["latestEventBindingVersion"] as? Int,
+                let latestDimensionVersion = sugoInitResult["latestDimensionVersion"] as? Int,
+                let isUpdateConfig = sugoInitResult["isUpdateConfig"] as? Bool else {
                     semaphore.signal()
                     return
             }
@@ -69,6 +109,10 @@ open class Sugo {
             userDefaults.set(isSugoInitialize, forKey: "isSugoInitialize")
             userDefaults.set(isHeatMapFunc, forKey: "isHeatMapFunc")
             userDefaults.set(uploadLocation, forKey: "uploadLocation")
+            
+            userDefaults.set(latestEventBindingVersion, forKey: "latestEventBindingVersion")
+            userDefaults.set(latestDimensionVersion, forKey: "latestDimensionVersion")
+            userDefaults.set(isUpdateConfig, forKey: "isUpdateConfig")
             userDefaults.synchronize()
             semaphore.signal()
         }

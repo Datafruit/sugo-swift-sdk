@@ -43,6 +43,7 @@ class Heats {
                                             let resultString = String(data: resultData, encoding: String.Encoding.utf8)
                                             Logger.debug(message: "Heats result:\n\(resultString.debugDescription)")
                                         } catch {
+                                            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                                             Logger.debug(message: "Heats serialize result error")
                                         }
                                         

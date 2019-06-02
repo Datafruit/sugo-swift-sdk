@@ -256,6 +256,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
                     }
                 }
             } catch {
+                self.track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.debug(message: "buildPageInfo:Failed to serialize cache event bindings")
             }
         }
@@ -289,6 +290,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         do {
             try self.reachability.startNotifier()
         } catch {
+            self.track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.debug(message: "Reachability exception")
         }
         

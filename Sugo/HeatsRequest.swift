@@ -48,6 +48,7 @@ class HeatsRequest: Network {
             do {
                 response = try JSONSerialization.jsonObject(with: data, options: [])
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.warn(message: "exception decoding api data")
             }
             return response as? HeatsResult
