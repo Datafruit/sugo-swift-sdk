@@ -31,6 +31,7 @@ import UIKit
                 return ["mime_type": "text/html"]
             }
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.debug(message: "Failed to convert NSAttributedString to HTML")
         }
         return nil

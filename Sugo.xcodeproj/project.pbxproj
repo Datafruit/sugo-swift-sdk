@@ -108,6 +108,7 @@
 		9B24949021EC89C400739385 /* BindingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B24948F21EC89C400739385 /* BindingUtils.swift */; };
 		9B269B1E21E5934C00983649 /* UIApplication+Sugo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */; };
 		9B2D4A8722969F2000CC70B3 /* SugoInitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */; };
+		9B2D4AA222A0C50900CC70B3 /* ExceptionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2D4AA122A0C50900CC70B3 /* ExceptionUtils.swift */; };
 		A71BD3D8211768BE0029F09A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BD3D7211768BE0029F09A /* CoreLocation.framework */; };
 		A71BD3DF21177A1E0029F09A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BD3DE21177A1E0029F09A /* Locations.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
@@ -218,6 +219,7 @@
 		9B24948F21EC89C400739385 /* BindingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BindingUtils.swift; path = Sugo/BindingUtils.swift; sourceTree = SOURCE_ROOT; };
 		9B269B1D21E5934C00983649 /* UIApplication+Sugo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIApplication+Sugo.swift"; path = "Sugo/UIApplication+Sugo.swift"; sourceTree = SOURCE_ROOT; };
 		9B2D4A8622969F2000CC70B3 /* SugoInitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SugoInitRequest.swift; path = Sugo/SugoInitRequest.swift; sourceTree = SOURCE_ROOT; };
+		9B2D4AA122A0C50900CC70B3 /* ExceptionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExceptionUtils.swift; path = Sugo/ExceptionUtils.swift; sourceTree = SOURCE_ROOT; };
 		A71BD3D7211768BE0029F09A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A71BD3DE21177A1E0029F09A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				147C00EE1DF66B90001FF110 /* SugoType.swift */,
 				144DB17F1DF65BD5007B2275 /* Track */,
 				144DB17E1DF65BC5007B2275 /* Utilities */,
+				9B2D4AA122A0C50900CC70B3 /* ExceptionUtils.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				14EADD431DF65ACB00E6B711 /* Persistence.swift in Sources */,
 				14EADD201DF65ACB00E6B711 /* ApplicationStateSerializer.swift in Sources */,
 				14EADD451DF65ACB00E6B711 /* SHA256.swift in Sources */,
+				9B2D4AA222A0C50900CC70B3 /* ExceptionUtils.swift in Sources */,
 				148F37191E07B52C00E2A98D /* AttributesPaser.swift in Sources */,
 				14EADD2B1DF65ACB00E6B711 /* Constants.swift in Sources */,
 				14EADD351DF65ACB00E6B711 /* Logger.swift in Sources */,

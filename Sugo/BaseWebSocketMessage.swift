@@ -41,6 +41,7 @@ class BaseWebSocketMessage: WebSocketMessageProtocol {
             do {
                 data = try JSONSerialization.data(withJSONObject: jsonObject)
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.error(message: "Failed to serialize websocket message:\(error.localizedDescription)")
             }
         } else {

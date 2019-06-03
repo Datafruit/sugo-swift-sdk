@@ -274,6 +274,7 @@ extension WebViewBindings {
                     resString = string
                 }
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.debug(message: "exception: \(error), decoding resJSON data: \(resJSON) -> \(resString)")
             }
         }
@@ -287,6 +288,7 @@ extension WebViewBindings {
                     infosString = string
                 }
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.debug(message: "exception: \(error), decoding resJSON data: \(infosJSON) -> \(infosString)")
             }
         }

@@ -157,6 +157,7 @@ class WebSocketWrapper: WebSocketDelegate {
                 Logger.warn(message: "Badly formed socket message, expected JSON dictionary.")
             }
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.warn(message: "Badly formed socket message, can't serialize object.")
         }
 

@@ -43,6 +43,7 @@ class JSONHandler {
             serializedObject = try JSONSerialization
                 .data(withJSONObject: serializableJSONObject, options: [])
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.warn(message: "exception encoding api data")
         }
         return serializedObject
@@ -89,6 +90,7 @@ class JSONHandler {
                                                            options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
             deserializedObject = JSONHandler.makeObjectDeserializable(pObject)
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.debug(message: "exception: \(error)")
         }
         

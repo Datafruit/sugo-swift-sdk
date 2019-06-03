@@ -160,6 +160,7 @@ extension HeatMap {
                 heats = hm
             }
         } catch {
+            Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
             Logger.error(message: "Heat Map Exception: \(error.localizedDescription)")
         }
         
@@ -186,6 +187,7 @@ extension HeatMap {
                     }
                 }
             } catch {
+                Sugo.mainInstance().track(eventName: ExceptionUtils.SUGOEXCEPTION, properties: ExceptionUtils.exceptionInfo(error: error))
                 Logger.error(message: "Heat Map Exception: \(error.localizedDescription)")
             }
         }
