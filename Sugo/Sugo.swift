@@ -15,7 +15,6 @@ open class Sugo {
     public static var BindingsURL: String?
     public static var CollectionURL: String?
     public static var CodelessURL: String?
-    
     public class func registerPriorityProperties(priorityProperties: [String: Any]) {
         
         let userDefaults = UserDefaults.standard
@@ -58,6 +57,74 @@ open class Sugo {
                                                      flushInterval: flushInterval,
                                                      cacheInterval: cacheInterval,
                                                      instanceName:  instanceName)
+    }
+    
+    open class func initialize(isEnable: Bool? = true,
+                               projectID: String,
+                               token apiToken: String,
+                               launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
+                               flushInterval: Double = 60,
+                               cacheInterval: Double = 3600,
+                               instanceName: String = UUID().uuidString,
+                               completion: () -> Void) {
+        checkInitialize(projectID: projectID, token: apiToken, completion: completion)
+    }
+    
+    
+    
+    class func checkInitialize(isEnable: Bool? = true,
+                               projectID: String,
+                               token apiToken: String,
+                               launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil,
+                               flushInterval: Double = 60,
+                               cacheInterval: Double = 3600,
+                               instanceName: String = UUID().uuidString,
+                               completion: () -> Void){
+        
+        
+        
+        let sugoInitRequest = SugoInitRequest()
+        let semaphore = DispatchSemaphore(value: 0)
+        sugoInitRequest.sendRequest(appVersion: (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!, projectId: projectID, token: apiToken) {
+            (sugoInitResult) in
+            
+            guard let sugoInitResult = sugoInitResult,
+                let isSugoInitialize = sugoInitResult["isSugoInitialize"] as? Bool,
+                let isHeatMapFunc = sugoInitResult["isHeatMapFunc"] as? Bool,
+                let uploadLocation = sugoInitResult["uploadLocation"] as? Int,
+                let latestEventBindingVersion = sugoInitResult["latestEventBindingVersion"] as? Int,
+                let latestDimensionVersion = sugoInitResult["latestDimensionVersion"] as? Int,
+                let isUpdateConfig = sugoInitResult["isUpdateConfig"] as? Bool else {
+                    semaphore.signal()
+                    return
+            }
+            
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(isSugoInitialize, forKey: "isSugoInitialize")
+            userDefaults.set(isHeatMapFunc, forKey: "isHeatMapFunc")
+            userDefaults.set(uploadLocation, forKey: "uploadLocation")
+            
+            userDefaults.set(latestEventBindingVersion, forKey: "latestEventBindingVersion")
+            userDefaults.set(latestDimensionVersion, forKey: "latestDimensionVersion")
+            userDefaults.set(isUpdateConfig, forKey: "isUpdateConfig")
+            userDefaults.synchronize()
+            semaphore.signal()
+        }
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        
+        let userDefaults = UserDefaults.standard
+        let isSugoInitialize = userDefaults.bool(forKey: "isSugoInitialize")
+        if !isSugoInitialize {
+            return
+        }
+        SugoManager.sharedInstance.initialize(isEnable:      isEnable!,
+                                              id:            projectID,
+                                              token:         apiToken,
+                                              launchOptions: launchOptions,
+                                              flushInterval: flushInterval,
+                                              cacheInterval: cacheInterval,
+                                              instanceName:  instanceName)
+        completion()
     }
 
     /**

@@ -105,6 +105,9 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		9BF8AE4522B23B2F00C99E59 /* FirstStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4422B23B2F00C99E59 /* FirstStartRequest.swift */; };
+		9BF8AE4722B23C9D00C99E59 /* SugoInitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4622B23C9D00C99E59 /* SugoInitRequest.swift */; };
+		9BF8AE4922B23D7900C99E59 /* ExceptionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4822B23D7900C99E59 /* ExceptionUtils.swift */; };
 		A74C454F1FDF737100D91B0F /* UICollectionViewBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */; };
 		A77D44E11FBAF87B00FCDEA0 /* FirstLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */; };
 /* End PBXBuildFile section */
@@ -210,6 +213,9 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		9BF8AE4422B23B2F00C99E59 /* FirstStartRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirstStartRequest.swift; path = Sugo/FirstStartRequest.swift; sourceTree = SOURCE_ROOT; };
+		9BF8AE4622B23C9D00C99E59 /* SugoInitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SugoInitRequest.swift; path = Sugo/SugoInitRequest.swift; sourceTree = SOURCE_ROOT; };
+		9BF8AE4822B23D7900C99E59 /* ExceptionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExceptionUtils.swift; path = Sugo/ExceptionUtils.swift; sourceTree = SOURCE_ROOT; };
 		A74C454E1FDF737100D91B0F /* UICollectionViewBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewBinding.swift; sourceTree = "<group>"; };
 		A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FirstLoginRequest.swift; path = Sugo/FirstLoginRequest.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -270,6 +276,7 @@
 				144DB1841DF65F5A007B2275 /* Transformers */,
 				144DB1861DF66004007B2275 /* Data */,
 				144DB1851DF65F6C007B2275 /* Logger */,
+				9BF8AE4822B23D7900C99E59 /* ExceptionUtils.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -314,6 +321,7 @@
 		144DB1821DF65D6F007B2275 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				9BF8AE4422B23B2F00C99E59 /* FirstStartRequest.swift */,
 				14EADD0B1DF65ACB00E6B711 /* SSLSecurity.swift */,
 				14EADCFE1DF65ACB00E6B711 /* Network.swift */,
 				14EADCF51DF65ACA00E6B711 /* Flush.swift */,
@@ -323,6 +331,7 @@
 				14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */,
 				144203F21E4897D80013FFCC /* Reachability.swift */,
 				A77D44E01FBAF87B00FCDEA0 /* FirstLoginRequest.swift */,
+				9BF8AE4622B23C9D00C99E59 /* SugoInitRequest.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -664,9 +673,11 @@
 				14C4CC6D1E32354A005ADF42 /* UIViewController+Sugo.swift in Sources */,
 				14EADD471DF65ACB00E6B711 /* SSLSecurity.swift in Sources */,
 				144D07251EBDB3D5004D7585 /* HeatMap.swift in Sources */,
+				9BF8AE4522B23B2F00C99E59 /* FirstStartRequest.swift in Sources */,
 				14EADD3F1DF65ACB00E6B711 /* ObjectSerializer.swift in Sources */,
 				1487ACA51DF6DDE900BB6B14 /* UILayoutSupportToNSString.swift in Sources */,
 				147C00EF1DF66B90001FF110 /* SugoType.swift in Sources */,
+				9BF8AE4922B23D7900C99E59 /* ExceptionUtils.swift in Sources */,
 				14EADD2D1DF65ACB00E6B711 /* DeviceInfoMessage.swift in Sources */,
 				14EADD251DF65ACB00E6B711 /* CGPointToNSDictionary.swift in Sources */,
 				14EADD3B1DF65ACB00E6B711 /* NSAttributedStringToNSDictionary.swift in Sources */,
@@ -703,6 +714,7 @@
 				14EADD231DF65ACB00E6B711 /* BindingMessage.swift in Sources */,
 				14EADD4E1DF65ACB00E6B711 /* UIFontToNSDictionary.swift in Sources */,
 				144203F31E4897D80013FFCC /* Reachability.swift in Sources */,
+				9BF8AE4722B23C9D00C99E59 /* SugoInitRequest.swift in Sources */,
 				14EADD4B1DF65ACB00E6B711 /* UIColorToNSString.swift in Sources */,
 				14EADD4C1DF65ACB00E6B711 /* UIViewBinding.swift in Sources */,
 				14EADD291DF65ACB00E6B711 /* ClearMessage.swift in Sources */,
