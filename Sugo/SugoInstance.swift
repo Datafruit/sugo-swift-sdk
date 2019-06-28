@@ -1180,9 +1180,12 @@ extension SugoInstance {
             return
         }
         serialQueue.async {
-            self.decideInstance.checkDecide(forceFetch: forceFetch,
+            self.decideInstance.runEventApiRequest(forceFetch: forceFetch,
                                             sugoInstance: self,
                                             completion: completion)
+            
+            self.decideInstance.runDimApiRequest(forceFetch: forceFetch,
+                                            sugoInstance: self)
         }
     }
 
