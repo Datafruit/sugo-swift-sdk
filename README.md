@@ -77,7 +77,7 @@ git submodule add git@github.com:Datafruit/sugo-swift-sdk.git
 
 ### 2.1 获取SDK配置信息
 
-登陆数果星盘后，可在平台界面中创建项目和数据接入方式，创建数据接入方式时，即可获得项目ID与Token。
+登陆行为分析平台后，可在平台界面中创建项目和数据接入方式，创建数据接入方式时，即可获得项目ID与Token。
 
 ### 2.2 配置并获取SDK对象
 
@@ -94,15 +94,20 @@ import Sugo
 把以下代码复制到`AppDelegate.swift`中，并填入已获得的项目ID与Token：
 
 ```
-func initSugo() {
-    let id: String = "Add_Your_Project_ID_Here"
-    let token: String = "Add_Your_App_Token_Here"
-    Sugo.initialize(id: id, token: token)
-    Sugo.mainInstance().loggingEnabled = true   // 如果需要查看SDK的Log，请设置为true
-    Sugo.mainInstance().flushInterval = 5       // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
-    Sugo.mainInstance().cacheInterval = 60      // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
-    // Sugo.mainInstance().registerModule()     // 需要支持Weex可视化埋点时调用
+fileprivate func initSugo() {
+    let id: String = "Add_Your_Project_ID_Here" // 项目ID
+    let token: String = "Add_Your_App_Token_Here" // 应用ID
+    Sugo.BindingsURL = "http://192.168.0.82:8080" // 设置获取绑定事件配置的URL，端口默认为8000
+    Sugo.CollectionURL = "http://192.168.0.220" // 设置传输绑定事件的网管URL，端口默认为80
+    Sugo.CodelessURL = "ws://58.63.110.97:18083" // 设置连接可视化埋点的URL，端口默认为8887
+    Sugo.initialize(projectID: id, token: token){
+        Sugo.mainInstance().loggingEnabled = true // 如果需要查看SDK的Log，请设置为true
+        Sugo.mainInstance().flushInterval = 5 // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
+        Sugo.mainInstance().cacheInterval = 60 // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
+        // Sugo.mainInstance().registerModule()     // 需要支持Weex可视化埋点时调用
+    }
 }
+
 ```
 #### 2.2.3 调用SDK对象初始化代码
 
@@ -149,7 +154,7 @@ Sugo.mainInstance().handle(url: url)
 
 ##### 2.3.1.4 连接
 
-登陆数果星盘，进入对应Token的可视化埋点界面，可看见二维码，保持埋点设备网络畅通，通过设备任意可扫二维码的应用扫一扫，然后用Safari打开链接，点击网页中的链接，即可进入可视化埋点模式。
+登陆行为分析平台，进入对应Token的可视化埋点界面，可看见二维码，保持埋点设备网络畅通，通过设备任意可扫二维码的应用扫一扫，然后用Safari打开链接，点击网页中的链接，即可进入可视化埋点模式。
 此时设备上方将出现可视化埋点连接条，网页可视化埋点界面将显示设备当前页面及相应可绑定控件信息。
 
 #### 2.3.2 通过自身应用进行扫码
