@@ -173,7 +173,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     var eventsQueue = Queue()
     var timedEvents = InternalProperties()
     var serialQueue: DispatchQueue!
-    var taskId = UIBackgroundTaskInvalid
+    var taskId = UIBackgroundTaskIdentifier.invalid
     let flushInstance = Flush()
     let cacheInstance = Cache()
     let trackInstance: Track
@@ -185,7 +185,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     init(isEnable: Bool? = true,
          projectID: String?,
          apiToken: String?,
-         launchOptions: [UIApplicationLaunchOptionsKey : Any]?,
+         launchOptions: [UIApplication.LaunchOptionsKey : Any]?,
          flushInterval: Double,
          cacheInterval: Double) {
 
@@ -247,23 +247,23 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationWillTerminate(_:)),
-                                       name: .UIApplicationWillTerminate,
+                                       name: UIApplication.willTerminateNotification,
                                        object: nil)
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationWillResignActive(_:)),
-                                       name: .UIApplicationWillResignActive,
+                                       name: UIApplication.willResignActiveNotification,
                                        object: nil)
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationDidBecomeActive(_:)),
-                                       name: .UIApplicationDidBecomeActive,
+                                       name: UIApplication.didBecomeActiveNotification,
                                        object: nil)
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationDidEnterBackground(_:)),
-                                       name: .UIApplicationDidEnterBackground,
+                                       name: UIApplication.didEnterBackgroundNotification,
                                        object: nil)
         notificationCenter.addObserver(self,
                                        selector: #selector(applicationWillEnterForeground(_:)),
-                                       name: .UIApplicationWillEnterForeground,
+                                       name: UIApplication.willEnterForegroundNotification,
                                        object: nil)
         #if targetEnvironment(simulator)
         initializeGestureRecognizer()
@@ -322,16 +322,16 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         }
         
         taskId = sharedApplication.beginBackgroundTask() {
-            self.taskId = UIBackgroundTaskInvalid
+            self.taskId = UIBackgroundTaskIdentifier.invalid
         }
         
         serialQueue.async() {
             self.archive()
             self.decideInstance.decideFetched = false
 
-            if self.taskId != UIBackgroundTaskInvalid {
+            if self.taskId != UIBackgroundTaskIdentifier.invalid {
                 sharedApplication.endBackgroundTask(self.taskId)
-                self.taskId = UIBackgroundTaskInvalid
+                self.taskId = UIBackgroundTaskIdentifier.invalid
             }
         }
     }
@@ -371,9 +371,9 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
         }
         
         serialQueue.async() {
-            if self.taskId != UIBackgroundTaskInvalid {
+            if self.taskId != UIBackgroundTaskIdentifier.invalid {
                 UIApplication.shared.endBackgroundTask(self.taskId)
-                self.taskId = UIBackgroundTaskInvalid
+                self.taskId = UIBackgroundTaskIdentifier.invalid
                 #if os(iOS)
                     self.updateNetworkActivityIndicator(false)
                 #endif
@@ -582,7 +582,7 @@ open class SugoInstance: CustomDebugStringConvertible, FlushDelegate, CacheDeleg
     }
 
     @objc func connectGestureRecognized(gesture: UILongPressGestureRecognizer) {
-        if gesture.state == UIGestureRecognizerState.began && enableVisualEditorForCodeless {
+        if gesture.state == UIGestureRecognizer.State.began && enableVisualEditorForCodeless {
             connectToWebSocket()
         }
     }

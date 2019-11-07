@@ -101,9 +101,9 @@ extension WebViewBindings {
         if let eventString = webView.stringByEvaluatingJavaScript(from: "sugo.trackStayEvent();"),
             let eventData = eventString.data(using: String.Encoding.utf8),
             let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
-            let eventID = event!["eventID"] as? String,
-            let eventName = event!["eventName"] as? String,
-            let properties = event!["properties"] as? String {
+            let eventID = event["eventID"] as? String,
+            let eventName = event["eventName"] as? String,
+            let properties = event["properties"] as? String {
             let storage = WebViewInfoStorage.global
             storage.eventID = eventID
             storage.eventName = eventName
@@ -130,15 +130,15 @@ extension WebViewBindings {
                     let event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
                     let storage = WebViewInfoStorage.global
                     if npi == "track",
-                        let eventID = event!["eventID"] as? String,
-                        let eventName = event!["eventName"] as? String,
-                        let properties = event!["properties"] as? String {
+                        let eventID = event["eventID"] as? String,
+                        let eventName = event["eventName"] as? String,
+                        let properties = event["properties"] as? String {
                         storage.eventID = eventID
                         storage.eventName = eventName
                         storage.properties = properties
                         track(eventID: storage.eventID, eventName: storage.eventName, properties: storage.properties)
                     } else if npi == "time",
-                        let eventName = event!["eventName"] as? String {
+                        let eventName = event["eventName"] as? String {
                         Sugo.mainInstance().time(event: eventName)
                     }
                 }
@@ -165,7 +165,7 @@ class SugoURLRequestObject: NSObject {
 
 extension UIWebView {
     
-    @objc func sugoWebViewShouldStartLoad(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    @objc func sugoWebViewShouldStartLoad(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         var returnValue = true
         if let delegate = webView.delegate {
             let originalSelector = #selector(delegate.webView(_:shouldStartLoadWith:navigationType:))
@@ -174,7 +174,7 @@ extension UIWebView {
                 for (_, block) in swizzle.blocks {
                     block(self, swizzle.selector, webView, SugoURLRequestObject(request: request))
                 }
-                typealias SUGOCFunction = @convention(c) (AnyObject, Selector, UIWebView, URLRequest, UIWebViewNavigationType) -> Bool
+                typealias SUGOCFunction = @convention(c) (AnyObject, Selector, UIWebView, URLRequest, UIWebView.NavigationType) -> Bool
                 let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: SUGOCFunction.self)
                 returnValue = curriedImplementation(self, originalSelector, webView, request, navigationType)
             }

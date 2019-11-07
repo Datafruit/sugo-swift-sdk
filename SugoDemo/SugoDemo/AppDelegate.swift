@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         initSugo()
         return true
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
         return Sugo.mainInstance().handle(url: url)
     }
@@ -62,17 +62,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     fileprivate func initSugo() {
-        let id: String = "Add_Your_Project_ID_Here"
-        let token: String = "Add_Your_App_Token_Here"
-//        Sugo.BindingsURL = ""
-//        Sugo.CollectionURL = ""
-//        Sugo.CodelessURL = ""
-        let priorityProperties = [String: Any]()
-        Sugo.registerPriorityProperties(priorityProperties: priorityProperties)
-        Sugo.initialize(projectID: id, token: token)
-        Sugo.mainInstance().loggingEnabled = true
-        Sugo.mainInstance().flushInterval = 5
-        Sugo.mainInstance().cacheInterval = 60
+        let id: String = "tindex_H1bIzqK2SZ_project_iin8GdGuep" // 项目ID
+        let token: String = "99524cf841b490c1f191f11443f5fb0c" // 应用ID
+        Sugo.BindingsURL = "http://183.6.26.89:2270" // 设置获取绑定事件配置的URL，端口默认为8000
+        Sugo.CollectionURL = "http://183.6.26.89:2271" // 设置传输绑定事件的网管URL，端口默认为80
+        Sugo.CodelessURL = "ws://183.6.26.89:2227" // 设置连接可视化埋点的URL，端口默认为8887
+        Sugo.initialize(projectID: id, token: token){
+            Sugo.mainInstance().loggingEnabled = true // 如果需要查看SDK的Log，请设置为true
+            Sugo.mainInstance().flushInterval = 5 // 被绑定的事件数据往服务端上传的时间间隔，单位是秒，如若不设置，默认时间是60秒
+            Sugo.mainInstance().cacheInterval = 60 // 从服务端拉取绑定事件配置的时间间隔，单位是秒，如若不设置，默认时间是1小时
+        }
     }
     
 }

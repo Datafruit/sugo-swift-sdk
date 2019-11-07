@@ -11,16 +11,16 @@ import UIKit
 
 class UIViewBinding: CodelessBinding {
 
-    let controlEvent: UIControlEvents
-    let verifyEvent: UIControlEvents
+    let controlEvent: UIControl.Event
+    let verifyEvent: UIControl.Event
     var verified: NSHashTable<UIControl>
     var appliedTo: NSHashTable<UIView>
 
-    init(eventID: String, eventName: String, path: String, controlEvent: UIControlEvents? = nil, verifyEvent: UIControlEvents? = nil, attributes: Attributes? = nil) {
+    init(eventID: String, eventName: String, path: String, controlEvent: UIControl.Event? = nil, verifyEvent: UIControl.Event? = nil, attributes: Attributes? = nil) {
         if let controlEvent = controlEvent {
             self.controlEvent = controlEvent
         } else {
-            self.controlEvent = UIControlEvents(rawValue: 0)
+            self.controlEvent = UIControl.Event(rawValue: 0)
         }
         self.verifyEvent = self.controlEvent
         self.verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
@@ -45,16 +45,16 @@ class UIViewBinding: CodelessBinding {
             return nil
         }
 
-        var finalControlEvent: UIControlEvents?
-        var finalVerifyEvent: UIControlEvents?
-        if let controlEvent = object["control_event"] as? UInt, controlEvent & UIControlEvents.allEvents.rawValue != 0 {
-            finalControlEvent = UIControlEvents(rawValue: controlEvent)
-            if let verifyEvent = object["verify_event"] as? UInt, verifyEvent & UIControlEvents.allEvents.rawValue != 0 {
-                finalVerifyEvent = UIControlEvents(rawValue: verifyEvent)
-            } else if controlEvent & UIControlEvents.allTouchEvents.rawValue != 0 {
-                finalVerifyEvent = UIControlEvents.touchDown
-            } else if controlEvent & UIControlEvents.allEditingEvents.rawValue != 0 {
-                finalVerifyEvent = UIControlEvents.editingDidBegin
+        var finalControlEvent: UIControl.Event?
+        var finalVerifyEvent: UIControl.Event?
+        if let controlEvent = object["control_event"] as? UInt, controlEvent & UIControl.Event.allEvents.rawValue != 0 {
+            finalControlEvent = UIControl.Event(rawValue: controlEvent)
+            if let verifyEvent = object["verify_event"] as? UInt, verifyEvent & UIControl.Event.allEvents.rawValue != 0 {
+                finalVerifyEvent = UIControl.Event(rawValue: verifyEvent)
+            } else if controlEvent & UIControl.Event.allTouchEvents.rawValue != 0 {
+                finalVerifyEvent = UIControl.Event.touchDown
+            } else if controlEvent & UIControl.Event.allEditingEvents.rawValue != 0 {
+                finalVerifyEvent = UIControl.Event.editingDidBegin
             }
         }
 
@@ -72,8 +72,8 @@ class UIViewBinding: CodelessBinding {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        controlEvent = UIControlEvents(rawValue: aDecoder.decodeObject(forKey: "controlEvent") as! UInt)
-        verifyEvent = UIControlEvents(rawValue: aDecoder.decodeObject(forKey: "verifyEvent") as! UInt)
+        controlEvent = UIControl.Event(rawValue: aDecoder.decodeObject(forKey: "controlEvent") as! UInt)
+        verifyEvent = UIControl.Event(rawValue: aDecoder.decodeObject(forKey: "verifyEvent") as! UInt)
         verified = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         appliedTo = NSHashTable(options: [NSHashTableWeakMemory, NSHashTableObjectPointerPersonality])
         super.init(coder: aDecoder)
@@ -140,7 +140,7 @@ class UIViewBinding: CodelessBinding {
 
                         for view in objects {
                             if let view = view as? UIControl {
-                                if self.verifyEvent != UIControlEvents(rawValue:0) && self.verifyEvent != self.controlEvent {
+                                if self.verifyEvent != UIControl.Event(rawValue:0) && self.verifyEvent != self.controlEvent {
                                     view.addTarget(self, action: #selector(self.preVerify(sender:event:)), for: self.verifyEvent)
                                 }
                                 view.addTarget(self, action: #selector(self.execute(sender:event:)), for: self.controlEvent)
@@ -236,7 +236,7 @@ class UIViewBinding: CodelessBinding {
 
     func stopOn(view: UIView) {
         if let view = view as? UIControl {
-            if verifyEvent != UIControlEvents(rawValue: 0) && verifyEvent != controlEvent {
+            if verifyEvent != UIControl.Event(rawValue: 0) && verifyEvent != controlEvent {
                 view.removeTarget(self, action: #selector(self.preVerify(sender:event:)), for: verifyEvent)
             }
             view.removeTarget(self, action: #selector(self.execute(sender:event:)), for: controlEvent)
@@ -270,7 +270,7 @@ class UIViewBinding: CodelessBinding {
 
     @objc func execute(sender: UIControl, event: UIEvent) {
         var shouldTrack = false
-        if verifyEvent != UIControlEvents(rawValue: 0) && verifyEvent != controlEvent {
+        if verifyEvent != UIControl.Event(rawValue: 0) && verifyEvent != controlEvent {
             shouldTrack = verified.contains(sender)
         } else {
             shouldTrack = verifyControlMatchesPath(sender)
@@ -295,7 +295,7 @@ class UIViewBinding: CodelessBinding {
                     }
                 }
             }
-            if controlEvent == UIControlEvents.editingDidBegin {
+            if controlEvent == UIControl.Event.editingDidBegin {
                 p[keys["EventType"]!] = values["focus"]!
             } else {
                 p[keys["EventType"]!] = values["click"]!

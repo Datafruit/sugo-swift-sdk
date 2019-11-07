@@ -202,16 +202,16 @@ extension ObjectSerializer {
         if var eventString = webView.stringByEvaluatingJavaScript(from: wvBindings.jsSource(of: "WebViewExcute.Report")),
             var eventData = eventString.data(using: String.Encoding.utf8),
             var event = try? JSONSerialization.jsonObject(with: eventData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
-            let title = event!["title"] as? String,
-            let path = event!["path"] as? String,
-            let width = event!["clientWidth"] as? Int,
-            let height = event!["clientHeight"] as? Int,
-            let viewportContent = event!["viewportContent"] as? String,
-            let nodes = event!["nodes"] as? String {
+            let title = event["title"] as? String,
+            let path = event["path"] as? String,
+            let width = event["clientWidth"] as? Int,
+            let height = event["clientHeight"] as? Int,
+            let viewportContent = event["viewportContent"] as? String,
+            let nodes = event["nodes"] as? String {
             storage.setHTMLInfo(withTitle: title, path: path, width: "\(width)", height: "\(height)", viewportContent: viewportContent, nodes: nodes)
             eventString.removeAll()
             eventData.removeAll()
-            event?.removeAll()
+            event.removeAll()
         }
         
         return storage.getHTMLInfo()

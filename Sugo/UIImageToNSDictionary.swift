@@ -45,7 +45,7 @@ import UIKit
         let images = image.images ?? [image]
         var imageDictionaries = [NSDictionary]()
         for img in images {
-            if UIImagePNGRepresentation(img) != nil {
+            if img.pngData() != nil {
                 let imageDictionary = ["scale": image.scale,
                                        "mime_type": "image/png"] as NSDictionary
                 imageDictionaries.append(imageDictionary)
