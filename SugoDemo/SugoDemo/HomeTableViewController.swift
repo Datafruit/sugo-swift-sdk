@@ -69,9 +69,9 @@ class HomeTableViewController: UITableViewController {
     func createCameraAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "相机权限不足",
                                                 message: "请到 设置->隐私->相机 中设置",
-                                                preferredStyle: UIAlertControllerStyle.alert)
+                                                preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "好",
-                                         style: UIAlertActionStyle.default,
+                                         style: UIAlertAction.Style.default,
                                          handler: nil)
         alertController.addAction(cancelAction)
         return alertController
