@@ -19,7 +19,7 @@ class ObjectSelector: NSObject {
     let scanner: Scanner
     var filters: [ObjectFilter]
 
-    let string: String
+    var string: String
 
     init(string: String) {
         self.string = string
@@ -36,6 +36,24 @@ class ObjectSelector: NSObject {
         while let filter = nextFilter() {
             filters.append(filter)
         }
+    }
+    
+    func isUITableviewCellLeafSelected(leaf: AnyObject, root: AnyObject, finalPredicate: Bool,num:Int) -> Bool {
+        var isSelected = true
+        var views = [leaf]
+        for i in stride(from: filters.count - 1 - num , to: -1, by: -1) {
+            let filter = filters[i]
+            filter.nameOnly = i == filters.count - 1 && !finalPredicate
+            if !filter.doesApply(on: views) {
+                isSelected = false
+                break
+            }
+            views = filter.applyReverse(on: views)
+            if views.isEmpty {
+                break
+            }
+        }
+        return isSelected && views.contains(where: {$0 === root})
     }
 
     /*

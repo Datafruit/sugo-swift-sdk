@@ -105,6 +105,8 @@
 		14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */; };
 		14EADD521DF65ACB00E6B711 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD161DF65ACB00E6B711 /* WebSocket.swift */; };
 		14EADD531DF65ACB00E6B711 /* WebSocketWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */; };
+		9B70EDF523755592008A57DB /* UITableViewCellBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70EDF323755591008A57DB /* UITableViewCellBinding.swift */; };
+		9B70EDF623755592008A57DB /* UICollectionViewCellBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70EDF423755592008A57DB /* UICollectionViewCellBinding.swift */; };
 		9BF8AE4522B23B2F00C99E59 /* FirstStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4422B23B2F00C99E59 /* FirstStartRequest.swift */; };
 		9BF8AE4722B23C9D00C99E59 /* SugoInitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4622B23C9D00C99E59 /* SugoInitRequest.swift */; };
 		9BF8AE4922B23D7900C99E59 /* ExceptionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8AE4822B23D7900C99E59 /* ExceptionUtils.swift */; };
@@ -213,6 +215,8 @@
 		14EADD151DF65ACB00E6B711 /* UIViewSelectors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewSelectors.swift; sourceTree = "<group>"; };
 		14EADD161DF65ACB00E6B711 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		14EADD171DF65ACB00E6B711 /* WebSocketWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketWrapper.swift; sourceTree = "<group>"; };
+		9B70EDF323755591008A57DB /* UITableViewCellBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITableViewCellBinding.swift; path = Sugo/UITableViewCellBinding.swift; sourceTree = SOURCE_ROOT; };
+		9B70EDF423755592008A57DB /* UICollectionViewCellBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICollectionViewCellBinding.swift; path = Sugo/UICollectionViewCellBinding.swift; sourceTree = SOURCE_ROOT; };
 		9BF8AE4422B23B2F00C99E59 /* FirstStartRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirstStartRequest.swift; path = Sugo/FirstStartRequest.swift; sourceTree = SOURCE_ROOT; };
 		9BF8AE4622B23C9D00C99E59 /* SugoInitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SugoInitRequest.swift; path = Sugo/SugoInitRequest.swift; sourceTree = SOURCE_ROOT; };
 		9BF8AE4822B23D7900C99E59 /* ExceptionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExceptionUtils.swift; path = Sugo/ExceptionUtils.swift; sourceTree = SOURCE_ROOT; };
@@ -395,6 +399,8 @@
 		144DB1891DF660AF007B2275 /* CommonViewBindings */ = {
 			isa = PBXGroup;
 			children = (
+				9B70EDF423755592008A57DB /* UICollectionViewCellBinding.swift */,
+				9B70EDF323755591008A57DB /* UITableViewCellBinding.swift */,
 				14EADCEE1DF65ACA00E6B711 /* CodelessBinding.swift */,
 				14EADD101DF65ACB00E6B711 /* UIViewBinding.swift */,
 				141524221E8F41B80072C0DC /* UITextViewBinding.swift */,
@@ -655,6 +661,7 @@
 				14EADD361DF65ACB00E6B711 /* MD5.swift in Sources */,
 				14EADD3A1DF65ACB00E6B711 /* Network.swift in Sources */,
 				14EADD481DF65ACB00E6B711 /* Swizzle.swift in Sources */,
+				9B70EDF523755592008A57DB /* UITableViewCellBinding.swift in Sources */,
 				14EADD1D1DF65ACB00E6B711 /* WebViewBindings+UIWebView.swift in Sources */,
 				14EADD331DF65ACB00E6B711 /* IdentityTransformer.swift in Sources */,
 				14E1971E1EC0789200E26E9C /* HeatsRequest.swift in Sources */,
@@ -692,6 +699,7 @@
 				147C00F11DF66C17001FF110 /* SugoInstance.swift in Sources */,
 				14785D811E5F04DF0053B3C8 /* SugoConfigurationPropertyList.swift in Sources */,
 				141524231E8F41B80072C0DC /* UITextViewBinding.swift in Sources */,
+				9B70EDF623755592008A57DB /* UICollectionViewCellBinding.swift in Sources */,
 				14EADD511DF65ACB00E6B711 /* UIViewSelectors.swift in Sources */,
 				141DFD2D1E449D0900714BA7 /* SugoPageInfos.swift in Sources */,
 				14EADD191DF65ACB00E6B711 /* Codeless.swift in Sources */,

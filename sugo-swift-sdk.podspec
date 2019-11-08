@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.source                = { :git => 'https://github.com/Datafruit/sugo-swift-sdk.git', :tag => spec.version, :branch => 'master-5.0'}
   spec.ios.deployment_target = '8.0'
   spec.default_subspec       = 'core'
-
+  spec.swift_version = '5.0'
   spec.subspec 'core' do |core|
     core.source_files      = 'Sugo/*.{h,swift}'
     core.resources         = 'Sugo/*.js', 'Sugo/Sugo*.plist'
